@@ -20,6 +20,14 @@ npm install github:artvandervennet/gesso#v1.0.0
 
 The `#v1.0.0` pins a release, so a project only changes when you bump it. Leave it off to follow `main`.
 
+The repo is private, so every machine that installs a project needs access to it. On your Mac, with an SSH key on GitHub, use the SSH form:
+
+```sh
+npm install git+ssh://git@github.com/artvandervennet/gesso.git#v1.0.0
+```
+
+In CI, add a read-only deploy key for this repo, or a token with read access, to the pipeline that runs `npm install`.
+
 ### 2. Pick a theme
 
 Use a built-in theme (`studio`, `harbour` or `plum`), or make the project its own (see below). Then load the fonts, the core, the base styles and **one** theme, in that order:
