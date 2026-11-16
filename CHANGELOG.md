@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.3 — 2026-11-16
+
+- `art-stroke` no longer leaves a space after the word it paints, so a full stop or comma right after it sits tight.
+
 ## 1.2.2 — 2026-11-16
 
 - `art-button`, `art-header`, `art-tape` and `art-signature` keep their padding, fonts and colours on a page with a reset such as Tailwind's. A page rule like `* { padding: 0 }` or `a { color: inherit }` used to win over what a component gives the link or button inside it; those declarations are now `!important`. Pages without such a reset look the same as before.

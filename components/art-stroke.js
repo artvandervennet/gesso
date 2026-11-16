@@ -59,9 +59,8 @@ class ArtStroke extends HTMLElement {
     const id = `r${seed}`;
     const streaks = bristles(W, H, seed, variant === 'highlight' ? 6 : 3)
       .map((b) => `<path d="${b.d}" stroke="var(--art-stroke-paper, var(--surface))" stroke-width="${b.w}" stroke-linecap="round" opacity=".55"/>`).join('');
-    this.shadowRoot.innerHTML = `
-      <slot></slot>
-      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    // no white space around the slot: it would show as a gap between the word and a full stop after it
+    this.shadowRoot.innerHTML = `<slot></slot><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true" focusable="false">
         <defs>${roughFilter(id, seed, variant === 'highlight' ? 4 : 2.5)}</defs>
         <g class="paint" filter="url(#${id})">
           <path d="${strokePath(W, H, seed, { taper: variant === 'highlight' ? 0.08 : 0.2 })}" fill="${pigment}"/>
