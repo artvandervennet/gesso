@@ -149,6 +149,17 @@ export function dripEdge(W, H, seed, count = 7) {
   return { d, drips };
 }
 
+/**
+ * One drip on its own, hanging from y = 0: a thin run of paint with a bead at the end, the same
+ * shape dripEdge() draws along an edge. Returns a path for a box w wide and len tall; it starts
+ * a little above 0 so it joins whatever it hangs from.
+ */
+export function dripShape(w, len) {
+  return `M${f(w)} -3 V0 C${f(w * 0.55)} 4 ${f(w * 0.5)} ${f(len - w)} ${f(w / 2 + w * 0.45)} ${f(len - w * 0.4)}`
+    + ` A${f(w / 2)} ${f(w / 2)} 0 1 1 ${f(w / 2 - w * 0.45)} ${f(len - w * 0.4)}`
+    + ` C${f(w * 0.5)} ${f(len - w)} ${f(w * 0.45)} 4 0 0 V-3 Z`;
+}
+
 export const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /** Build a constructable stylesheet once per component class. */

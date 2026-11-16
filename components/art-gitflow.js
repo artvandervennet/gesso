@@ -5,24 +5,29 @@ import { paint, roughFilter, rng, seedFrom, ON_WALL, define, reducedMotion } fro
  * Write an ordinary ordered list. Each item says which branch it was committed to;
  * the component paints the branches, forks and merges beside it and reveals them as you scroll.
  *
- *   <art-gitflow>
+ * Write it newest first, like git log, and say so with the newest-first attribute.
+ *
+ *   <art-gitflow newest-first>
  *     <ol>
- *       <li data-branch="main"><time>2018</time><h3>Started studying</h3>…</li>
+ *       <li data-branch="work/bouwflow" data-open data-current>…</li>  ← still running: runs off the top
+ *       <li data-branch="side/solid">…</li>                           ← newest commit: merges into main above it
  *       <li data-branch="side/solid" data-pigment="complement"><time>2024</time>…</li>
- *       <li data-branch="side/solid">…</li>              ← last commit: merges back into main
- *       <li data-branch="work/bouwflow" data-open>…</li>  ← still running: never merges
+ *       <li data-branch="main"><time>2018</time><h3>Started studying</h3>…</li>
  *     </ol>
  *   </art-gitflow>
  *
  * Item attributes
  *   data-branch   branch name, shown as a label (default "main")
- *   data-pigment  colour for the branch, set on its first item
- *   data-open     the branch is still going: it runs off the bottom instead of merging
+ *   data-pigment  colour for the branch, set on any one of its items
+ *   data-open     the branch is still going: it runs off the end instead of merging
+ *                 (off the top when newest-first, off the bottom otherwise)
  *   data-current  marks the commit you are at now (gets a ring)
  *
  * Element attributes
  *   seed          changes the brushwork
  *   static        draw everything at once, no scroll reveal
+ *   newest-first  the list runs from newest to oldest, like git log: a branch forks below its
+ *                 last item and merges above its first, and an open branch runs off the top
  *
  * The list stays a list: the graph is aria-hidden, and branch names are inserted as visible text.
  * Uses light DOM so your own list styles still apply.
@@ -85,16 +90,22 @@ class ArtGitflow extends HTMLElement {
         });
       }
       const b = branches.get(name);
+      if (li.dataset.pigment) b.pigment = li.dataset.pigment;
       b.last = i;
       if (li.hasAttribute('data-open')) b.open = true;
     });
     // first-fit lane assignment: a lane is free again once its branch has merged
+    const newest = this.hasAttribute('newest-first');
     const lanesEnd = [Infinity]; // lane 0 is main, forever
-    for (const b of branches.values()) {
-      if (b.name === 'main') { b.lane = 0; continue; }
-      let lane = lanesEnd.findIndex((end, k) => k > 0 && end < b.first);
+    const side = [...branches.values()].filter((b) => b.name !== 'main');
+    if (branches.has('main')) branches.get('main').lane = 0;
+    // newest first, an open branch holds its lane from the very top, so those are placed first
+    if (newest) side.sort((a, b) => Number(b.open) - Number(a.open));
+    for (const b of side) {
+      const from = newest && b.open ? 0 : b.first;
+      let lane = lanesEnd.findIndex((end, k) => k > 0 && end < from);
       if (lane === -1) { lane = lanesEnd.length; lanesEnd.push(0); }
-      lanesEnd[lane] = b.open ? Infinity : b.last;
+      lanesEnd[lane] = b.open && !newest ? Infinity : b.last;
       b.lane = lane;
     }
     this.items = items;
@@ -140,15 +151,19 @@ class ArtGitflow extends HTMLElement {
 
     const main = this.branches.get('main');
     const lastMain = main ? y(main.last) : 0;
-    const anyOpenBelow = [...this.branches.values()].some((b) => b.open);
+    const newest = this.hasAttribute('newest-first');
+    const anyOpenBelow = !newest && [...this.branches.values()].some((b) => b.open);
     brush(`M${x(0)} ${f(y(0) - 18)} V${f(anyOpenBelow ? H : lastMain)}`, paint(main?.pigment || 'accent'), 7);
 
     for (const b of this.branches.values()) {
       if (b.name === 'main') continue;
       const bx = x(b.lane), y0 = y(b.first), y1 = y(b.last);
       const forkAt = Math.max(y(0), y0 - bend - 12);
-      let d = `M${x(0)} ${f(forkAt)} C${x(0)} ${f(forkAt + bend * 0.55)} ${bx} ${f(y0 - bend * 0.55 - 12)} ${bx} ${f(y0 - 12)} V${f(y1)}`;
-      if (b.open) d += ` V${f(H)}`;
+      // newest first, a branch that is still going starts at the top edge instead of joining main
+      let d = newest && b.open
+        ? `M${bx} ${f(y(0) - 18)} V${f(y1)}`
+        : `M${x(0)} ${f(forkAt)} C${x(0)} ${f(forkAt + bend * 0.55)} ${bx} ${f(y0 - bend * 0.55 - 12)} ${bx} ${f(y0 - 12)} V${f(y1)}`;
+      if (b.open && !newest) d += ` V${f(H)}`;
       else {
         const m = y1 + 14;
         d += ` C${bx} ${f(m + bend * 0.45)} ${x(0)} ${f(m + bend * 0.55)} ${x(0)} ${f(m + bend)}`;

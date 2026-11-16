@@ -3,9 +3,9 @@
 The design system behind **vandervennet.art**. Gesso is the primer painters brush onto a canvas before any colour goes on. This system does the same job for the portfolio, side projects, slides and CV: a reliable ground, then paint on top.
 
 - **Tokens**: shared tokens in `tokens/tokens.json` and theme recipes in `tokens/themes.json`, built to CSS custom properties. A theme is three pigments (brand, partner, complement); everything else is generated and contrast-checked. Ships with three themes: Studio (phthalo green, the portfolio), Harbour and Plum.
-- **Paints**: every section of a page has its own background. Paints `1`…`8` walk the colour wheel from brand to partner to complement; `deep` is the brand itself, used for the header and the last section. Each section ends in a drip of its own paint.
+- **Paints**: every section of a page has its own background. Paints `1`…`8` walk the colour wheel from brand to partner to complement; `deep` is the brand itself, used for the header, the hero, the last section and the footer. Only the hero and the sticky header drip.
 - **Base**: `css/base.css` styles plain HTML: type, links, focus, forms, code, tables.
-- **Components**: eleven framework-free custom elements, prefixed `art-`.
+- **Components**: twelve framework-free custom elements, prefixed `art-`.
 - **Docs**: `index.html` is a living reference that uses the system itself.
 
 ## Use it in a project
@@ -15,15 +15,15 @@ Gesso is installed straight from git. Every project picks its own theme.
 ### 1. Install
 
 ```sh
-npm install github:artvandervennet/gesso#v1.0.0
+npm install github:artvandervennet/gesso#v1.1.0
 ```
 
-The `#v1.0.0` pins a release, so a project only changes when you bump it. Leave it off to follow `main`.
+The `#v1.1.0` pins a release, so a project only changes when you bump it. Leave it off to follow `main`.
 
 The repo is private, so every machine that installs a project needs access to it. On your Mac, with an SSH key on GitHub, use the SSH form:
 
 ```sh
-npm install git+ssh://git@github.com/artvandervennet/gesso.git#v1.0.0
+npm install git+ssh://git@github.com/artvandervennet/gesso.git#v1.1.0
 ```
 
 In CI, add a read-only deploy key for this repo, or a token with read access, to the pipeline that runs `npm install`.
@@ -51,12 +51,51 @@ import '@vandervennet/gesso/components/art-gitflow.js';      // or just the ones
 
 ### 4. Paint the page
 
+Every page follows the same anatomy:
+
 ```html
-<header data-paint="deep">…<art-drip pigment="--surface" run></art-drip></header>
-<section data-paint="1">…</section>
-<section data-paint="2">…</section>
-<footer data-paint="deep">… <art-signature year="2026">Art Van der Vennet</art-signature></footer>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- 1. The sticky header, first in the body. It carries the hero's drips down the page. -->
+  <art-header label="Sections" data-paint="deep">
+    <a slot="wordmark" href="#top">Art Van der Vennet</a>
+    <a href="#about">About</a>
+    <a href="#work">Work</a>
+  </art-header>
+
+  <main id="main" tabindex="-1">
+    <!-- 2. The hero, in the deep paint. The only band with a drip of its own. -->
+    <div id="top" data-paint="deep" style="position: relative">
+      <h1>…</h1>
+      <art-drip pigment="--surface" stagger flush style="position: absolute; inset: calc(100% - 1px) 0 auto"></art-drip>
+    </div>
+
+    <!-- 3. Sections in paints 1, 2, 3… in order, with straight edges. The last one is deep again. -->
+    <section id="about" data-paint="1">…</section>
+    <section id="work" data-paint="2">
+      <!-- A timeline is a git graph, newest first. -->
+      <art-gitflow newest-first><ol>…</ol></art-gitflow>
+    </section>
+    <section id="contact" data-paint="deep">…</section>
+  </main>
+
+  <!-- 4. The footer, after main, in the deep paint. Nothing comes after it, and it doesn't drip. -->
+  <footer data-paint="deep">… <art-signature year="2026">Art Van der Vennet</art-signature></footer>
+</body>
 ```
+
+The rules behind it:
+
+- **The header takes the paint of the section above the one you are reading**, and drips it onto the page. `<art-header>` does this by itself: every top-level element with `data-paint` is a band.
+- **Drips are rare.** Only the hero and the header drip. A drip under every section is tiring, not fun.
+- **Drips are never there at once.** With `stagger`, every drip waits a few seconds, then runs down on its own time, once.
+- **The header takes the hero's drips along.** When the hero scrolls away, the same drips hang off the header without starting again; scroll back and they stay on the hero.
+- **The repaint follows the scroll.** While a section boundary passes behind the header, the new paint comes up through it as a soft blend: from the bottom edge upwards on the way down the page, from the top edge downwards on the way back up. The paints are mixed in OKLCH, so the blend passes through real in-between colours and never through grey.
+- **Fresh paint drips.** Every later section repaints the header, and it drips again: new drips, each after its own wait.
+- **Drips stay in their section.** They hang straight off the header, with no band of paint under it, and never into the next section: as it comes up they get shorter, all together, and are gone when it reaches the header.
+- **The footer is outside `<main>`** and is the last thing on the page.
+- **Timelines read newest first**, like `git log`.
 
 ### A project's own theme
 
@@ -86,7 +125,7 @@ The command mixes the shades and the eight section paints, fixes anything that w
 
 ### Updating
 
-Bump the tag in the project's `package.json` (`github:artvandervennet/gesso#v1.1.0`) and run `npm install`. If the project has its own theme, run `npm run theme` again so it picks up generator changes.
+Bump the tag in the project's `package.json` (`github:artvandervennet/gesso#v1.2.0`) and run `npm install`. If the project has its own theme, run `npm run theme` again so it picks up generator changes.
 
 ### Releasing a new version (in this repo)
 
@@ -108,7 +147,7 @@ The built CSS is committed, so projects never need to build Gesso themselves.
 1. **Prime before you paint.** Pages work as plain HTML first. Components wrap real buttons, links and lists.
 2. **One bold stroke per view.** One loud thing; everything around it stays quiet.
 3. **Paint for every eye.** Every colour pairing is contrast-checked. Colour never carries meaning alone.
-4. **Motion follows the hand.** Things move when people act. One reveal per page, at most. Reduced motion turns it all off.
+4. **Motion follows the hand.** Things move when people act, but nothing changes place under the pointer: a hover never moves an element or shifts its neighbours. One reveal per page, at most. Reduced motion turns it all off.
 5. **Leave visible brushwork.** Strokes, tape and dabs are irregular on purpose, but seeded, so they render identically every time.
 
 ## Tokens
@@ -125,7 +164,7 @@ The built CSS is committed, so projects never need to build Gesso themselves.
 | Layout | `--measure`, `--canvas-max`, `--gutter` | |
 | Motion | `--dur-dab`, `--dur-stroke`, `--dur-drip`, `--ease-brush`, `--ease-drip`, `--ease-settle` | |
 
-Themes: give each website its theme with `<html data-theme="harbour">`; without one, the first theme in `tokens/themes.json` is used. Paints: put `data-paint="deep"` or `"1"`…`"8"` on a section and everything inside follows; end it with `<art-drip pigment="--surface">` at its bottom edge. Add a theme by adding a recipe to `tokens/themes.json` and running the build: anything that would fail contrast is darkened or lightened until it passes.
+Themes: give each website its theme with `<html data-theme="harbour">`; without one, the first theme in `tokens/themes.json` is used. Paints: put `data-paint="deep"` or `"1"`…`"8"` on a section and everything inside follows. Sections don't drip; see the page anatomy above. Add a theme by adding a recipe to `tokens/themes.json` and running the build: anything that would fail contrast is darkened or lightened until it passes.
 
 ### Changing a token
 
@@ -147,9 +186,10 @@ Put `npm run check` in CI.
 | `<art-tape>` | Tape tag in the complement colour. `pigment`, `seed`, `flat`. |
 | `<art-signature>` | Your tag in the footer, like the signature on a painting. `year`, `pigment`, `animate`. |
 | `<art-theme>` | Theme picker: palettes for every theme in `themes.json`. `label`, `remember`. Fires `gesso:themechange`. |
-| `<art-railnav>` | Section nav drawn as a git branch: a painted lane with a dab per section, filling as you scroll (`aria-current="location"`). `label`. |
-| `<art-gitflow>` | Turns an `<ol>` into a painted git graph that reveals on scroll. Items: `data-branch`, `data-pigment`, `data-open`, `data-current`. |
-| `<art-drip>` | Wet edge with drips, to end a coloured band. `pigment`, `seed`, `count`, `height`, `run`. |
+| `<art-header>` | The sticky page header and the standard navigation, folding into a labelled Menu button under 48rem: wordmark, section links (`aria-current="location"` on the one you're in), and drips: it carries the hero's along, and drips afresh each time a section repaints it. Wears the paint of the section above the current one. `label`, `nodrip`. |
+| `<art-railnav>` | Section nav drawn as a git branch, for use inside a page: a painted lane with a dab per section, filling as you scroll (`aria-current="location"`). `label`. |
+| `<art-gitflow>` | Turns an `<ol>` into a painted git graph that reveals on scroll. Write the list newest first and add `newest-first`. Items: `data-branch`, `data-pigment`, `data-open`, `data-current`. |
+| `<art-drip>` | Wet edge with drips, for the hero. `pigment`, `seed`, `count`, `height`, `run` (all drips run once, together), `stagger` (each drip waits a few seconds, then runs on its own), `flush` (no band of paint above the drips). The hero uses `stagger flush`. |
 | `<art-splatter>` | Paint splatter for empty states and 404s. `pigment`, `seed`, `size`. |
 
 `components/brush.js` is the shared, seeded paint engine (strokes, bristles, splatter, drips, rough-edge filter).
@@ -161,7 +201,8 @@ Put `npm run check` in CI.
 - Focus rings use `--focus` (the complement), 3px with a 3px offset, at least 3:1 on every paint.
 - Errors are always red or orange: when a theme's complement isn't, the generator mixes a red.
 - Status colours always come with a word; branch colours always come with a branch name.
-- `prefers-reduced-motion` disables drips, stroke painting and the gitflow reveal.
+- `prefers-reduced-motion` disables drips, stroke painting and the gitflow reveal. Staggered drips are then shown in full at once.
+- `art-header` marks the current section by weight and a brushstroke, not colour alone.
 
 ## Text styles and animation
 

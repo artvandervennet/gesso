@@ -17,9 +17,22 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <art-header label="On this page" data-paint="deep">
+    <a slot="wordmark" href="#top">Gesso</a>
+    <a href="#principles">Principles</a>
+    <a href="#pigments">Pigments</a>
+    <a href="#type">Type</a>
+    <a href="#shape">Space and shape</a>
+    <a href="#motion">Animation</a>
+    <a href="#components">Components</a>
+    <a href="#gitflow">Gitflow</a>
+    <a href="#voice">Voice</a>
+    <a href="#designers">For designers</a>
+    <a href="#install">Install</a>
+  </art-header>
+
   <div class="paint-band hero" data-paint="deep" id="top">
     <div class="inner">
-      <header class="site-header"><a class="wordmark" href="#top">Gesso</a></header>
       <h1><art-stroke pigment="stroke" seed="gesso" animate>Gesso</art-stroke></h1>
       <p class="lead">The primer under everything on vandervennet.art. Tokens, web components and the rules for using them.</p>
       <div class="actions">
@@ -27,23 +40,8 @@
         <art-button size="l" variant="secondary"><a href="#components">Browse components</a></art-button>
       </div>
     </div>
-    <art-drip class="section-drip" pigment="--surface" seed="hero" count="9" run></art-drip>
+    <art-drip class="section-drip" pigment="--surface" seed="hero" count="9" stagger flush></art-drip>
   </div>
-
-  <aside class="side-nav" data-paint="1">
-    <art-railnav label="On this page">
-      <a href="#principles">Principles</a>
-      <a href="#pigments">Pigments</a>
-      <a href="#type">Type</a>
-      <a href="#shape">Space and shape</a>
-      <a href="#motion">Animation</a>
-      <a href="#components">Components</a>
-      <a href="#gitflow">Gitflow</a>
-      <a href="#voice">Voice</a>
-      <a href="#designers">For designers</a>
-      <a href="#install">Install</a>
-    </art-railnav>
-  </aside>
 
   <main id="main" tabindex="-1">
 
@@ -60,7 +58,6 @@
           <li><strong>Leave visible brushwork</strong>Strokes, tape and dabs are slightly irregular on purpose. The irregularity is seeded, so the same stroke paints the same way on every render.</li>
         </ol>
         </div>
-        <art-drip class="section-drip" pigment="--surface" seed="principles" count="8" run></art-drip>
       </section>
 
       <!-- ───────────────── Pigments ───────────────── -->
@@ -135,7 +132,6 @@
 }</code></pre>
         <p>Then give each website its theme: <code>&lt;html data-theme="harbour"&gt;</code>. Without one, a page uses the first theme in the file.</p>
         </div>
-        <art-drip class="section-drip" pigment="--surface" seed="pigments" count="8" run></art-drip>
       </section>
 
       <!-- ───────────────── Type ───────────────── -->
@@ -239,7 +235,6 @@
           </div>
         </div>
         </div>
-        <art-drip class="section-drip" pigment="--surface" seed="type" count="8" run></art-drip>
       </section>
 
       <!-- ───────────────── Space & shape ───────────────── -->
@@ -271,7 +266,6 @@
         </div>
 
         </div>
-        <art-drip class="section-drip" pigment="--surface" seed="shape" count="8" run></art-drip>
       </section>
 
       <!-- ───────────────── Animation ───────────────── -->
@@ -286,9 +280,9 @@
             <ul>
               <li>Decoration: drips running, a stroke being painted, the git graph filling in.</li>
               <li>Responses to someone's action: a press, a hover, a selection, a theme change.</li>
-              <li>Buttons never move. They respond with paint, not position.</li>
+              <li>Nothing changes place when you hover over it. Buttons and links respond with paint: a fill, a thicker underline. A canvas may grow slightly, in place, without pushing its neighbours.</li>
               <li>With the motion tokens below, never with ad-hoc timings.</li>
-              <li>Once. A drip runs when its section first comes into view, then stays put.</li>
+              <li>Once per coat of paint. The hero's drips run after the page loads and the header carries them along as they are; the header drips again only when a new section repaints it.</li>
             </ul>
           </div>
           <div style="--c:var(--danger)">
@@ -296,6 +290,7 @@
             <ul>
               <li>Fade, slide or reveal text, images or cards as they scroll in or as the page loads.</li>
               <li>Delay content or input: no splash screens, no loading animations for decoration, no clicks that wait for an animation.</li>
+              <li>Move, lift or tilt anything on hover, or let a hover shift anything else on the page.</li>
               <li>Loop forever, or move something while people are reading it.</li>
               <li>Animate anything when reduced motion is on: every animation then jumps straight to its end state.</li>
             </ul>
@@ -303,7 +298,7 @@
         </div>
 
         <h3>Drips run</h3>
-        <p>When a section scrolls into view, the wet edge is already there and its drips run down into the next section, once.</p>
+        <p>The hero's wet edge is there at once. With <code>stagger</code> each drip waits a few seconds, then runs down on its own, once. With <code>run</code> they all run together when the drip scrolls into view.</p>
         <div class="demo stack">
           <div class="band">
             <div class="fill">Paint running down</div>
@@ -341,14 +336,18 @@
           <table>
             <thead><tr><th scope="col">Animation</th><th scope="col">Trigger</th><th scope="col">What moves</th><th scope="col">Timing</th><th scope="col">With reduced motion</th></tr></thead>
             <tbody>
-              <tr><td>Drips run</td><td>A section scrolls into view, once</td><td>Drips grow down out of the wet edge</td><td><code>--dur-drip</code>, <code>--ease-drip</code></td><td>Drips shown in full</td></tr>
+              <tr><td>Hero drips</td><td>Page load, once</td><td>Each drip waits 1.5 to 5.5 seconds, then runs down on its own; longer drips run longer</td><td><code>--dur-drip</code> × 0.6 to 1.6, <code>--ease-drip</code></td><td>Drips shown in full at once</td></tr>
+              <tr><td>Header takes the drips</td><td>Scrolling past the hero</td><td>Nothing: the header carries the hero's drips as they are, and leaves them on the hero when you scroll back</td><td>None</td><td>The same</td></tr>
+              <tr><td>Header drips</td><td>Any later section repaints the header</td><td>The drips never hang into the next section: as it comes up they get shorter with the scroll, all together, and are gone when it reaches the header. Then the header is repainted and each new drip waits 1.5 to 5.5 seconds and runs down on its own</td><td><code>--dur-drip</code> × 0.6 to 1.6, <code>--ease-drip</code></td><td>Drips shown in full at once</td></tr>
+              <tr><td>Header menu</td><td>The Menu button, on small screens</td><td>The three lines turn into a cross; the list of links opens by growing to its own height, and closes the same way</td><td><code>--dur-wash</code>, <code>--ease-brush</code></td><td>Opens and closes at once</td></tr>
+              <tr><td>Header repaint</td><td>A section boundary passes behind the header</td><td>The new paint comes up through the header as a soft blend, mixed in OKLCH so it never goes grey: from the bottom edge upwards on the way down the page, from the top edge downwards on the way back up. It takes two header heights of scrolling</td><td>Follows the scroll</td><td>The same: it only moves when you scroll</td></tr>
               <tr><td>Hero stroke</td><td>Page load, once</td><td>The stroke under the wordmark is painted left to right; the wordmark is there from the start</td><td><code>--dur-stroke</code>, <code>--ease-brush</code></td><td>Stroke shown in full</td></tr>
               <tr><td>Git graph</td><td>Scrolling</td><td>The graph paints down beside the list; the list itself never moves</td><td>Follows the scroll</td><td>Graph shown in full</td></tr>
               <tr><td>Rail progress</td><td>A section comes into view</td><td>Paint runs down the lane to its dab; passed dabs fill, the current one swells with a ring</td><td><code>--dur-wash</code>, <code>--ease-settle</code></td><td>Changes at once</td></tr>
               <tr><td>Button press</td><td>Pointer down, Enter or Space</td><td>A dab spreads from the press point and fades</td><td><code>--dur-wash</code> × 1.5, <code>--ease-settle</code></td><td>No dab</td></tr>
               <tr><td>Button hover</td><td>Hover or keyboard focus</td><td>Paint spreads from the centre until the button is filled; the button itself never moves. On a primary button two drips run</td><td><code>--dur-wash</code>, <code>--ease-settle</code>; drips <code>--dur-drip</code></td><td>Filled at once, no drips</td></tr>
               <tr><td>Theme change</td><td>A theme is picked</td><td>Backgrounds and text wash to the new colours</td><td><code>--dur-wash</code>, <code>--ease-brush</code></td><td>Changes at once</td></tr>
-              <tr><td>Card hover</td><td>Hover</td><td>Canvases lift 2px. Swatches and theme palettes are buttons, so they don't move: their outline darkens</td><td><code>--dur-dab</code>, <code>--ease-brush</code></td><td>Changes at once</td></tr>
+              <tr><td>Card hover</td><td>Hover</td><td>A linked canvas grows 3% in place; the canvases around it don't move. Swatches and theme palettes get a darker outline</td><td><code>--dur-dab</code>, <code>--ease-brush</code></td><td>Changes at once</td></tr>
               <tr><td>Link hover</td><td>Hover</td><td>The underline thickens</td><td><code>--dur-dab</code>, <code>--ease-brush</code></td><td>Changes at once</td></tr>
               <tr><td>Signature</td><td>The footer scrolls into view, once</td><td>The name is painted left to right, then the flourish</td><td><code>--dur-stroke</code>, <code>--ease-brush</code></td><td>Shown in full</td></tr>
               <tr><td>Copied</td><td>A swatch is selected</td><td>"Copied" fades in, and out after 1.6 seconds</td><td><code>--dur-dab</code></td><td>Appears at once</td></tr>
@@ -370,7 +369,7 @@
             <tr><td><code>--dur-dab</code></td><td>140ms</td><td>Hover and press feedback</td></tr>
             <tr><td><code>--dur-wash</code></td><td>400ms</td><td>A background or tint changing colour: a chip being selected, a theme change</td></tr>
             <tr><td><code>--dur-stroke</code></td><td>650ms</td><td>A brushstroke being painted, a panel opening</td></tr>
-            <tr><td><code>--dur-drip</code></td><td>1100ms</td><td>Paint running down, once per section</td></tr>
+            <tr><td><code>--dur-drip</code></td><td>1100ms</td><td>Paint running down</td></tr>
             <tr><td><code>--ease-brush</code></td><td>slow start, confident middle, soft lift-off</td><td>Most changes</td></tr>
             <tr><td><code>--ease-drip</code></td><td>speeds up like gravity</td><td>Drips</td></tr>
             <tr><td><code>--ease-settle</code></td><td>fast, then settles gently</td><td>Selections and presses</td></tr>
@@ -380,14 +379,13 @@
         <h3>For designers</h3>
         <p>In Figma prototypes, use Smart animate with these durations and name the token in the annotation (<code>--dur-wash</code>, <code>--ease-settle</code>). Don't prototype content that fades in: in the build, it won't.</p>
         </div>
-        <art-drip class="section-drip" pigment="--surface" seed="motion" count="8" run></art-drip>
       </section>
 
       <!-- ───────────────── Components ───────────────── -->
       <section id="components" aria-labelledby="components-h" data-paint="6">
         <div class="inner">
         <h2 id="components-h">Components</h2>
-        <p class="intro">Eleven custom elements with no framework and no build step. They read the tokens, enhance native HTML where they can, and keep all decoration hidden from assistive technology.</p>
+        <p class="intro">Twelve custom elements with no framework and no build step. They read the tokens, enhance native HTML where they can, and keep all decoration hidden from assistive technology.</p>
 
         <h3 id="c-stroke">art-stroke</h3>
         <p>A hand-painted brushstroke under, behind or through inline text. Use it once per view, on the words that matter most.</p>
@@ -462,6 +460,7 @@
             <tr><td><code>pigment</code></td><td>Main colour of the painted study.</td></tr>
             <tr><td><code>seed</code></td><td>Changes the composition of the study.</td></tr>
             <tr><td><code>wet</code></td><td>Marks work in progress with a "Still wet" tape label.</td></tr>
+            <tr><td><code>bare</code></td><td>No painted study when there is no image: a text-only canvas. Show the work, or show nothing.</td></tr>
           </tbody></table>
         </details>
         <p class="a11y">The whole canvas is clickable, but only the heading link is in the tab order and read out. Keep one link per canvas.</p>
@@ -486,8 +485,28 @@
           </tbody></table>
         </details>
 
+        <h3 id="c-header">art-header</h3>
+        <p>The sticky page header, and the standard navigation: a wordmark, a link per section, and the hero's drips on its bottom edge. It takes the hero's drips along when the hero scrolls away and leaves them on the hero when you scroll back. Each later section repaints it with a soft blend that follows the scroll, bottom edge first on the way down and top edge first on the way up, and it drips again. It wears the paint of the section above the one you are reading, so the previous section seems to drip onto this one. The link to the section you are in is bold, with a brushstroke under it. It is the header of this page.</p>
+<pre><code>&lt;art-header label="Sections" data-paint="deep"&gt;
+  &lt;a slot="wordmark" href="#top"&gt;Art Van der Vennet&lt;/a&gt;
+  &lt;a href="#about"&gt;About&lt;/a&gt;
+  &lt;a href="#work"&gt;Work&lt;/a&gt;
+&lt;/art-header&gt;</code></pre>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>label</code></td><td>Accessible name of the navigation landmark.</td></tr>
+            <tr><td><code>nodrip</code></td><td>Never carry the drips.</td></tr>
+            <tr><td>Hero drip</td><td>End the first band in an <code>&lt;art-drip stagger flush&gt;</code>. The header copies its seed, count and height, and joins in at the same point of its run.</td></tr>
+            <tr><td><code>slot="wordmark"</code></td><td>One link with the site name.</td></tr>
+            <tr><td>Small screens</td><td>Under 48rem the links fold away under a Menu button. Its three lines turn into a cross and the list opens by growing, over the page: it takes no room in the layout, so picking a link lands you exactly on that section. A link, the button or Escape closes it.</td></tr>
+            <tr><td>Links</td><td>Plain <code>&lt;a href="#section-id"&gt;</code> children, one per section, in page order.</td></tr>
+            <tr><td>Bands</td><td>Every top-level element with <code>data-paint</code> is a band. Put the header first in <code>&lt;body&gt;</code>, before the hero.</td></tr>
+          </tbody></table>
+        </details>
+        <p class="a11y">A real <code>&lt;nav&gt;</code> landmark with your label. The current link gets <code>aria-current="location"</code> and is marked by weight and a brushstroke, not colour alone. The menu button is a real <code>&lt;button&gt;</code> with the visible label "Menu" and <code>aria-expanded</code>; while the menu is closed its links can't be reached by keyboard or screen reader. The drips are hidden from assistive technology.</p>
+
         <h3 id="c-railnav">art-railnav</h3>
-        <p>Section navigation drawn as a git branch, like the timeline it was inspired by. A painted lane runs beside the links with a dab per section: sections you've passed are filled, the one you're in is bigger with a ring, the ones ahead are hollow. It's the navigation beside this page.</p>
+        <p>Section navigation drawn as a git branch, like the timeline it was inspired by. A painted lane runs beside the links with a dab per section: sections you've passed are filled, the one you're in is bigger with a ring, the ones ahead are hollow. Use it inside a page, for a long article or a set of steps; the page's own navigation is <code>&lt;art-header&gt;</code>.</p>
         <div class="demo" data-code>
           <art-railnav label="Example sections" style="inline-size:15rem">
             <a href="#c-stroke">Strokes</a>
@@ -505,7 +524,7 @@
         <p class="a11y">Renders a <code>&lt;nav&gt;</code> landmark and sets <code>aria-current="location"</code> on the link for the section in view. The current link is also bold, so it doesn't rely on the dab alone.</p>
 
         <h3 id="c-decor">art-drip and art-splatter</h3>
-        <p>Decoration, used sparingly. Every section ends in a drip of its own paint; here it ends a block of colour inside one. A splatter belongs on an empty state or a 404, one per view.</p>
+        <p>Decoration, used sparingly. On a page only the hero and the header drip; here a drip ends a block of colour inside a section. A splatter belongs on an empty state or a 404, one per view.</p>
         <div class="demo stack" data-code>
           <div class="band">
             <div class="fill">The end of a coloured band</div>
@@ -521,7 +540,9 @@
         <details class="api"><summary>Attributes</summary>
           <table><tbody>
             <tr><td><code>pigment</code>, <code>seed</code></td><td>Colour and shape. Both components default to <code>accent</code>.</td></tr>
-            <tr><td><code>count</code>, <code>height</code>, <code>run</code></td><td>Drip only: number of drips, height of the edge, and running once when scrolled into view.</td></tr>
+            <tr><td><code>count</code>, <code>height</code>, <code>run</code></td><td>Drip only: number of drips on a 1200px edge (a narrower edge gets fewer drips at their normal width, never the same drips squeezed), height of the edge, and running once, together, when scrolled into view.</td></tr>
+            <tr><td><code>stagger</code></td><td>Drip only: the drips are not there at first. Each waits a few seconds, then runs down on its own time. Use it on the hero.</td></tr>
+            <tr><td><code>flush</code></td><td>Drip only: the drips hang directly off the edge above, with no band of paint under it. Use it on the hero, so its drips line up with the header's.</td></tr>
             <tr><td><code>size</code></td><td>Splatter only: width and height.</td></tr>
           </tbody></table>
         </details>
@@ -541,62 +562,61 @@
         </details>
         <p class="a11y">Screen readers hear "Signed: Art Van der Vennet, 2026". The painted version is hidden from them.</p>
         </div>
-        <art-drip class="section-drip" pigment="--surface" seed="components" count="8" run></art-drip>
       </section>
 
       <!-- ───────────────── Gitflow ───────────────── -->
       <section id="gitflow" aria-labelledby="gitflow-h" data-paint="7">
         <div class="inner">
         <h2 id="gitflow-h">Gitflow</h2>
-        <p class="intro"><code>&lt;art-gitflow&gt;</code> turns an ordinary list into a painted git graph: branches fork, run beside each other and merge back as you scroll. On vandervennet.art it tells your career. Here it tells how Gesso was made.</p>
+        <p class="intro"><code>&lt;art-gitflow&gt;</code> turns an ordinary list into a painted git graph: branches fork, run beside each other and merge back as you scroll. Write the list newest first, like <code>git log</code>, and add <code>newest-first</code>. On vandervennet.art it tells your career. Here it tells how Gesso was made.</p>
 
         <div class="demo stack" data-code>
-          <art-gitflow seed="gesso">
+          <art-gitflow seed="gesso" newest-first>
             <ol>
-              <li data-branch="main">
-                <span class="when">v0.1</span>
-                <h4>Primed the canvas</h4>
-                <p>One tokens file in the W3C format, built to CSS custom properties by a small script.</p>
-              </li>
-              <li data-branch="feat/pigments" data-pigment="complement">
-                <span class="when">v0.2</span>
-                <h4>Mixed the paint box</h4>
-                <p>Three pigments and eleven shades of green, all in OKLCH.</p>
-              </li>
-              <li data-branch="feat/pigments">
-                <span class="when">v0.3</span>
-                <h4>Checked every pairing</h4>
-                <p>A contrast script covers every pairing and fails on anything below AA.</p>
-              </li>
-              <li data-branch="feat/brush" data-pigment="partner">
-                <span class="when">v0.4</span>
-                <h4>Built the brush engine</h4>
-                <p>Seeded strokes, splatters and drips, so every render paints the same way.</p>
-              </li>
-              <li data-branch="feat/components" data-pigment="neutral-500">
-                <span class="when">v0.5</span>
-                <h4>Wrapped the native elements</h4>
-                <p>Buttons, links and lists keep their own semantics inside the components.</p>
-              </li>
-              <li data-branch="feat/brush">
-                <span class="when">v0.6</span>
-                <h4>Added dry-brush streaks</h4>
-                <p>Thin gaps where the canvas shows through the paint.</p>
-              </li>
-              <li data-branch="feat/components">
-                <span class="when">v0.9</span>
-                <h4>Painted the git graph</h4>
-                <p>This list, revealed as you scroll.</p>
+              <li data-branch="next/portfolio" data-pigment="complement" data-open data-current>
+                <span class="when">Now</span>
+                <h4>Painting vandervennet.art</h4>
+                <p>The portfolio itself, built on Gesso.</p>
               </li>
               <li data-branch="main">
                 <span class="when">v1.0</span>
                 <h4>Released Gesso</h4>
                 <p>Tokens, eleven components, three themes and this page.</p>
               </li>
-              <li data-branch="next/portfolio" data-pigment="complement" data-open data-current>
-                <span class="when">Now</span>
-                <h4>Painting vandervennet.art</h4>
-                <p>The portfolio itself, built on Gesso.</p>
+              <li data-branch="feat/components">
+                <span class="when">v0.9</span>
+                <h4>Painted the git graph</h4>
+                <p>This list, revealed as you scroll.</p>
+              </li>
+              <li data-branch="feat/brush">
+                <span class="when">v0.6</span>
+                <h4>Added dry-brush streaks</h4>
+                <p>Thin gaps where the canvas shows through the paint.</p>
+              </li>
+              <li data-branch="feat/components" data-pigment="neutral-500">
+                <span class="when">v0.5</span>
+                <h4>Wrapped the native elements</h4>
+                <p>Buttons, links and lists keep their own semantics inside the components.</p>
+              </li>
+              <li data-branch="feat/brush" data-pigment="partner">
+                <span class="when">v0.4</span>
+                <h4>Built the brush engine</h4>
+                <p>Seeded strokes, splatters and drips, so every render paints the same way.</p>
+              </li>
+              <li data-branch="feat/pigments">
+                <span class="when">v0.3</span>
+                <h4>Checked every pairing</h4>
+                <p>A contrast script covers every pairing and fails on anything below AA.</p>
+              </li>
+              <li data-branch="feat/pigments" data-pigment="complement">
+                <span class="when">v0.2</span>
+                <h4>Mixed the paint box</h4>
+                <p>Three pigments and eleven shades of green, all in OKLCH.</p>
+              </li>
+              <li data-branch="main">
+                <span class="when">v0.1</span>
+                <h4>Primed the canvas</h4>
+                <p>One tokens file in the W3C format, built to CSS custom properties by a small script.</p>
               </li>
             </ol>
           </art-gitflow>
@@ -604,16 +624,16 @@
         <details class="api"><summary>Attributes</summary>
           <table><tbody>
             <tr><td><code>data-branch</code> on an item</td><td>The branch it was committed to. Defaults to <code>main</code>. Shown as text next to the date.</td></tr>
-            <tr><td><code>data-pigment</code> on an item</td><td>The branch colour, set on its first item.</td></tr>
-            <tr><td><code>data-open</code> on an item</td><td>The branch is still running and never merges back.</td></tr>
+            <tr><td><code>data-pigment</code> on an item</td><td>The branch colour, set on any one of its items.</td></tr>
+            <tr><td><code>data-open</code> on an item</td><td>The branch is still running and never merges back: it runs off the top of a newest-first graph.</td></tr>
             <tr><td><code>data-current</code> on an item</td><td>Rings the commit you're at now.</td></tr>
             <tr><td><code>&lt;time&gt;</code> or <code>.when</code></td><td>The date or version, moved onto the meta line.</td></tr>
+            <tr><td><code>newest-first</code></td><td>On the element: the list runs from newest to oldest, which is the standard. A branch then forks below its last item and merges above its first. Leave it off for an oldest-first list.</td></tr>
             <tr><td><code>seed</code>, <code>static</code></td><td>On the element: changes the brushwork, or turns off the scroll reveal.</td></tr>
           </tbody></table>
         </details>
         <p class="a11y">It stays an ordered list for screen readers. The graph is aria-hidden; branch names are inserted as visible text. With reduced motion the whole graph is painted at once.</p>
         </div>
-        <art-drip class="section-drip" pigment="--surface" seed="gitflow" count="8" run></art-drip>
       </section>
 
       <!-- ───────────────── Voice ───────────────── -->
@@ -642,7 +662,6 @@
           </div>
         </div>
         </div>
-        <art-drip class="section-drip" pigment="--surface" seed="voice" count="8" run></art-drip>
       </section>
 
       <!-- ───────────────── For designers ───────────────── -->
@@ -674,16 +693,18 @@
         </ol>
 
         <h3>Page anatomy</h3>
-        <p>A page is a stack of painted sections, each a different colour, each ending in a drip of its own paint that runs into the next. The header and the last section use the deep paint, so a page opens and closes in the same colour. The sections in between take paints 1, 2, 3 and so on, in order.</p>
-        <figure class="anatomy" aria-label="Page anatomy: a header in the deep paint, then sections in paints 1 to 4, ending with a last section in the deep paint. Each section drips into the next.">
-          <div class="a-sec" data-paint="deep"><span>Header and hero, deep</span><art-drip class="a-drip" pigment="--surface" seed="a1" count="7"></art-drip></div>
-          <div class="a-sec" data-paint="1"><span>Section, paint 1</span><art-drip class="a-drip" pigment="--surface" seed="a2" count="7"></art-drip></div>
-          <div class="a-sec" data-paint="2"><span>Section, paint 2</span><art-drip class="a-drip" pigment="--surface" seed="a3" count="7"></art-drip></div>
-          <div class="a-sec" data-paint="3"><span>Section, paint 3</span><art-drip class="a-drip" pigment="--surface" seed="a4" count="7"></art-drip></div>
-          <div class="a-sec" data-paint="4"><span>Section, paint 4, and so on</span><art-drip class="a-drip" pigment="--surface" seed="a5" count="7"></art-drip></div>
-          <div class="a-sec" data-paint="deep"><span>Last section and footer, deep again</span></div>
+        <p>A page is a stack of painted bands, each a different colour. It opens with the sticky header and the hero in the deep paint. The sections in <code>&lt;main&gt;</code> take paints 1, 2, 3 and so on, in order. The last section and the footer use the deep paint again, so a page opens and closes in the same colour. The footer comes after <code>&lt;/main&gt;</code>, and nothing follows it.</p>
+        <p>Drips are rare on purpose: a drip under every section is tiring, not fun. Only two things drip. The hero ends in an <code>&lt;art-drip&gt;</code> of its own. Its drips are not there at once: each waits a few seconds, then runs down on its own time. When the hero scrolls away, the header takes those same drips along without starting them again, and leaves them behind on the hero when you scroll back up. Further down, the header takes the paint of the section above the one you are reading. Each time it is repainted, the fresh paint drips again. Sections and the footer have straight edges.</p>
+        <figure class="anatomy" aria-label="Page anatomy: a sticky header and a hero in the deep paint, the hero ending in a drip. Then sections in paints 1 to 4 with straight edges, a last section in the deep paint, and the footer in the deep paint.">
+          <div class="a-sec" data-paint="deep"><span>Sticky header, then the hero: deep</span><art-drip class="a-drip" pigment="--surface" seed="a1" count="7"></art-drip></div>
+          <div class="a-sec" data-paint="1"><span>Section, paint 1</span></div>
+          <div class="a-sec" data-paint="2"><span>Section, paint 2</span></div>
+          <div class="a-sec" data-paint="3"><span>Section, paint 3</span></div>
+          <div class="a-sec" data-paint="4"><span>Section, paint 4, and so on</span></div>
+          <div class="a-sec" data-paint="deep"><span>Last section, deep again</span></div>
+          <div class="a-sec a-foot" data-paint="deep"><span>Footer, outside main, deep</span></div>
         </figure>
-        <p>Content inside a section stays within 68 characters per line; canvases, demos and the gitflow can go wider. On screens of 960px and up, the gitflow rail navigation hangs at the side.</p>
+        <p>Content inside a section stays within 68 characters per line; canvases, demos and the gitflow can go wider.</p>
 
         <h3>Grid and breakpoints</h3>
         <div style="overflow-x:auto">
@@ -728,7 +749,6 @@
         <h3>Handing off</h3>
         <p>Name layers after components and their attributes (<code>art-canvas · pigment=complement · wet</code>), and colours after variables, never hex. Mark motion with the motion tokens instead of drawing it. For a gitflow, list each entry's branch, colour and whether it's still open; the code paints the graph.</p>
         </div>
-        <art-drip class="section-drip" pigment="--surface" seed="designers" count="8" run></art-drip>
       </section>
 
       <!-- ───────────────── Install ───────────────── -->
@@ -737,7 +757,7 @@
         <h2 id="install-h">Install</h2>
         <p class="intro">Gesso installs straight from git, and every project picks its own theme. The built CSS is committed, so projects never build Gesso themselves.</p>
         <h3>Add it to a project</h3>
-<pre><code>npm install github:artvandervennet/gesso#v1.0.0</code></pre>
+<pre><code>npm install github:artvandervennet/gesso#v1.1.0</code></pre>
         <p>The tag pins a release, so a project only changes when you bump it.</p>
         <h3>Load the styles and one theme</h3>
 <pre><code>@import "@vandervennet/gesso/fonts.css";         /* self-hosted fonts */
@@ -762,23 +782,25 @@ git push --follow-tags</code></pre>
 ├── css/core.css              shared tokens, paints, text styles
 ├── css/themes/*.css          one file per built-in theme
 ├── css/base.css, fonts.css   plain HTML styles, self-hosted fonts
-├── components/               eleven custom elements, brush.js, themes.js
+├── components/               twelve custom elements, brush.js, themes.js
 ├── scripts/                  build, contrast check, design kit export
 ├── design-kit/               fonts, Figma tokens, SVG brushwork, PDF guide
 └── index.html                this page</code></pre>
 
-      <footer class="site-footer">
-        <div class="footer-notes">
-          <span>Gesso 1.0, for vandervennet.art</span>
-          <span>Inspired by the work of Bart Delrue and Michiel Van de Velde, with their blessing.</span>
         </div>
-        <art-signature year="2026" animate>Art Van der Vennet</art-signature>
-      </footer>
-        </div>
-        <art-drip class="section-drip" pigment="--surface" seed="install" count="8" run></art-drip>
       </section>
 
   </main>
+
+  <footer class="paint-band site-footer" data-paint="deep">
+    <div class="inner">
+      <div class="footer-notes">
+        <span>Gesso 1.1, for vandervennet.art</span>
+        <span>Inspired by the work of Bart Delrue and Michiel Van de Velde, with their blessing.</span>
+      </div>
+      <art-signature year="2026" animate>Art Van der Vennet</art-signature>
+    </div>
+  </footer>
 
   <script>
     // Show each demo's markup underneath it, captured before the components upgrade.

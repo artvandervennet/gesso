@@ -1,4 +1,4 @@
-import { rng, seedFrom, sheet, define } from './brush.js';
+import { rng, seedFrom, dripShape, roughFilter, sheet, define } from './brush.js';
 
 /**
  * <art-button> — styles a real <button> or <a> as a dab of paint.
@@ -66,21 +66,18 @@ const css = sheet(`
   }
   :host([variant="secondary"]) .dab-press, :host([variant="quiet"]) .dab-press { background: var(--accent); opacity: 0.16; }
   @keyframes art-press { 0% { transform: scale(0); opacity: 0.32; } 55% { opacity: 0.26; } 100% { transform: scale(var(--s, 20)); opacity: 0; } }
-  .drips { position: absolute; inset: auto 0 0; pointer-events: none; }
+  /* Two drips of the button's paint, drawn by the brush engine like every other drip in
+     Gesso. Each hangs behind a shutter that opens downwards on hover or focus. */
+  .drips { position: absolute; inset: calc(100% - 2px) 0 auto; block-size: 0; pointer-events: none; }
   .drip {
-    position: absolute; top: -2px; inline-size: var(--w); block-size: var(--len);
-    background: var(--fill);
-    border-radius: 0 0 999px 999px;
-    transform-origin: top; transform: scaleY(0);
-    transition: transform var(--dur-dab) var(--ease-brush);
+    position: absolute; inset-block-start: 0; overflow: visible;
+    clip-path: inset(0 -6px 100% -6px);
+    transition: clip-path var(--dur-dab) var(--ease-brush);
   }
-  .drip::after { /* the bead at the end of a drip */
-    content: ""; position: absolute; inset-inline: -1.5px; bottom: -2px; aspect-ratio: 1;
-    border-radius: 50%; background: inherit;
-  }
+  .drip path { fill: var(--fill); }
   :host(:hover:not([data-disabled])) .drip, :host(:focus-within:not([data-disabled])) .drip {
-    transform: scaleY(1);
-    transition: transform var(--dur-drip) var(--ease-drip) var(--delay);
+    clip-path: inset(0 -6px -8px -6px);
+    transition: clip-path var(--dur-drip) var(--ease-drip) var(--delay);
   }
   :host([variant="secondary"]) .drips, :host([variant="quiet"]) .drips, :host([nodrip]) .drips { display: none; }
   @media (prefers-reduced-motion: reduce) { .drips, .press { display: none; } .blob { transition: none; } ::slotted(*) { transition: none !important; } }
@@ -92,10 +89,13 @@ class ArtButton extends HTMLElement {
     this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [css];
   }
   connectedCallback() {
-    const r = rng(seedFrom(this.textContent.trim(), 5));
+    const seed = seedFrom(this.textContent.trim(), 5);
+    const r = rng(seed);
     const drips = Array.from({ length: 2 }, (_, i) => {
-      const left = 22 + i * 38 + r() * 18;
-      return `<span class="drip" style="left:${left.toFixed(1)}%;--w:${(4 + r() * 3).toFixed(1)}px;--len:${(7 + r() * 9).toFixed(1)}px;--delay:${(i * 120 + r() * 80).toFixed(0)}ms"></span>`;
+      const left = 22 + i * 38 + r() * 18, w = 5 + r() * 4, len = 12 + r() * 10;
+      const id = `b${seed}-${i}`;
+      return `<svg class="drip" style="left:${left.toFixed(1)}%;--delay:${(i * 120 + r() * 80).toFixed(0)}ms" width="${w.toFixed(1)}" height="${len.toFixed(1)}" viewBox="0 0 ${w.toFixed(1)} ${len.toFixed(1)}" focusable="false">
+        <defs>${roughFilter(id, seed + i, 1.2, 0.09)}</defs><path d="${dripShape(w, len)}" filter="url(#${id})"/></svg>`;
     }).join('');
     this.shadowRoot.innerHTML = `<span class="paint" aria-hidden="true"><span class="blob"></span></span><slot></slot><span class="press" aria-hidden="true"></span><span class="drips" aria-hidden="true">${drips}</span>`;
     // the paint blob has to cover the corners, so size it to the button's diagonal

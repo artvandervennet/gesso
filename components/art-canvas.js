@@ -15,19 +15,27 @@ import { strokePath, roughFilter, paint, rng, seedFrom, PIGMENTS, sheet, define 
  *   pigment  main colour of the painted study (default: brand)
  *   seed     changes the painted study
  *   wet      mark as work in progress: shows a "Still wet" tag
+ *   bare     no painted study when there is no image: a text-only canvas
  */
 const css = sheet(`
   :host {
     display: flex; flex-direction: column;
     background: var(--surface-raised);
     border-radius: var(--radius-canvas);
-    box-shadow: 0 0 0 1px var(--rule), var(--shadow-canvas-edge);
-    transition: transform var(--dur-dab) var(--ease-brush), box-shadow var(--dur-dab) var(--ease-brush);
+    /* no outline: the canvas stands off the wall by its shadow alone */
+    box-shadow: var(--shadow-tape), 0 10px 28px -18px oklch(20% 0.03 200 / 0.45);
     position: relative;
+    transition: scale var(--dur-dab) var(--ease-brush), box-shadow var(--dur-dab) var(--ease-brush);
   }
   :host([data-linked]) { cursor: pointer; }
-  :host([data-linked]:hover) { transform: translate(-2px, -2px); }
-  :host(:focus-within) { box-shadow: 0 0 0 1px var(--rule), var(--shadow-canvas-edge), 0 0 0 3px var(--surface), 0 0 0 6px var(--focus); }
+  /* On hover a linked canvas grows a little, in place: it is scaled, not resized, so the
+     canvases around it stay exactly where they are. */
+  :host([data-linked]:hover) { scale: 1.03; z-index: 1; box-shadow: var(--shadow-tape), var(--shadow-lifted); }
+  @media (prefers-reduced-motion: reduce) { :host { transition: none; } }
+  /* bare: no painted study. For a canvas with nothing to show, which is better than decoration. */
+  :host([bare]) .media:not(.has-image) { display: none; }
+  :host([bare]) .body { padding-block-start: var(--space-6); }
+  :host(:focus-within) { box-shadow: var(--shadow-tape), 0 0 0 3px var(--surface), 0 0 0 6px var(--focus); }
   .media { aspect-ratio: 4 / 3; overflow: hidden; border-block-end: 1px solid var(--rule); background: var(--canvas); }
   ::slotted([slot="media"]) { display: block; inline-size: 100%; block-size: 100%; object-fit: cover; }
   .study { inline-size: 100%; block-size: 100%; }
@@ -53,7 +61,7 @@ class ArtCanvas extends HTMLElement {
     const seed = seedFrom(this.getAttribute('seed') ?? this.textContent.trim().slice(0, 40), 9);
     const hasMedia = !!this.querySelector(':scope > [slot="media"]');
     this.shadowRoot.innerHTML = `
-      <div class="media" part="media"><slot name="media">${hasMedia ? '' : this.study(seed)}</slot></div>
+      <div class="media${hasMedia ? ' has-image' : ''}" part="media"><slot name="media">${hasMedia || this.hasAttribute('bare') ? '' : this.study(seed)}</slot></div>
       <div class="body" part="body"><slot></slot></div>
       ${this.hasAttribute('wet') ? '<span class="wet">Still wet</span>' : ''}`;
     const link = this.querySelector('a[href]');

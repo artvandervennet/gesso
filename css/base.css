@@ -51,7 +51,7 @@
   small { font-size: var(--step--1); }
   strong, b { font-weight: var(--weight-bold); }
 
-  :not(art-button, art-railnav) > a {
+  :not(art-button, art-railnav, art-header) > a {
     color: var(--link);
     text-decoration-line: underline;
     text-decoration-thickness: 0.08em;
@@ -59,9 +59,9 @@
     text-decoration-skip-ink: auto;
     transition: text-decoration-thickness var(--dur-dab) var(--ease-brush);
   }
-  :not(art-button, art-railnav) > a:hover { text-decoration-thickness: 0.18em; }
+  :not(art-button, art-railnav, art-header) > a:hover { text-decoration-thickness: 0.18em; }
 
-  :focus-visible:not(art-button > *, art-railnav > *) {
+  :focus-visible:not(art-button > *, art-railnav > *, art-header > *) {
     outline: 3px solid var(--focus);
     outline-offset: 3px;
     border-radius: 2px;
@@ -106,6 +106,17 @@
   art-canvas:hover :is(h2, h3) a { text-decoration: underline; text-decoration-thickness: 0.08em; text-underline-offset: 0.2em; }
   art-tape:not(:defined) { background: var(--tape); color: var(--on-tape); padding: 0.2em 0.7em; font-size: var(--step--1); }
   art-railnav:not(:defined) > a { display: block; padding: var(--space-2) 0; }
+  art-header:not(:defined) {
+    position: sticky; inset-block-start: 0; z-index: 30;
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-6);
+    padding: var(--space-3) var(--gutter);
+  }
+  art-header:not(:defined) > a { color: var(--ink); }
+  /* A link to a section lands that section's top edge right under the sticky header: no strip
+     of the section before it, and the section's own top padding is all the room the title needs
+     under the drips. */
+  html:has(art-header) { scroll-padding-block-start: var(--art-header-height, 3.5rem); }
+  html:has(art-header) [data-paint]:target { scroll-margin-block-start: 0; }
 }
 
 @layer gesso.utilities {
