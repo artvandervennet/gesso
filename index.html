@@ -6,7 +6,7 @@
   <title>Gesso — the design system of vandervennet.art</title>
   <meta name="description" content="Gesso is Art Van der Vennet's design system: paint-named tokens, web components and the rules behind vandervennet.art.">
   <link rel="stylesheet" href="css/fonts.css">
-  <script>try { const t = localStorage.getItem('gesso-theme'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+  <script>try { const t = localStorage.getItem('gesso-theme'); if (t) document.documentElement.dataset.theme = t; const s = localStorage.getItem('gesso-scheme'); if (s) document.documentElement.dataset.scheme = s; } catch {}</script>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -28,6 +28,7 @@
     <a href="#voice">Voice</a>
     <a href="#designers">For designers</a>
     <a href="#install">Install</a>
+    <art-scheme slot="actions" remember></art-scheme>
   </art-header>
 
   <div class="band hero" data-paint="deep" id="top">
@@ -127,6 +128,21 @@
 
         <h3>Text on paint</h3>
         <p>On paints 1 to 8, text is the darkest brand shade and links and buttons are the brand colour. On the deep paint, text is gesso white, links are the light partner and buttons are the partner with dark text. The partner is never text on a light paint: it's for strokes, highlights and fills under dark text. The complement is for errors, focus and the odd accent.</p>
+
+        <h3 id="dark">Light and dark</h3>
+        <p>Every theme comes in two schemes. After dark the paints keep their hues and go deep, the ink turns gesso white, and each pigment is lifted until it reads again. The deep paint is the brand in both, so the header and hero look the same day and night. Every pairing is contrast-checked in both schemes.</p>
+        <p>A page is light unless it asks. Set the scheme on <code>&lt;html&gt;</code>:</p>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th scope="col">On <code>&lt;html&gt;</code></th><th scope="col">Result</th></tr></thead>
+            <tbody>
+              <tr><td>nothing, or <code>data-scheme="light"</code></td><td>Light.</td></tr>
+              <tr><td><code>data-scheme="dark"</code> or <code>class="dark"</code></td><td>Dark.</td></tr>
+              <tr><td><code>data-scheme="auto"</code></td><td>Dark when the visitor's system is, without any script.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-block-start:var(--space-4)">The switch in this page's header is <code>&lt;art-scheme&gt;</code>. Try it.</p>
 
         <h3>Making a theme</h3>
         <p>Add a recipe to <code>tokens/themes.json</code> and run the build. The generator mixes the shades and the eight paints, then darkens or lightens anything that would fail contrast until every pairing passes AA.</p>
@@ -405,7 +421,7 @@
         <div class="inner">
         <div class="section-head">
         <h2 id="components-h" class="section-title">Components</h2>
-        <p class="intro">Twelve custom elements with no framework and no build step. They read the tokens, enhance native HTML where they can, and keep all decoration hidden from assistive technology.</p>
+        <p class="intro">Thirteen custom elements with no framework and no build step. They read the tokens, enhance native HTML where they can, and keep all decoration hidden from assistive technology.</p>
         </div>
         <div class="section-body">
 
@@ -523,9 +539,24 @@
             <tr><td>Small screens</td><td>Under 48rem the links fold away under a Menu button. Its three lines turn into a cross and the list opens by growing, over the page: it takes no room in the layout, so picking a link lands you exactly on that section. A link, the button or Escape closes it.</td></tr>
             <tr><td>Links</td><td>Plain <code>&lt;a href="#section-id"&gt;</code> children, one per section, in page order.</td></tr>
             <tr><td>Bands</td><td>Every top-level element with <code>data-paint</code> is a band. Put the header first in <code>&lt;body&gt;</code>, before the hero.</td></tr>
+            <tr><td><code>slot="actions"</code></td><td>Buttons and switches at the right: a scheme switch, a log-in button, a user menu. Places to go are links; things to do are actions.</td></tr>
+            <tr><td>Pages</td><td>In an app the links can be routes. Mark the one you are on with <code>aria-current="page"</code>; the header puts its brushstroke under it.</td></tr>
           </tbody></table>
         </details>
         <p class="a11y">A real <code>&lt;nav&gt;</code> landmark with your label. The current link gets <code>aria-current="location"</code> and is marked by weight and a brushstroke, not colour alone. The menu button is a real <code>&lt;button&gt;</code> with the visible label "Menu" and <code>aria-expanded</code>; while the menu is closed its links can't be reached by keyboard or screen reader. The drips are hidden from assistive technology.</p>
+
+        <h3 id="c-scheme">art-scheme</h3>
+        <p>One button that moves the page between light, dark and the visitor's system. It says the current choice in words, so it never relies on an icon alone.</p>
+        <div class="demo" data-code>
+          <art-scheme></art-scheme>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>remember</code></td><td>Keep the choice on this device.</td></tr>
+            <tr><td><code>label</code></td><td>What it switches, for the accessible name. Default "Colour scheme".</td></tr>
+          </tbody></table>
+        </details>
+        <p class="a11y">A real button. Its name is read as "Colour scheme: dark. Switch to system." To avoid a flash of the wrong scheme, set <code>data-scheme</code> from <code>localStorage</code> in the <code>&lt;head&gt;</code>, as this page does.</p>
 
         <h3 id="c-railnav">art-railnav</h3>
         <p>Section navigation drawn as a git branch, like the timeline it was inspired by. A painted lane runs beside the links with a dab per section: sections you've passed are filled, the one you're in is bigger with a ring, the ones ahead are hollow. Use it inside a page, for a long article or a set of steps; the page's own navigation is <code>&lt;art-header&gt;</code>.</p>
@@ -799,7 +830,7 @@
         </div>
         <div class="section-body">
         <h3>Add it to a project</h3>
-<pre><code>npm install github:artvandervennet/gesso#v1.1.0</code></pre>
+<pre><code>npm install github:artvandervennet/gesso#v1.2.0</code></pre>
         <p>The tag pins a release, so a project only changes when you bump it.</p>
         <h3>Load the styles and one theme</h3>
 <pre><code>@import "@vandervennet/gesso/fonts.css";         /* self-hosted fonts */
@@ -848,6 +879,12 @@
               <tr><td><code>.card</code></td><td>The one card: a raised surface with no outline, on <code>--shadow-card</code>. <code>&lt;art-canvas&gt;</code> looks the same.</td></tr>
               <tr><td><code>.card-grid</code></td><td>Cards one or two wide. With an odd number, the first card takes the whole first row, so the last row never has a hole.</td></tr>
               <tr><td><code>.field-row</code>, <code>.form-message</code></td><td>A field with its button beside it, and what the form says back.</td></tr>
+              <tr><td><code>.stack</code></td><td>A vertical list of cards or rows: a feed, a thread.</td></tr>
+              <tr><td><code>.avatar</code></td><td>A person: a photo or an initial in a dab of paint. <code>.small</code> and <code>.large</code>.</td></tr>
+              <tr><td><code>.dialog</code></td><td>A native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>: the one card, lifted, with the browser's own focus handling and Escape.</td></tr>
+              <tr><td><code>.menu</code></td><td>A menu on the popover API: <code>&lt;div class="menu" popover&gt;</code> with links or buttons inside. Add <code>.anchored</code> and a <code>position-anchor</code> to hang it under its button.</td></tr>
+              <tr><td><code>.tabs</code></td><td>A <code>role="tablist"</code> of <code>role="tab"</code> buttons. The selected one is bolder and underlined.</td></tr>
+              <tr><td><code>.skeleton</code>, <code>.empty</code></td><td>Something is on its way, and nothing is here. The skeleton doesn't shimmer.</td></tr>
               <tr><td><code>.page-footer</code></td><td>The footer after <code>&lt;main&gt;</code>: same deep paint as the last section, no rule, the signature bottom right.</td></tr>
             </tbody>
           </table>
@@ -897,7 +934,7 @@ git push --follow-tags</code></pre>
 ├── css/core.css              shared tokens, paints, text styles
 ├── css/themes/*.css          one file per built-in theme
 ├── css/base.css, fonts.css   plain HTML styles, self-hosted fonts
-├── components/               twelve custom elements, brush.js, themes.js
+├── components/               thirteen custom elements, brush.js, themes.js
 ├── scripts/                  build, contrast check, design kit export
 ├── design-kit/               fonts, Figma tokens, SVG brushwork, PDF guide
 └── index.html                this page</code></pre>
@@ -911,7 +948,7 @@ git push --follow-tags</code></pre>
   <footer class="band page-footer" data-paint="deep">
     <div class="inner">
       <div class="footer-notes">
-        <span>Gesso 1.1, for vandervennet.art</span>
+        <span>Gesso 1.2, for vandervennet.art</span>
         <span>Inspired by the work of Bart Delrue and Michiel Van de Velde, with their blessing.</span>
       </div>
       <art-signature year="2026" animate>Art Van der Vennet</art-signature>

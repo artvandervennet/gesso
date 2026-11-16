@@ -7,7 +7,8 @@ The design system behind **vandervennet.art**. Gesso is the primer painters brus
 - **Base**: `css/base.css` styles plain HTML: type, links, focus, forms, code, tables.
 - **Layout**: `css/layout.css` is the page anatomy as classes: bands, the hero, two-column sections, the one card, the footer. A new site that loads it has the same structure as the portfolio.
 - **Sass**: `scss/` has the tokens as checked functions and the breakpoints as mixins.
-- **Components**: twelve framework-free custom elements, prefixed `art-`.
+- **Components**: thirteen framework-free custom elements, prefixed `art-`.
+- **Light and dark**: every theme has both schemes, contrast-checked. A page is light unless it asks for dark.
 - **Docs**: `index.html` is a living reference that uses the system itself.
 
 ## Use it in a project
@@ -17,18 +18,10 @@ Gesso is installed straight from git. Every project picks its own theme.
 ### 1. Install
 
 ```sh
-npm install github:artvandervennet/gesso#v1.1.0
+npm install github:artvandervennet/gesso#v1.2.0
 ```
 
-The `#v1.1.0` pins a release, so a project only changes when you bump it. Leave it off to follow `main`.
-
-The repo is private, so every machine that installs a project needs access to it. On your Mac, with an SSH key on GitHub, use the SSH form:
-
-```sh
-npm install git+ssh://git@github.com/artvandervennet/gesso.git#v1.1.0
-```
-
-In CI, add a read-only deploy key for this repo, or a token with read access, to the pipeline that runs `npm install`.
+The `#v1.2.0` pins a release, so a project only changes when you bump it. Leave it off to follow `main`.
 
 ### 2. Pick a theme
 
@@ -113,6 +106,7 @@ Every page follows the same anatomy, and `layout.css` has the classes for it:
 | `.prose` | Running text meant to be read, a step larger than body text. |
 | `.card`, `.card-grid` | The one card (no outline, `--shadow-card`), and a grid of them one or two wide. With an odd number the first card takes the whole first row. |
 | `.field-row`, `.form-message` | A field with its button beside it, and what the form says back. |
+| `.stack`, `.avatar`, `.dialog`, `.menu`, `.tabs`, `.skeleton`, `.empty` | For apps: a feed, a person, a native dialog, a popover menu, tabs, loading and empty states. |
 | `.page-footer` | The footer: same paint as the last section, no rule, the signature bottom right. |
 
 The rules behind it:
@@ -130,6 +124,37 @@ The rules behind it:
 - **There is one card.** No outline, square corners, a soft shadow. Every card on a page looks the same, and a grid of them never ends in a hole.
 - **Nothing changes place on hover.** Buttons and links respond with paint. A card may grow slightly, in place.
 - **A section link lands its section right under the header**, with the title clear of the drips.
+
+### Light and dark
+
+Every theme file carries a dark scheme. A page is light unless `<html>` asks:
+
+| On `<html>` | Result |
+|---|---|
+| nothing, or `data-scheme="light"` | Light |
+| `data-scheme="dark"` or `class="dark"` | Dark |
+| `data-scheme="auto"` | Dark when the visitor's system is, with no script |
+
+`<art-scheme remember>` is a ready-made switch. To avoid a flash of the wrong scheme, set it early in `<head>`:
+
+```html
+<script>try { const s = localStorage.getItem('gesso-scheme'); if (s) document.documentElement.dataset.scheme = s; } catch {}</script>
+```
+
+The deep paint is the brand in both schemes, so the header and hero look the same day and night.
+
+### In an app
+
+`<art-header>` also works as an app header. Links can be routes (mark the current one with `aria-current="page"`), and buttons go in its `actions` slot:
+
+```html
+<art-header label="Main" data-paint="deep">
+  <a slot="wordmark" href="/">OdyFeed</a>
+  <a href="/about" aria-current="page">About</a>
+  <art-scheme slot="actions" remember></art-scheme>
+  <art-button slot="actions" size="s"><a href="/login">Log in</a></art-button>
+</art-header>
+```
 
 ### With Sass
 
@@ -179,7 +204,7 @@ The command mixes the shades and the eight section paints, fixes anything that w
 
 ### Updating
 
-Bump the tag in the project's `package.json` (`github:artvandervennet/gesso#v1.2.0`) and run `npm install`. If the project has its own theme, run `npm run theme` again so it picks up generator changes.
+Bump the tag in the project's `package.json` (`github:artvandervennet/gesso#v1.3.0`) and run `npm install`. If the project has its own theme, run `npm run theme` again so it picks up generator changes.
 
 ### Releasing a new version (in this repo)
 
@@ -240,6 +265,7 @@ Put `npm run check` in CI.
 | `<art-tape>` | Tape tag in the complement colour. `pigment`, `seed`, `flat`. |
 | `<art-signature>` | Your tag in the footer, like the signature on a painting. `year`, `pigment`, `animate`. |
 | `<art-theme>` | Theme picker: palettes for every theme in `themes.json`. `label`, `remember`. Fires `gesso:themechange`. |
+| `<art-scheme>` | One button that switches between light, dark and the visitor's system, and says which in words. `remember`, `label`. Fires `gesso:schemechange`. |
 | `<art-header>` | The sticky page header and the standard navigation, folding into a labelled Menu button under 48rem: wordmark, section links (`aria-current="location"` on the one you're in), and drips: it carries the hero's along, and drips afresh each time a section repaints it. Wears the paint of the section above the current one. `label`, `nodrip`. |
 | `<art-railnav>` | Section nav drawn as a git branch, for use inside a page: a painted lane with a dab per section, filling as you scroll (`aria-current="location"`). `label`. |
 | `<art-gitflow>` | Turns an `<ol>` into a painted git graph that reveals on scroll. Write the list newest first and add `newest-first`. Items: `data-branch`, `data-pigment`, `data-open`, `data-current`. |

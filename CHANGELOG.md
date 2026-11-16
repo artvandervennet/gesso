@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 — 2026-11-17
+
+Dark schemes, and what an app needs.
+
+- Every theme has a dark scheme. The paints keep their hues and go deep, the ink goes gesso white, the deep paint stays the brand. All pairings are contrast-checked in both schemes (`npm run check`, `gesso-theme`). Dark is opt-in per page: `<html data-scheme="dark">` or `class="dark"`, or `data-scheme="auto"` to follow the system. A page that says nothing stays light.
+- New `art-scheme`: one labelled button that switches between light, dark and system.
+- `art-header` works as an app header: an `actions` slot for buttons at the right, route links marked with `aria-current="page"` get the brushstroke, and it notices when the page under it changes without a scroll.
+- `layout.css` gains patterns for apps: `.stack`, `.avatar`, `.dialog` (native dialog), `.menu` (popover API), `.tabs`, `.skeleton`, `.empty`.
+- New `components/vcard-paint.js`: repaints `<solid-vcard-card>` in Gesso.
+- The repository is public, so installing no longer needs a key.
+
 ## 1.1.0 — 2026-11-16
 
 A new page anatomy, taken from the portfolio. This is the standard for every project.

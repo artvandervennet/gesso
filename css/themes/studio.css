@@ -95,3 +95,120 @@
   --stroke: oklch(83% 0.13 82);
   --highlight: oklch(44% 0.132 8);
 }
+
+/* Studio after dark. Only for pages that ask: data-scheme="dark" or class="dark". */
+:root[data-scheme="dark"],
+:root.dark {
+  color-scheme: dark;
+  --pigment-brand: oklch(74% 0.1 168);
+  --pigment-brand-wash: oklch(30% 0.047 168);
+  --pigment-partner: oklch(83% 0.13 82);
+  --pigment-partner-wash: oklch(32% 0.052 82);
+  --pigment-complement: oklch(72% 0.124 8);
+  --pigment-complement-wash: oklch(30% 0.054 8);
+  --paint-1: oklch(19% 0.03 168);
+  --paint-1-sunken: oklch(14.5% 0.03 168);
+  --paint-1-rule: oklch(30% 0.03 168);
+  --paint-2: oklch(24% 0.045 145.1);
+  --paint-2-sunken: oklch(19.5% 0.045 145.1);
+  --paint-2-rule: oklch(35% 0.045 145.1);
+  --paint-3: oklch(19% 0.03 122.3);
+  --paint-3-sunken: oklch(14.5% 0.03 122.3);
+  --paint-3-rule: oklch(30% 0.03 122.3);
+  --paint-4: oklch(24% 0.045 99.4);
+  --paint-4-sunken: oklch(19.5% 0.045 99.4);
+  --paint-4-rule: oklch(35% 0.045 99.4);
+  --paint-5: oklch(19% 0.03 76.6);
+  --paint-5-sunken: oklch(14.5% 0.03 76.6);
+  --paint-5-rule: oklch(30% 0.03 76.6);
+  --paint-6: oklch(24% 0.045 53.7);
+  --paint-6-sunken: oklch(19.5% 0.045 53.7);
+  --paint-6-rule: oklch(35% 0.045 53.7);
+  --paint-7: oklch(19% 0.03 30.9);
+  --paint-7-sunken: oklch(14.5% 0.03 30.9);
+  --paint-7-rule: oklch(30% 0.03 30.9);
+  --paint-8: oklch(24% 0.045 8);
+  --paint-8-sunken: oklch(19.5% 0.045 8);
+  --paint-8-rule: oklch(35% 0.045 8);
+  --surface: oklch(19% 0.03 168);
+  --surface-raised: oklch(28% 0.028 168);
+  --surface-sunken: oklch(14.5% 0.03 168);
+  --canvas: oklch(28% 0.028 168);
+  --on-canvas: oklch(97.5% 0.008 168);
+  --ink: oklch(97.5% 0.008 168);
+  --ink-muted: oklch(80% 0.03 168);
+  --rule: oklch(30% 0.03 168);
+  --rule-strong: oklch(62% 0.05 168);
+  --accent: oklch(74% 0.1 168);
+  --accent-wash: oklch(32% 0.052 168);
+  --on-accent: oklch(18% 0.04 168);
+  --link: oklch(86% 0.098 82);
+  --focus: oklch(80% 0.093 8);
+  --success: oklch(74% 0.1 168);
+  --warning: oklch(83% 0.13 82);
+  --danger: oklch(80% 0.093 8);
+  --info: oklch(84% 0.02 168);
+  --stroke: oklch(83% 0.13 82);
+  --highlight: oklch(42% 0.132 8);
+  --tape: oklch(86% 0.07 8);
+  --on-tape: oklch(28% 0.085 8);
+}
+
+/* data-scheme="auto" follows the visitor's system */
+@media (prefers-color-scheme: dark) {
+  :root[data-scheme="auto"] {
+    color-scheme: dark;
+    --pigment-brand: oklch(74% 0.1 168);
+    --pigment-brand-wash: oklch(30% 0.047 168);
+    --pigment-partner: oklch(83% 0.13 82);
+    --pigment-partner-wash: oklch(32% 0.052 82);
+    --pigment-complement: oklch(72% 0.124 8);
+    --pigment-complement-wash: oklch(30% 0.054 8);
+    --paint-1: oklch(19% 0.03 168);
+    --paint-1-sunken: oklch(14.5% 0.03 168);
+    --paint-1-rule: oklch(30% 0.03 168);
+    --paint-2: oklch(24% 0.045 145.1);
+    --paint-2-sunken: oklch(19.5% 0.045 145.1);
+    --paint-2-rule: oklch(35% 0.045 145.1);
+    --paint-3: oklch(19% 0.03 122.3);
+    --paint-3-sunken: oklch(14.5% 0.03 122.3);
+    --paint-3-rule: oklch(30% 0.03 122.3);
+    --paint-4: oklch(24% 0.045 99.4);
+    --paint-4-sunken: oklch(19.5% 0.045 99.4);
+    --paint-4-rule: oklch(35% 0.045 99.4);
+    --paint-5: oklch(19% 0.03 76.6);
+    --paint-5-sunken: oklch(14.5% 0.03 76.6);
+    --paint-5-rule: oklch(30% 0.03 76.6);
+    --paint-6: oklch(24% 0.045 53.7);
+    --paint-6-sunken: oklch(19.5% 0.045 53.7);
+    --paint-6-rule: oklch(35% 0.045 53.7);
+    --paint-7: oklch(19% 0.03 30.9);
+    --paint-7-sunken: oklch(14.5% 0.03 30.9);
+    --paint-7-rule: oklch(30% 0.03 30.9);
+    --paint-8: oklch(24% 0.045 8);
+    --paint-8-sunken: oklch(19.5% 0.045 8);
+    --paint-8-rule: oklch(35% 0.045 8);
+    --surface: oklch(19% 0.03 168);
+    --surface-raised: oklch(28% 0.028 168);
+    --surface-sunken: oklch(14.5% 0.03 168);
+    --canvas: oklch(28% 0.028 168);
+    --on-canvas: oklch(97.5% 0.008 168);
+    --ink: oklch(97.5% 0.008 168);
+    --ink-muted: oklch(80% 0.03 168);
+    --rule: oklch(30% 0.03 168);
+    --rule-strong: oklch(62% 0.05 168);
+    --accent: oklch(74% 0.1 168);
+    --accent-wash: oklch(32% 0.052 168);
+    --on-accent: oklch(18% 0.04 168);
+    --link: oklch(86% 0.098 82);
+    --focus: oklch(80% 0.093 8);
+    --success: oklch(74% 0.1 168);
+    --warning: oklch(83% 0.13 82);
+    --danger: oklch(80% 0.093 8);
+    --info: oklch(84% 0.02 168);
+    --stroke: oklch(83% 0.13 82);
+    --highlight: oklch(42% 0.132 8);
+    --tape: oklch(86% 0.07 8);
+    --on-tape: oklch(28% 0.085 8);
+  }
+}

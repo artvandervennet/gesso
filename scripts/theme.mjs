@@ -1,4 +1,5 @@
-// Turns a theme recipe (brand, partner, complement) into a full, contrast-checked theme.
+// Turns a theme recipe (brand, partner, complement) into a full, contrast-checked theme,
+// in a light and a dark scheme.
 // Used by build-tokens, check-contrast and export-design-kit, so all three always agree.
 import { contrast } from './color.mjs';
 
@@ -91,7 +92,46 @@ export function buildTheme(id, recipe) {
   const paints = { deep: deepRoles };
   paintsRaw.forEach((p, i) => { paints[i + 1] = { surface: fmt(p.surface), 'surface-sunken': fmt(p.sunken), rule: fmt(p.rule) }; });
 
-  return { id, label: recipe.label, description: recipe.description, pigment, neutral, roles, paints };
+  return { id, label: recipe.label, description: recipe.description, pigment, neutral, roles, paints, dark: buildDark() };
+
+  // The same theme after dark: the paints keep their hues and go deep, the ink goes gesso white,
+  // and every pigment that has to read on them is lifted until it does. The deep paint is the
+  // brand in both schemes, so it keeps its own roles and still reads as the brand band.
+  function buildDark() {
+    const dPaintsRaw = Array.from({ length: PAINT_COUNT }, (_, i) => {
+      const h = hueAt(i / (PAINT_COUNT - 1));
+      // alternate two depths, like the light paints alternate two tints
+      const L = i % 2 === 0 ? 19 : 24, C = i % 2 === 0 ? 0.03 : 0.045;
+      return { surface: [L, C, h], sunken: [L - 4.5, C, h], rule: [L + 11, C, h] };
+    });
+    const raised = fmt([28, 0.028 * k, hB]);
+    const bgs = dPaintsRaw.flatMap((p) => [fmt(p.surface), fmt(p.sunken)]).concat([raised]);
+    const up = (lch, min = 4.5, against = bgs) => fmt(ensure(lch, against, min, +1));
+
+    const dBrand = up([74, B[1] * 0.95, hB]);
+    const dPartner = up([P[0], P[1], P[2]]);
+    const dComplement = up([72, X[1] * 0.8, X[2]]);
+    const dPigment = {
+      brand: { body: dBrand, wash: fmt([30, B[1] * 0.45, hB]) },
+      partner: { body: dPartner, wash: fmt([32, P[1] * 0.4, P[2]]) },
+      complement: { body: dComplement, wash: fmt([30, X[1] * 0.35, X[2]]) },
+    };
+    const dRoles = {
+      'surface': fmt(dPaintsRaw[0].surface), 'surface-raised': raised, 'surface-sunken': fmt(dPaintsRaw[0].sunken),
+      'canvas': raised, 'on-canvas': neutral[50],
+      'ink': neutral[50], 'ink-muted': up([80, 0.03 * k, hB]), 'rule': fmt(dPaintsRaw[0].rule), 'rule-strong': up([62, 0.05 * k, hB], 3),
+      'accent': dBrand, 'accent-wash': fmt([32, B[1] * 0.5, hB]), 'on-accent': neutral[950],
+      'link': up([86, P[1] * 0.75, P[2]]), 'focus': up([80, X[1] * 0.6, X[2]], 3),
+      'success': dBrand, 'warning': dPartner, 'danger': up([80, errorBase[1] * 0.6, errorBase[2]]), 'info': up([84, 0.02 * k, hB]),
+      'stroke': dPartner,
+      // text sits on a highlight, and the text is light now, so the highlight goes dark
+      'highlight': fmt(ensure([42, X[1] * 0.85, X[2]], [neutral[50]], 4.5)),
+      'tape': pigment.complement.light, 'on-tape': fmt([28, X[1] * 0.55, X[2]]),
+    };
+    const dPaints = { deep: deepRoles };
+    dPaintsRaw.forEach((p, i) => { dPaints[i + 1] = { surface: fmt(p.surface), 'surface-sunken': fmt(p.sunken), rule: fmt(p.rule) }; });
+    return { pigment: dPigment, roles: dRoles, paints: dPaints };
+  }
 }
 
 export function loadThemes(json) {
@@ -109,5 +149,8 @@ export const PAIRS = [
   ['ink', 'highlight', 4.5, 'text on a highlight'], ['on-tape', 'tape', 4.5, 'tape labels'], ['on-canvas', 'canvas', 7, 'text on a white canvas'],
 ];
 
-/** Roles as they resolve inside one paint. */
-export const rolesIn = (theme, paint) => ({ ...theme.roles, ...theme.paints[paint] });
+export const SCHEMES = ['light', 'dark'];
+
+/** Roles as they resolve inside one paint, in one scheme. */
+export const rolesIn = (theme, paint, scheme = 'light') =>
+  scheme === 'dark' ? { ...theme.dark.roles, ...theme.dark.paints[paint] } : { ...theme.roles, ...theme.paints[paint] };

@@ -174,6 +174,145 @@
     padding-inline-start: var(--space-3);
   }
 
+  /* ── App patterns ──────────────────────────────────────────────────────── */
+  /* For sites that are an app as well as a page: feeds, people, dialogs, menus, tabs. */
+
+  /* A vertical list of cards or rows: a feed, a thread, a list of results. */
+  .stack {
+    display: grid;
+    gap: var(--space-4);
+    list-style: none;
+    padding: 0;
+  }
+  .stack > * { max-inline-size: none; }
+
+  /* A person: a photo, or their initial, in a dab of paint. Give an <img> real dimensions. */
+  .avatar {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--avatar-size, 3rem);
+    block-size: var(--avatar-size, 3rem);
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: var(--radius-dab);
+    background: var(--surface-sunken);
+    box-shadow: 0 0 0 1px var(--rule);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: calc(var(--avatar-size, 3rem) * 0.45);
+    line-height: 1;
+  }
+  .avatar.small { --avatar-size: 2rem; }
+  .avatar.large { --avatar-size: 6rem; }
+
+  /* A native <dialog class="dialog">, opened with showModal(). It is the one card, lifted. */
+  .dialog {
+    inline-size: min(32rem, calc(100vw - 2 * var(--gutter)));
+    max-block-size: calc(100dvh - 2 * var(--gutter));
+    margin: auto;
+    padding: var(--space-8);
+    border: 0;
+    border-radius: var(--radius-canvas);
+    background: var(--surface-raised);
+    color: var(--ink);
+    box-shadow: var(--shadow-card), var(--shadow-lifted);
+    overflow: auto;
+  }
+  .dialog::backdrop { background: color-mix(in oklch, var(--neutral-950) 55%, transparent); }
+  .dialog > * + * { margin-block-start: var(--space-4); }
+  .dialog > .actions { margin-block-start: var(--space-8); justify-content: flex-end; }
+
+  /* A menu that opens from a button: <div class="menu" popover> with links or buttons inside.
+     The popover API opens and closes it and gives it Escape and click-outside. */
+  .menu {
+    min-inline-size: 12rem;
+    padding: var(--space-2);
+    border: 0;
+    border-radius: var(--radius-canvas);
+    background: var(--surface-raised);
+    color: var(--ink);
+    box-shadow: var(--shadow-card), var(--shadow-lifted);
+  }
+  .menu:popover-open { display: grid; gap: var(--space-1); }
+  /* By default it opens in the middle of the screen, as popovers do. To hang it under its
+     button, name the button as an anchor and point the menu at it:
+       <button popovertarget="m" style="anchor-name: --m">…</button>
+       <div id="m" class="menu anchored" popover style="position-anchor: --m">…</div>
+     Add .end for a menu at the right of the page, so it grows leftwards. It flips when there
+     is no room. Browsers without anchor positioning keep the middle of the screen. */
+  @supports (position-area: block-end) {
+    .menu.anchored {
+      inset: auto;
+      margin: var(--space-2) 0;
+      position-area: block-end span-inline-end;
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+    .menu.anchored.end { position-area: block-end span-inline-start; }
+  }
+  .menu > :is(a, button) {
+    all: unset;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-block-size: 2.75rem;
+    padding-inline: var(--space-3);
+    border-radius: var(--radius-chip);
+    font: var(--weight-medium) var(--step--1)/1.25 var(--font-body);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .menu > :is(a, button):hover { background: var(--accent-wash); }
+  .menu > :is(a, button):focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+  .menu > hr { margin-block: var(--space-1); }
+
+  /* Tabs: <div class="tabs" role="tablist"> of <button role="tab" aria-selected>.
+     The selected tab is bolder and underlined with the accent, never colour alone. */
+  .tabs {
+    display: flex;
+    gap: var(--space-6);
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-block-end: 1px solid var(--rule);
+  }
+  .tabs > [role="tab"] {
+    all: unset;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-block-size: 2.75rem;
+    white-space: nowrap;
+    font: var(--weight-medium) var(--step-0)/1.25 var(--font-body);
+    color: var(--ink-muted);
+    border-block-end: 3px solid transparent;
+    margin-block-end: -1px;
+    cursor: pointer;
+  }
+  .tabs > [role="tab"]:hover { color: var(--ink); }
+  .tabs > [role="tab"][aria-selected="true"] { color: var(--ink); font-weight: var(--weight-bold); border-block-end-color: var(--accent); }
+  .tabs > [role="tab"]:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; border-radius: 2px; }
+
+  /* Something is on its way: a block in the shape of what will be there. It doesn't shimmer. */
+  .skeleton {
+    display: block;
+    min-block-size: 1em;
+    border-radius: var(--radius-chip);
+    background: var(--surface-sunken);
+    color: transparent;
+  }
+
+  /* Nothing here: one plain sentence, an optional <art-splatter> above it, one way forward. */
+  .empty {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    padding-block: var(--space-12);
+    text-align: center;
+    color: var(--ink-muted);
+  }
+
   /* ── Footer ────────────────────────────────────────────────────────────── */
 
   /* The footer comes after <main>, in the same deep paint as the last section, and reads as

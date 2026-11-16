@@ -28,6 +28,17 @@ import './art-decor.js'; // the header carries an <art-drip>
  *     <a href="#work">Work</a>
  *   </art-header>
  *
+ * In an app with pages, the links can be routes. Mark the one you are on with
+ * aria-current="page" and the header leaves it alone and puts its brushstroke under it.
+ * Things to do, as opposed to places to go, sit at the right in the actions slot:
+ *
+ *   <art-header label="Main" data-paint="deep">
+ *     <a slot="wordmark" href="/">OdyFeed</a>
+ *     <a href="/about" aria-current="page">About</a>
+ *     <art-scheme slot="actions"></art-scheme>
+ *     <art-button slot="actions" size="s"><a href="/login">Log in</a></art-button>
+ *   </art-header>
+ *
  * Put it first in <body>, before the hero, and end the hero in an <art-drip stagger flush>.
  * The hero and the header are the only things on the page that drip.
  *
@@ -50,10 +61,19 @@ const css = sheet(`
      Gesso gives every painted element is switched off here. */
   :host { display: block; position: sticky; inset-block-start: 0; z-index: 30; transition: none !important; }
   .bar {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; column-gap: var(--space-6);
+    display: flex; align-items: center; column-gap: var(--space-6);
     min-block-size: var(--art-header-height, 3.5rem);
     max-inline-size: var(--canvas-max); margin-inline: auto; padding-inline: var(--gutter);
   }
+  /* The wordmark, the links and the menu button are as tall as the bar, so the repaint's seam
+     (a mask on each of them) runs through all three at the same height. */
+  .lead, nav, .wipe .links, .toggle { align-self: stretch; display: flex; align-items: center; }
+  .lead { margin-inline-end: auto; }
+  /* Actions: buttons and switches at the right. They are not part of the two-coat repaint;
+     they change ink in one go, halfway through it. */
+  .acts { display: flex; align-items: center; gap: var(--space-3); }
+  .acts:not(.filled), .wipe .acts:not(.filled) { display: none; }
+  .wipe .acts { inline-size: var(--acts-width, 0); flex: none; }
   ::slotted([slot="wordmark"]), .wipe .wordmark {
     font: var(--step-1)/1 var(--font-display); color: var(--ink); text-decoration: none; white-space: nowrap;
   }
@@ -123,12 +143,12 @@ const css = sheet(`
      does: half-faded words on a half-way colour are unreadable. So the bar in the old paint's
      inks is shown above the middle of the blend and a second coat of it, in the new paint's
      inks, below it, with only a thin soft seam between the two.
-     Only the real bar gets the first mask ([part]); the copy inside .wipe has its own. */
+     The mask sits on the real bar's wordmark, links and menu button; the copy inside .wipe has its own. */
   .paint, .bar, .wipe {
     --seam-top: calc(((var(--from) + var(--to)) / 2 - 0.06) * 100%);
     --seam-end: calc(((var(--from) + var(--to)) / 2 + 0.06) * 100%);
   }
-  :host([data-repainting]) .bar[part] {
+  :host([data-repainting]) .bar[part] > :is(.lead, nav, .toggle) {
     -webkit-mask-image: linear-gradient(to bottom, #000 var(--seam-top), transparent var(--seam-end));
     mask-image: linear-gradient(to bottom, #000 var(--seam-top), transparent var(--seam-end));
   }
@@ -181,7 +201,7 @@ const ROLES = ['--surface', '--ink', '--ink-muted', '--accent', '--rule', '--foc
 const esc = (text) => text.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 
 class ArtHeader extends HTMLElement {
-  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = '';
+  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = ''; #resized; #marked;
   constructor() { super(); this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [css]; }
 
   connectedCallback() {
@@ -189,27 +209,33 @@ class ArtHeader extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <div class="paint" aria-hidden="true"></div>
       <div class="bar" part="bar">
-        <slot name="wordmark"></slot>
+        <div class="lead"><slot name="wordmark"></slot></div>
+        <nav id="links" part="nav"><div class="fold"><div class="list"><slot></slot></div></div></nav>
+        <div class="acts" part="actions"><slot name="actions"></slot></div>
         <button class="toggle" type="button" aria-expanded="false" aria-controls="links">
           <span>Menu</span><span class="lines" aria-hidden="true"><span></span><span></span><span></span></span>
         </button>
-        <nav id="links" part="nav"><div class="fold"><div class="list"><slot></slot></div></div></nav>
       </div>
       <div class="wipe" aria-hidden="true"></div>
       <div class="drips" part="drips"></div>`;
     this.shadowRoot.querySelector('nav').setAttribute('aria-label', this.getAttribute('label') || 'Sections');
-    this.links = [...this.querySelectorAll(':scope > a[href^="#"]:not([slot])')];
+    // every link in the navigation, and the ones that point at a band of this page
+    this.navLinks = [...this.querySelectorAll(':scope > a:not([slot])')];
+    this.links = this.navLinks.filter((a) => (a.getAttribute('href') || '').startsWith('#'));
     // the second coat: a picture of the bar, for the wipe to show in the new colours
     const wordmark = this.querySelector(':scope > [slot="wordmark"]');
     this.shadowRoot.querySelector('.wipe').innerHTML = `<div class="bar">
-      ${wordmark ? `<span class="wordmark">${esc(wordmark.textContent)}</span>` : ''}
-      <span class="toggle"><span>Menu</span><span class="lines"><span></span><span></span><span></span></span></span>
-      <div class="links"><div class="fold"><div class="list">${this.links.map((a) => `<span>${esc(a.textContent)}</span>`).join('')}</div></div></div></div>`;
+      <div class="lead">${wordmark ? `<span class="wordmark">${esc(wordmark.textContent)}</span>` : ''}</div>
+      <div class="links"><div class="fold"><div class="list">${this.navLinks.map((a) => `<span>${esc(a.textContent)}</span>`).join('')}</div></div></div>
+      <div class="acts"></div>
+      <span class="toggle"><span>Menu</span><span class="lines"><span></span><span></span><span></span></span></span></div>`;
+    const filled = !!this.querySelector(':scope > [slot="actions"]');
+    for (const acts of this.shadowRoot.querySelectorAll('.acts')) acts.classList.toggle('filled', filled);
     // the menu button (small screens only)
     this.toggle = this.shadowRoot.querySelector('button.toggle');
     this.toggle.addEventListener('click', () => this.open(!this.hasAttribute('data-open')));
     // following a link closes the menu; so does Escape, which hands focus back to the button
-    for (const a of this.links) a.addEventListener('click', () => this.open(false));
+    for (const a of this.navLinks) a.addEventListener('click', () => this.open(false));
     this.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.hasAttribute('data-open')) { this.open(false); this.toggle.focus(); }
     });
@@ -228,6 +254,12 @@ class ArtHeader extends HTMLElement {
     this.#schedule = () => { cancelAnimationFrame(this.#raf); this.#raf = requestAnimationFrame(() => this.update()); };
     addEventListener('scroll', this.#schedule, { passive: true });
     addEventListener('resize', this.#schedule);
+    // In an app the page under the header changes without a scroll: a route change swaps the
+    // bands and moves aria-current. Watch for both.
+    this.#resized = new ResizeObserver(this.#schedule);
+    this.#resized.observe(document.body);
+    this.#marked = new MutationObserver(this.#schedule);
+    this.#marked.observe(this, { attributes: true, subtree: true, attributeFilter: ['aria-current'] });
     this.update();
   }
 
@@ -235,6 +267,8 @@ class ArtHeader extends HTMLElement {
     cancelAnimationFrame(this.#raf);
     removeEventListener('scroll', this.#schedule);
     removeEventListener('resize', this.#schedule);
+    this.#resized?.disconnect();
+    this.#marked?.disconnect();
   }
 
   /** Open or close the folded menu (small screens). */
@@ -275,18 +309,20 @@ class ArtHeader extends HTMLElement {
     if (reading !== this.#reading) {
       this.#reading = reading;
       const here = bands[reading].id ? `#${bands[reading].id}` : null;
-      const spans = wipe.querySelectorAll('.links .list span');
-      this.links.forEach((a, i) => {
-        const current = decodeURIComponent(a.hash) === here;
-        if (current) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
-        spans[i]?.classList.toggle('current', current);
-      });
+      for (const a of this.links) {
+        if (decodeURIComponent(a.hash) === here) a.setAttribute('aria-current', 'location');
+        else a.removeAttribute('aria-current');
+      }
       // paint the stroke afresh under the new link
       for (const mark of this.marks) mark.removeAttribute('data-painted');
       requestAnimationFrame(() => { for (const mark of this.marks) mark.setAttribute('data-painted', ''); });
     }
     // keep the stroke under the current link (its place changes with the window and the weight)
-    const current = this.links.find((a) => a.hasAttribute('aria-current'));
+    // the current link is the band you are in, or the page you are on (aria-current="page")
+    const current = this.navLinks.find((a) => a.hasAttribute('aria-current'));
+    const spans = wipe.querySelectorAll('.links .list span');
+    this.navLinks.forEach((a, i) => spans[i]?.classList.toggle('current', a === current));
+    wipe.querySelector('.acts').style.setProperty('--acts-width', `${this.shadowRoot.querySelector('.bar[part] > .acts').offsetWidth}px`);
     const bar = this.shadowRoot.querySelector('.bar[part]').getBoundingClientRect();
     // folded away, there is no link to put it under
     const shown = !!current && (!this.compact || open);
@@ -329,9 +365,14 @@ class ArtHeader extends HTMLElement {
         this.shadowRoot.querySelector('.paint').style.setProperty('--fresh', style.getPropertyValue('--surface'));
         this.#fresh = style.getPropertyValue('--surface');
       }
-      for (const part of this.shadowRoot.querySelectorAll('.paint, .bar, .wipe')) {
+      for (const part of this.shadowRoot.querySelectorAll('.paint, .bar, .wipe, .lead, nav, .toggle')) {
         part.style.setProperty('--from', from.toFixed(3));
         part.style.setProperty('--to', to.toFixed(3));
+      }
+      // the actions take the new paint's inks once the blend has passed the middle of the bar
+      const acts = this.shadowRoot.querySelector('.bar[part] > .acts');
+      for (const role of ROLES) {
+        if (done >= 0.5) acts.style.setProperty(role, wipe.style.getPropertyValue(role)); else acts.style.removeProperty(role);
       }
       wipe.querySelector('.list').scrollLeft = this.shadowRoot.querySelector('nav .list').scrollLeft;
       wipe.setAttribute('data-on', '');
@@ -340,6 +381,7 @@ class ArtHeader extends HTMLElement {
       this.#coat = null;
       wipe.removeAttribute('data-on');
       this.removeAttribute('data-repainting');
+      for (const role of ROLES) this.shadowRoot.querySelector('.bar[part] > .acts').style.removeProperty(role);
     }
 
     // The drips never hang into the next band. As its top edge comes up towards the header

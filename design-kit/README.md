@@ -44,6 +44,7 @@ Read **Gesso-design-guide.pdf** first. It's the full system: principles, themes 
 - Every page footer carries the signature, bottom right, like the corner of a painting. The footer has no rule above it: it reads as one block with the last section.
 - Timelines are git graphs, newest first.
 - On phones the header folds its links into a labelled Menu button.
+- Every theme has a light and a dark scheme. The deep paint is the same in both; design the sections in both.
 - Sentence case everywhere. Puns stay in names, never on buttons.
 
 The colour values here are generated from the code's source of truth. If they ever disagree with the guide, ask Art to re-run `node scripts/export-design-kit.mjs`.
