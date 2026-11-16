@@ -17,6 +17,12 @@ import { sheet, define } from './brush.js';
  * Attributes
  *   remember  keep the choice in localStorage (off unless present)
  *   label     what the button switches, for its accessible name (default "Colour scheme")
+ *
+ * Parts
+ *   button  the button
+ *   name    the word beside the dab ("System", "Light", "Dark"). Where room is short, hide it
+ *           and the dab stays, with the button's accessible name still saying what it does:
+ *             @media (width < 40rem) { art-scheme::part(name) { display: none; } }
  */
 const KEY = 'gesso-scheme';
 const ORDER = ['auto', 'light', 'dark'];
@@ -55,7 +61,7 @@ class ArtScheme extends HTMLElement {
       const saved = read();
       if (ORDER.includes(saved) && document.documentElement.dataset.scheme !== saved) document.documentElement.dataset.scheme = saved;
     }
-    this.shadowRoot.innerHTML = '<button type="button"><span class="dab" aria-hidden="true"></span><span class="name"></span></button>';
+    this.shadowRoot.innerHTML = '<button type="button" part="button"><span class="dab" aria-hidden="true"></span><span class="name" part="name"></span></button>';
     this.shadowRoot.querySelector('button').addEventListener('click', () => this.choose(ORDER[(ORDER.indexOf(this.current) + 1) % ORDER.length]));
     // stay in step with other switches on the page
     this.#sync = () => this.sync();

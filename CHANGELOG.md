@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.4 — 2026-11-16
+
+- `art-scheme` has parts, `button` and `name`, so a crowded header can hide the word and keep the dab: `art-scheme::part(name) { display: none; }`.
+
 ## 1.2.3 — 2026-11-16
 
 - `art-stroke` no longer leaves a space after the word it paints, so a full stop or comma right after it sits tight.
