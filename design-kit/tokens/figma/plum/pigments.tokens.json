@@ -1,0 +1,95 @@
+{
+  "pigment": {
+    "brand": {
+      "body": {
+        "$type": "color",
+        "$value": "#6f2563",
+        "$description": "Quinacridone violet (PV19)"
+      },
+      "light": {
+        "$type": "color",
+        "$value": "#ef9fdd"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": "#fde2f6"
+      }
+    },
+    "partner": {
+      "body": {
+        "$type": "color",
+        "$value": "#efba64",
+        "$description": "Gold ochre (PY42)"
+      },
+      "light": {
+        "$type": "color",
+        "$value": "#fad59c"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": "#fef0da"
+      }
+    },
+    "complement": {
+      "body": {
+        "$type": "color",
+        "$value": "#276018",
+        "$description": "Sap green (PG36)"
+      },
+      "light": {
+        "$type": "color",
+        "$value": "#bfdab9"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": "#ecf5ea"
+      }
+    }
+  },
+  "neutral": {
+    "50": {
+      "$type": "color",
+      "$value": "#faf5f9"
+    },
+    "100": {
+      "$type": "color",
+      "$value": "#efe4ec"
+    },
+    "200": {
+      "$type": "color",
+      "$value": "#e1cedc"
+    },
+    "300": {
+      "$type": "color",
+      "$value": "#c5abbe"
+    },
+    "400": {
+      "$type": "color",
+      "$value": "#a5839d"
+    },
+    "500": {
+      "$type": "color",
+      "$value": "#875b7d"
+    },
+    "600": {
+      "$type": "color",
+      "$value": "#6f2563"
+    },
+    "700": {
+      "$type": "color",
+      "$value": "#53234a"
+    },
+    "800": {
+      "$type": "color",
+      "$value": "#401939"
+    },
+    "900": {
+      "$type": "color",
+      "$value": "#2c1227"
+    },
+    "950": {
+      "$type": "color",
+      "$value": "#1a0816"
+    }
+  }
+}

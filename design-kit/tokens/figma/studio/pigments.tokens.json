@@ -1,0 +1,95 @@
+{
+  "pigment": {
+    "brand": {
+      "body": {
+        "$type": "color",
+        "$value": "#005c3f",
+        "$description": "Phthalo green (PG7)"
+      },
+      "light": {
+        "$type": "color",
+        "$value": "#78d3b1"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": "#d8f3e7"
+      }
+    },
+    "partner": {
+      "body": {
+        "$type": "color",
+        "$value": "#f1bf5b",
+        "$description": "Yellow ochre (PY43)"
+      },
+      "light": {
+        "$type": "color",
+        "$value": "#f9d595"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": "#fef0d8"
+      }
+    },
+    "complement": {
+      "body": {
+        "$type": "color",
+        "$value": "#9b2549",
+        "$description": "Rose (PR122)"
+      },
+      "light": {
+        "$type": "color",
+        "$value": "#fbbfc8"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": "#ffecef"
+      }
+    }
+  },
+  "neutral": {
+    "50": {
+      "$type": "color",
+      "$value": "#f2f9f6"
+    },
+    "100": {
+      "$type": "color",
+      "$value": "#deebe6"
+    },
+    "200": {
+      "$type": "color",
+      "$value": "#c4dad1"
+    },
+    "300": {
+      "$type": "color",
+      "$value": "#9cbdaf"
+    },
+    "400": {
+      "$type": "color",
+      "$value": "#6e9a89"
+    },
+    "500": {
+      "$type": "color",
+      "$value": "#3b7a63"
+    },
+    "600": {
+      "$type": "color",
+      "$value": "#005c3f"
+    },
+    "700": {
+      "$type": "color",
+      "$value": "#004931"
+    },
+    "800": {
+      "$type": "color",
+      "$value": "#003825"
+    },
+    "900": {
+      "$type": "color",
+      "$value": "#00271a"
+    },
+    "950": {
+      "$type": "color",
+      "$value": "#00170e"
+    }
+  }
+}

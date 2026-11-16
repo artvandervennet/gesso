@@ -1,0 +1,136 @@
+{
+  "text": {
+    "wordmark": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Young Serif",
+        "fontWeight": 400,
+        "fontSize": "208px",
+        "lineHeight": 0.9,
+        "letterSpacing": "-0.045em"
+      },
+      "$description": "The site name in the hero. Once per page."
+    },
+    "heading-1": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Young Serif",
+        "fontWeight": 400,
+        "fontSize": "102.4px",
+        "lineHeight": 1.05,
+        "letterSpacing": "-0.025em"
+      },
+      "$description": "Page titles."
+    },
+    "heading-2": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Young Serif",
+        "fontWeight": 400,
+        "fontSize": "54.4px",
+        "lineHeight": 1.05,
+        "letterSpacing": "-0.02em"
+      },
+      "$description": "Section titles."
+    },
+    "heading-3": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Young Serif",
+        "fontWeight": 400,
+        "fontSize": "28px",
+        "lineHeight": 1.25,
+        "letterSpacing": "-0.01em"
+      },
+      "$description": "Sub-sections and canvas titles."
+    },
+    "heading-4": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Atkinson Hyperlegible Next",
+        "fontWeight": 720,
+        "fontSize": "22.4px",
+        "lineHeight": 1.25,
+        "letterSpacing": "0em"
+      },
+      "$description": "Small headings inside a block of text."
+    },
+    "lead": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Atkinson Hyperlegible Next",
+        "fontWeight": 400,
+        "fontSize": "22.4px",
+        "lineHeight": 1.5,
+        "letterSpacing": "0em"
+      },
+      "$description": "The first paragraph of a section."
+    },
+    "body": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Atkinson Hyperlegible Next",
+        "fontWeight": 400,
+        "fontSize": "18px",
+        "lineHeight": 1.6,
+        "letterSpacing": "0em"
+      },
+      "$description": "Everything people read for a while."
+    },
+    "small": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Atkinson Hyperlegible Next",
+        "fontWeight": 400,
+        "fontSize": "15px",
+        "lineHeight": 1.5,
+        "letterSpacing": "0em"
+      },
+      "$description": "Captions, footnotes, help text."
+    },
+    "label": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Atkinson Hyperlegible Next",
+        "fontWeight": 550,
+        "fontSize": "15px",
+        "lineHeight": 1.25,
+        "letterSpacing": "0em"
+      },
+      "$description": "Chips, tags, meta lines, table headers."
+    },
+    "button": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Atkinson Hyperlegible Next",
+        "fontWeight": 720,
+        "fontSize": "18px",
+        "lineHeight": 1.2,
+        "letterSpacing": "0em"
+      },
+      "$description": "Buttons and button-like links."
+    },
+    "code": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Atkinson Hyperlegible Mono",
+        "fontWeight": 400,
+        "fontSize": "15px",
+        "lineHeight": 1.55,
+        "letterSpacing": "0em"
+      },
+      "$description": "Code, commit hashes and branch names."
+    },
+    "signature": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Kristi",
+        "fontWeight": 400,
+        "fontSize": "35.2px",
+        "lineHeight": 1,
+        "letterSpacing": "0em"
+      },
+      "$description": "The signature in the footer, like the name in the corner of a painting. Once per page."
+    }
+  }
+}

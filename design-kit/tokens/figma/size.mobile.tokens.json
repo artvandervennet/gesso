@@ -1,0 +1,52 @@
+{
+  "type": {
+    "step-0": {
+      "$type": "dimension",
+      "$value": "17px"
+    },
+    "step-1": {
+      "$type": "dimension",
+      "$value": "20px"
+    },
+    "step-2": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "step-3": {
+      "$type": "dimension",
+      "$value": "28.8px"
+    },
+    "step-4": {
+      "$type": "dimension",
+      "$value": "35.2px"
+    },
+    "step-5": {
+      "$type": "dimension",
+      "$value": "48px"
+    },
+    "step--1": {
+      "$type": "dimension",
+      "$value": "14px"
+    }
+  },
+  "layout": {
+    "gutter": {
+      "$type": "dimension",
+      "$value": "20px"
+    },
+    "canvas-max": {
+      "$type": "dimension",
+      "$value": "1280px"
+    },
+    "measure": {
+      "$type": "dimension",
+      "$value": "68ch",
+      "$description": "About 640px at body size"
+    },
+    "frame-width": {
+      "$type": "dimension",
+      "$value": "360px",
+      "$description": "Design at these frame widths"
+    }
+  }
+}

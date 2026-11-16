@@ -1,0 +1,27 @@
+/* Gesso fonts, self-hosted from the package (no requests to Google).
+   Import this once, before core.css. All four families are under the SIL Open Font License. */
+@font-face {
+  font-family: "Young Serif";
+  src: url("../design-kit/fonts/YoungSerif-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("../design-kit/fonts/AtkinsonHyperlegibleNext[wght].ttf") format("truetype");
+  font-weight: 200 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("../design-kit/fonts/AtkinsonHyperlegibleNext-Italic[wght].ttf") format("truetype");
+  font-weight: 200 800; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Mono";
+  src: url("../design-kit/fonts/AtkinsonHyperlegibleMono[wght].ttf") format("truetype");
+  font-weight: 200 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Kristi";
+  src: url("../design-kit/fonts/Kristi-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}

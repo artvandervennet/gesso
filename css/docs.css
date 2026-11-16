@@ -1,0 +1,148 @@
+/* Styles for the Gesso documentation site only. Not part of the system. */
+
+/* Painted sections: every band ends in a drip of its own paint, running into the next.
+   The page opens and closes in the deep brand paint. */
+.paint-band, main > section { position: relative; }
+.section-drip { position: absolute; inset-inline: 0; inset-block-start: calc(100% - 1px); z-index: 2; --art-drip-height: 4.5rem;
+  /* a wet edge: the drip's own paint, a shade darker */
+  filter: drop-shadow(0 2px 0 color-mix(in oklch, var(--surface), black 16%)); }
+.inner { max-inline-size: var(--canvas-max); margin-inline: auto; padding: var(--space-24) var(--gutter) var(--space-16); }
+main { padding-block-end: 4.5rem; }
+main > section > .inner > h2 { margin-block-end: var(--space-4); }
+main > section > .inner > .intro { font-size: var(--step-1); line-height: 1.5; color: var(--ink-muted); margin-block-end: var(--space-8); }
+
+/* The gitflow rail hangs at the side on wide screens */
+@media (min-width: 60rem) {
+  .side-nav { position: fixed; z-index: 10; inset-block-start: var(--space-6); inline-size: 13.5rem;
+    inset-inline-start: max(var(--gutter), calc((100vw - var(--canvas-max)) / 2 + var(--gutter))); background: none; }
+  .inner { padding-inline-start: calc(13.5rem + var(--space-12) + var(--gutter)); }
+}
+@media (max-width: 60rem) {
+  .side-nav { padding: var(--space-24) var(--gutter) 0; }
+  .side-nav + main > section:first-child > .inner { padding-block-start: var(--space-12); }
+}
+
+.site-header { margin-block-end: var(--space-12); }
+.site-header .wordmark { font: var(--step-1)/1 var(--font-display); color: inherit; text-decoration: none; }
+
+/* Hero */
+.hero .inner { padding-block: var(--space-8) var(--space-12); }
+.hero h1 { font-size: clamp(4.5rem, 2rem + 13vw, 13rem); line-height: 0.9; letter-spacing: -0.045em; }
+.hero h1 art-stroke { --art-stroke-offset: 0.2em; --art-stroke-size: 0.15em; --art-stroke-paper: var(--surface); }
+.hero .lead { font-size: var(--step-2); line-height: 1.35; max-inline-size: 34ch; margin-block: var(--space-12) var(--space-8); text-wrap: balance; }
+.hero .actions { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.hero art-button[variant="secondary"] { --accent: var(--ink); --accent-wash: color-mix(in oklch, var(--ink) 14%, transparent); }
+main h3 { margin-block: var(--space-12) var(--space-3); }
+main p + p { margin-block-start: var(--space-4); }
+
+/* Principles: a real sequence, so numbered */
+.principles { list-style: none; padding: 0; display: grid; gap: var(--space-8); counter-reset: p; }
+.principles li { counter-increment: p; position: relative; padding-inline-start: 4rem; max-inline-size: calc(64ch + 4rem); }
+.principles li::before { content: counter(p); position: absolute; inset-inline-start: 0; inset-block-start: 0; font: var(--step-4)/1 var(--font-display); color: var(--accent); }
+.principles strong { font: var(--step-2)/1.2 var(--font-display); font-weight: 400; display: block; margin-block-end: var(--space-1); }
+
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr)); gap: var(--space-6); }
+.swatches.small { grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr)); gap: var(--space-3); }
+
+.roles td:first-child { white-space: nowrap; }
+.chip { display: inline-block; inline-size: 2.25rem; block-size: 1.25rem; border-radius: var(--radius-chip); background: var(--c); box-shadow: inset 0 0 0 1px oklch(0% 0 0 / 0.15); vertical-align: middle; }
+
+.specimen { font: var(--step-5)/1 var(--font-display); letter-spacing: -0.03em; margin-block: var(--space-4) var(--space-8); }
+.scale { display: grid; gap: var(--space-4); }
+.scale > div { display: grid; grid-template-columns: 9rem minmax(0, 1fr); align-items: baseline; gap: var(--space-4); border-block-end: 1px solid var(--rule); padding-block-end: var(--space-3); }
+.scale code { font-size: var(--step--1); color: var(--ink-muted); background: none; padding: 0; }
+.scale span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.fonts { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--space-6); }
+.fonts > div { border-block-start: 3px solid var(--ink); padding-block-start: var(--space-3); }
+.fonts .sample { font-size: var(--step-3); line-height: 1.1; margin-block: var(--space-2); }
+
+.spaces { display: grid; gap: var(--space-2); }
+.spaces > div { display: grid; grid-template-columns: 6rem 1fr; align-items: center; gap: var(--space-4); font-size: var(--step--1); }
+.spaces .bar { block-size: 0.9rem; inline-size: var(--s); background: var(--accent); border-radius: 1px 6px 3px 1px; }
+
+.shapes { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: var(--space-8); }
+.shapes .shape { block-size: 6rem; background: var(--surface-raised); box-shadow: 0 0 0 1px var(--rule); margin-block-end: var(--space-3); }
+.shapes .shape.dab { background: var(--accent); box-shadow: none; }
+
+.motion { display: grid; gap: var(--space-4); }
+.motion .track { display: grid; grid-template-columns: 8rem 1fr; gap: var(--space-4); align-items: center; font-size: var(--step--1); }
+.motion .lane { block-size: 1.6rem; background: var(--surface-sunken); border-radius: var(--radius-chip); position: relative; overflow: hidden; }
+.motion .lane span { position: absolute; inset: 0; background: var(--accent); transform-origin: left; transform: scaleX(0); border-radius: inherit; }
+.motion[data-play] .lane span { transform: scaleX(1); transition: transform var(--dur-stroke) var(--e); }
+
+/* Component documentation */
+.demo {
+  background: var(--surface-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-canvas) var(--radius-canvas) 0 0;
+  padding: var(--space-8);
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-6);
+}
+.demo.stack { display: grid; }
+.demo + pre { border-start-start-radius: 0; border-start-end-radius: 0; border-block-start: 0; margin-block-end: var(--space-4); font-size: var(--step--1); }
+.demo .big { font: var(--step-3)/1.3 var(--font-display); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--space-8); inline-size: 100%; }
+.cards art-tape { align-self: flex-start; margin-block-start: var(--space-2); }
+.tapes { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+.empty { display: grid; justify-items: center; text-align: center; gap: var(--space-3); inline-size: 100%; padding-block: var(--space-6); position: relative; }
+.empty art-splatter { margin-block-end: calc(-1 * var(--space-4)); }
+.empty h4 { font: var(--step-3)/1.1 var(--font-display); }
+
+.band { inline-size: 100%; }
+.band .fill { background: var(--accent); color: var(--on-accent); padding: var(--space-6); font: var(--step-2)/1.2 var(--font-display); }
+
+details.api { margin-block-end: var(--space-4); border-block-end: 1px solid var(--rule); padding-block-end: var(--space-4); }
+details.api summary { cursor: pointer; font-weight: var(--weight-bold); min-block-size: 2.75rem; display: flex; align-items: center; }
+details.api table { margin-block-start: var(--space-2); }
+details.api td:first-child code { white-space: nowrap; }
+.a11y { font-size: var(--step--1); color: var(--ink-muted); border-inline-start: 4px solid var(--pigment-partner); padding-inline-start: var(--space-4); margin-block: var(--space-4) var(--space-2); }
+
+.dodont { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-6); }
+.dodont > div { padding: var(--space-4) var(--space-6); background: var(--surface-raised); border-block-start: 4px solid var(--c); border-radius: 0 0 var(--radius-canvas) var(--radius-canvas); box-shadow: 0 0 0 1px var(--rule); }
+.dodont h4 { margin-block-end: var(--space-2); }
+.dodont ul { padding-inline-start: 1.1em; display: grid; gap: var(--space-2); }
+
+.site-footer { border-block-start: 1px solid var(--rule); padding-block: var(--space-8); font-size: var(--step--1); color: var(--ink-muted); display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4); }
+
+@media (max-width: 40rem) {
+  .demo { padding: var(--space-4); }
+  .scale > div { grid-template-columns: 1fr; gap: var(--space-1); }
+}
+
+/* Page anatomy diagram */
+.anatomy { margin-block: var(--space-4) var(--space-6); max-inline-size: 32rem; font-size: var(--step--1); border-radius: var(--radius-canvas); box-shadow: 0 0 0 1px var(--rule); overflow: hidden; }
+.anatomy .a-sec { position: relative; padding: var(--space-4) var(--space-4) var(--space-8); }
+.anatomy .a-sec + .a-sec { padding-block-start: var(--space-8); }
+.anatomy .a-drip { position: absolute; inset-inline: 0; inset-block-start: calc(100% - 1px); z-index: 1; --art-drip-height: 1.4rem; filter: drop-shadow(0 1.5px 0 color-mix(in oklch, var(--surface), black 16%)); }
+.anatomy .a-sec:last-child .a-drip { display: none; }
+
+@media print {
+  .side-nav, .skip-link, .demo + pre, details.api, #install, .motion, #motion-play { display: none !important; }
+  .inner { padding: var(--space-16) var(--space-8) var(--space-12) !important; }
+  .section-drip { --art-drip-height: 3rem; }
+  h2, h3, h4 { break-after: avoid; }
+  #pigments, #components, #gitflow, #designers { break-before: page; }
+  .demo, art-canvas, .dodont > div, figure, table, li { break-inside: avoid; }
+  body { background-image: none; }
+}
+
+/* Section paints strip */
+.paint-strip { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); border-radius: var(--radius-chip); overflow: hidden; box-shadow: 0 0 0 1px var(--rule); margin-block-start: var(--space-4); }
+.paint-strip > div { block-size: 5.5rem; display: flex; align-items: flex-end; padding: var(--space-2); }
+.paint-strip code { background: none; padding: 0; font-size: var(--step--1); }
+@media (max-width: 40rem) { .paint-strip { grid-template-columns: repeat(3, 1fr); } }
+
+/* Text styles list */
+.tstyles { display: grid; gap: 0; margin-block-start: var(--space-6); }
+.tstyle { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr) minmax(0, 17rem); gap: var(--space-4); align-items: baseline; padding-block: var(--space-4); border-block-end: 1px solid var(--rule); }
+.tstyle code { font-size: var(--step--1); background: none; padding: 0; }
+.tsample { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tspec { font-size: var(--step--1); color: var(--ink-muted); line-height: 1.45; }
+@media (max-width: 52rem) { .tstyle { grid-template-columns: 1fr; gap: var(--space-1); } .tsample { white-space: normal; } }
+
+/* Footer with the signature, bottom right like on a canvas */
+.site-footer { align-items: flex-end; }
+.footer-notes { display: grid; gap: var(--space-1); }
+.site-footer art-signature { margin-inline-start: auto; }

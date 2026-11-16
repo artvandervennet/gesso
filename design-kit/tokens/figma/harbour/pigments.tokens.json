@@ -1,0 +1,95 @@
+{
+  "pigment": {
+    "brand": {
+      "body": {
+        "$type": "color",
+        "$value": "#004d72",
+        "$description": "Prussian blue (PB27)"
+      },
+      "light": {
+        "$type": "color",
+        "$value": "#89c6ee"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": "#dbeefc"
+      }
+    },
+    "partner": {
+      "body": {
+        "$type": "color",
+        "$value": "#e9d38f",
+        "$description": "Naples yellow (PY35)"
+      },
+      "light": {
+        "$type": "color",
+        "$value": "#eadaac"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": "#f7f2e0"
+      }
+    },
+    "complement": {
+      "body": {
+        "$type": "color",
+        "$value": "#963300",
+        "$description": "Cadmium orange (PO20)"
+      },
+      "light": {
+        "$type": "color",
+        "$value": "#f7c4ab"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": "#ffeee5"
+      }
+    }
+  },
+  "neutral": {
+    "50": {
+      "$type": "color",
+      "$value": "#f3f8fb"
+    },
+    "100": {
+      "$type": "color",
+      "$value": "#e0e9f0"
+    },
+    "200": {
+      "$type": "color",
+      "$value": "#c6d7e2"
+    },
+    "300": {
+      "$type": "color",
+      "$value": "#a1b8c8"
+    },
+    "400": {
+      "$type": "color",
+      "$value": "#7594a9"
+    },
+    "500": {
+      "$type": "color",
+      "$value": "#47718d"
+    },
+    "600": {
+      "$type": "color",
+      "$value": "#004d72"
+    },
+    "700": {
+      "$type": "color",
+      "$value": "#003d5b"
+    },
+    "800": {
+      "$type": "color",
+      "$value": "#002e46"
+    },
+    "900": {
+      "$type": "color",
+      "$value": "#032030"
+    },
+    "950": {
+      "$type": "color",
+      "$value": "#01111c"
+    }
+  }
+}

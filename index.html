@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gesso — the design system of vandervennet.art</title>
+  <meta name="description" content="Gesso is Art Van der Vennet's design system: paint-named tokens, web components and the rules behind vandervennet.art.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:ital,wght@0,400..800;1,400&family=Kristi&family=Young+Serif&display=swap">
+  <script>try { const t = localStorage.getItem('gesso-theme'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/docs.css">
+  <script type="module" src="components/index.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="paint-band hero" data-paint="deep" id="top">
+    <div class="inner">
+      <header class="site-header"><a class="wordmark" href="#top">Gesso</a></header>
+      <h1><art-stroke pigment="stroke" seed="gesso" animate>Gesso</art-stroke></h1>
+      <p class="lead">The primer under everything on vandervennet.art. Tokens, web components and the rules for using them.</p>
+      <div class="actions">
+        <art-button size="l"><a href="#pigments">Start with the pigments</a></art-button>
+        <art-button size="l" variant="secondary"><a href="#components">Browse components</a></art-button>
+      </div>
+    </div>
+    <art-drip class="section-drip" pigment="--surface" seed="hero" count="9" run></art-drip>
+  </div>
+
+  <aside class="side-nav" data-paint="1">
+    <art-railnav label="On this page">
+      <a href="#principles">Principles</a>
+      <a href="#pigments">Pigments</a>
+      <a href="#type">Type</a>
+      <a href="#shape">Space and shape</a>
+      <a href="#motion">Animation</a>
+      <a href="#components">Components</a>
+      <a href="#gitflow">Gitflow</a>
+      <a href="#voice">Voice</a>
+      <a href="#designers">For designers</a>
+      <a href="#install">Install</a>
+    </art-railnav>
+  </aside>
+
+  <main id="main" tabindex="-1">
+
+      <!-- ───────────────── Principles ───────────────── -->
+      <section id="principles" aria-labelledby="principles-h" data-paint="1">
+        <div class="inner">
+        <h2 id="principles-h">Principles</h2>
+        <p class="intro">Gesso is the white primer painters brush onto a canvas before any colour goes on. This system does the same job for Art Van der Vennet's portfolio, side projects, slides and CV: a reliable ground, then paint on top.</p>
+        <ol class="principles">
+          <li><strong>Prime before you paint</strong>Every page works as plain HTML first. Components wrap real buttons, links and lists, so nothing breaks when JavaScript is slow or off.</li>
+          <li><strong>One bold stroke per view</strong>Choose one thing to be loud: a painted heading, a drip, a splatter. Everything around it stays quiet and disciplined.</li>
+          <li><strong>Paint for every eye</strong>Every colour pairing is contrast-checked by a script. Colour never carries meaning on its own: a branch has a name, a status has a word.</li>
+          <li><strong>Motion follows the hand</strong>Things move when someone acts on them. Each page gets at most one reveal of its own. Reduced motion turns all of it off.</li>
+          <li><strong>Leave visible brushwork</strong>Strokes, tape and dabs are slightly irregular on purpose. The irregularity is seeded, so the same stroke paints the same way on every render.</li>
+        </ol>
+        </div>
+        <art-drip class="section-drip" pigment="--surface" seed="principles" count="8" run></art-drip>
+      </section>
+
+      <!-- ───────────────── Pigments ───────────────── -->
+      <section id="pigments" aria-labelledby="pigments-h" data-paint="2">
+        <div class="inner">
+        <h2 id="pigments-h">Themes and pigments</h2>
+        <p class="intro">Every website picks a theme. A theme is three pigments: a brand colour, a partner that goes with it, and a complement from across the colour wheel. Everything else is generated from those three, so each theme fits together on its own. Try them here.</p>
+        <art-theme remember label="Theme for this page"></art-theme>
+
+        <h3>The three pigments</h3>
+        <div class="swatches" id="theme-swatches"></div>
+        <p class="muted" style="margin-block-start:var(--space-4)">Each pigment also comes as <code>-light</code>, the version that reads on the deep paint, and <code>-wash</code>, thinned for tinted areas. Names and codes follow the Colour Index printed on paint tubes.</p>
+
+        <h3>Section paints</h3>
+        <p>Every section of a page gets its own background. The eight paints walk the colour wheel from the brand, through the partner, to the complement, alternating a light and a deeper tint, so no two sections repeat, every drip stands out on the section below, and they still read as one family. The deep paint is the brand itself: a page opens and closes with it.</p>
+        <div class="paint-strip" role="img" aria-label="The deep paint, then paints 1 to 8 of the current theme">
+          <div data-paint="deep"><code>deep</code></div>
+          <div data-paint="1"><code>1</code></div><div data-paint="2"><code>2</code></div><div data-paint="3"><code>3</code></div><div data-paint="4"><code>4</code></div>
+          <div data-paint="5"><code>5</code></div><div data-paint="6"><code>6</code></div><div data-paint="7"><code>7</code></div><div data-paint="8"><code>8</code></div>
+        </div>
+        <p class="muted" style="margin-block-start:var(--space-4)">Use them in order. A page with more than eight sections starts again at 1.</p>
+
+        <h3>Brand shades</h3>
+        <p>The greys are shades of the brand colour, from gesso white down to near black, so they sit quietly next to it. 600 is the brand itself.</p>
+        <div class="swatches small" style="margin-block-start:var(--space-6)">
+          <art-swatch size="s" token="--neutral-50" name="50" code="Gesso"></art-swatch>
+          <art-swatch size="s" token="--neutral-100" name="100"></art-swatch>
+          <art-swatch size="s" token="--neutral-200" name="200"></art-swatch>
+          <art-swatch size="s" token="--neutral-300" name="300"></art-swatch>
+          <art-swatch size="s" token="--neutral-400" name="400"></art-swatch>
+          <art-swatch size="s" token="--neutral-500" name="500"></art-swatch>
+          <art-swatch size="s" token="--neutral-600" name="600" code="Brand"></art-swatch>
+          <art-swatch size="s" token="--neutral-700" name="700"></art-swatch>
+          <art-swatch size="s" token="--neutral-800" name="800"></art-swatch>
+          <art-swatch size="s" token="--neutral-900" name="900"></art-swatch>
+          <art-swatch size="s" token="--neutral-950" name="950" code="Text"></art-swatch>
+        </div>
+
+        <h3>Roles</h3>
+        <p>Components use roles, never pigments directly, so a theme or a paint can change without touching a component. These are the values for the current theme, on this section's paint.</p>
+        <div style="overflow-x:auto;margin-block-start:var(--space-4)">
+          <table class="roles">
+            <thead><tr><th scope="col">Role</th><th scope="col">Use it for</th><th scope="col">Now</th></tr></thead>
+            <tbody>
+              <tr><td><code>--surface</code></td><td>The page</td><td><span class="chip" style="--c:var(--surface)"></span></td></tr>
+              <tr><td><code>--surface-raised</code></td><td>Canvases, cards, chips</td><td><span class="chip" style="--c:var(--surface-raised)"></span></td></tr>
+              <tr><td><code>--surface-sunken</code></td><td>Code, wells, inset areas</td><td><span class="chip" style="--c:var(--surface-sunken)"></span></td></tr>
+              <tr><td><code>--canvas</code> / <code>--on-canvas</code></td><td>White-primed canvas inside project cards, and text on it</td><td><span class="chip" style="--c:var(--canvas)"></span> <span class="chip" style="--c:var(--on-canvas)"></span></td></tr>
+              <tr><td><code>--tape</code> / <code>--on-tape</code></td><td>Tags and labels</td><td><span class="chip" style="--c:var(--tape)"></span> <span class="chip" style="--c:var(--on-tape)"></span></td></tr>
+              <tr><td><code>--ink</code></td><td>Body text and headings</td><td><span class="chip" style="--c:var(--ink)"></span></td></tr>
+              <tr><td><code>--ink-muted</code></td><td>Secondary text, meta lines</td><td><span class="chip" style="--c:var(--ink-muted)"></span></td></tr>
+              <tr><td><code>--rule</code> / <code>--rule-strong</code></td><td>Hairlines / input borders (3:1)</td><td><span class="chip" style="--c:var(--rule)"></span> <span class="chip" style="--c:var(--rule-strong)"></span></td></tr>
+              <tr><td><code>--accent</code> / <code>--on-accent</code></td><td>Primary actions and the text on them</td><td><span class="chip" style="--c:var(--accent)"></span> <span class="chip" style="--c:var(--on-accent)"></span></td></tr>
+              <tr><td><code>--link</code></td><td>Links in running text</td><td><span class="chip" style="--c:var(--link)"></span></td></tr>
+              <tr><td><code>--focus</code></td><td>Keyboard focus rings</td><td><span class="chip" style="--c:var(--focus)"></span></td></tr>
+              <tr><td><code>--stroke</code> / <code>--highlight</code></td><td>Brushstroke underlines / highlighter</td><td><span class="chip" style="--c:var(--stroke)"></span> <span class="chip" style="--c:var(--highlight)"></span></td></tr>
+              <tr><td><code>--success</code> <code>--warning</code> <code>--danger</code></td><td>Status text, always with a word</td><td><span class="chip" style="--c:var(--success)"></span> <span class="chip" style="--c:var(--warning)"></span> <span class="chip" style="--c:var(--danger)"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Text on paint</h3>
+        <p>On paints 1 to 8, text is the darkest brand shade and links and buttons are the brand colour. On the deep paint, text is gesso white, links are the light partner and buttons are the partner with dark text. The partner is never text on a light paint: it's for strokes, highlights and fills under dark text. The complement is for errors, focus and the odd accent.</p>
+
+        <h3>Making a theme</h3>
+        <p>Add a recipe to <code>tokens/themes.json</code> and run the build. The generator mixes the shades and the eight paints, then darkens or lightens anything that would fail contrast until every pairing passes AA.</p>
+<pre><code>"harbour": {
+  "label": "Harbour",
+  "brand":      { "name": "Prussian blue",  "code": "PB27", "oklch": [40, 0.09, 238] },
+  "partner":    { "name": "Naples yellow",  "code": "PY35", "oklch": [87, 0.09, 92] },
+  "complement": { "name": "Cadmium orange", "code": "PO20", "oklch": [60, 0.15, 48] }
+}</code></pre>
+        <p>Then give each website its theme: <code>&lt;html data-theme="harbour"&gt;</code>. Without one, a page uses the first theme in the file.</p>
+        </div>
+        <art-drip class="section-drip" pigment="--surface" seed="pigments" count="8" run></art-drip>
+      </section>
+
+      <!-- ───────────────── Type ───────────────── -->
+      <section id="type" aria-labelledby="type-h" data-paint="3">
+        <div class="inner">
+        <h2 id="type-h">Type</h2>
+        <p class="intro">A soft, heavy serif with the weight of a loaded brush, set beside a sans drawn for legibility. Accessibility is part of the brand, so the reading face is the one built for it.</p>
+        <p class="specimen" aria-hidden="true">Primed, stretched and ready</p>
+        <div class="fonts">
+          <div>
+            <p class="muted">Display, <code>--font-display</code></p>
+            <p class="sample" style="font-family:var(--font-display)">Young Serif</p>
+            <p>Headings and the wordmark. One weight, used big. Never below <code>--step-1</code>.</p>
+          </div>
+          <div>
+            <p class="muted">Body, <code>--font-body</code></p>
+            <p class="sample">Atkinson Hyperlegible Next</p>
+            <p>Everything you read. Drawn by the Braille Institute so similar letters stay distinct: Il1, O0, rn m.</p>
+          </div>
+          <div>
+            <p class="muted">Mono, <code>--font-mono</code></p>
+            <p class="sample" style="font-family:var(--font-mono)">Hyperlegible Mono</p>
+            <p>Code, commit hashes and branch names. Never for labels or decoration.</p>
+          </div>
+        </div>
+
+        <h3>Scale</h3>
+        <p>A major third (×1.25) from an 18px body that grows with the viewport. Headings set their own leading; body text sits at 1.6 with a 68-character measure.</p>
+        <div class="scale" style="margin-block-start:var(--space-6)">
+          <div><code>--step-5</code><span style="font:var(--step-5)/1 var(--font-display)">Gesso</span></div>
+          <div><code>--step-4</code><span style="font:var(--step-4)/1.1 var(--font-display)">Section heading</span></div>
+          <div><code>--step-3</code><span style="font:var(--step-3)/1.2 var(--font-display)">Feature heading</span></div>
+          <div><code>--step-2</code><span style="font:var(--step-2)/1.2 var(--font-display)">Canvas title</span></div>
+          <div><code>--step-1</code><span style="font-size:var(--step-1)">Lead text and intros</span></div>
+          <div><code>--step-0</code><span style="font-size:var(--step-0)">Body text you read for a while</span></div>
+          <div><code>--step--1</code><span style="font-size:var(--step--1)">Meta lines, captions, tags</span></div>
+        </div>
+
+        <h3>Text styles</h3>
+        <p>Every piece of text uses one of these twelve styles. In code they're classes (<code>.text-heading-2</code>); for designers they're typography tokens that Tokens Studio turns into Figma text styles. Sizes run from the 360px frame to the 1280px frame.</p>
+        <div class="tstyles">
+          <div class="tstyle">
+            <div class="tname"><code>.text-wordmark</code></div>
+            <div class="tsample"><span class="text-wordmark" style="font-size:min(var(--step-4), 3.4rem)">Gesso</span></div>
+            <div class="tspec">Young Serif, regular, 72–208px, line height 0.9, tracking -0.045em <span class="muted">(shown smaller)</span><br>The site name in the hero. Once per page.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-heading-1</code></div>
+            <div class="tsample"><span class="text-heading-1" style="font-size:min(var(--step-4), 3.4rem)">Art Van der Vennet</span></div>
+            <div class="tspec">Young Serif, regular, 48–102.4px, line height 1.05, tracking -0.025em <span class="muted">(shown smaller)</span><br>Page titles.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-heading-2</code></div>
+            <div class="tsample"><span class="text-heading-2">Things I've built</span></div>
+            <div class="tspec">Young Serif, regular, 35.2–54.4px, line height 1.05, tracking -0.02em<br>Section titles.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-heading-3</code></div>
+            <div class="tsample"><span class="text-heading-3">Solid notes</span></div>
+            <div class="tspec">Young Serif, regular, 24–28px, line height 1.25, tracking -0.01em<br>Sub-sections and canvas titles.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-heading-4</code></div>
+            <div class="tsample"><span class="text-heading-4">What I learned</span></div>
+            <div class="tspec">Atkinson Hyperlegible Next, bold, 20–22.4px, line height 1.25<br>Small headings inside a block of text.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-lead</code></div>
+            <div class="tsample"><span class="text-lead">Full-stack developer who cares about clean code.</span></div>
+            <div class="tspec">Atkinson Hyperlegible Next, regular, 20–22.4px, line height 1.5<br>The first paragraph of a section.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-body</code></div>
+            <div class="tsample"><span class="text-body">Every page works as plain HTML first, then gets painted.</span></div>
+            <div class="tspec">Atkinson Hyperlegible Next, regular, 17–18px, line height 1.6<br>Everything people read for a while.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-small</code></div>
+            <div class="tsample"><span class="text-small">Updated in November 2026.</span></div>
+            <div class="tspec">Atkinson Hyperlegible Next, regular, 14–15px, line height 1.5<br>Captions, footnotes, help text.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-label</code></div>
+            <div class="tsample"><span class="text-label">ActivityPub</span></div>
+            <div class="tspec">Atkinson Hyperlegible Next, medium, 14–15px, line height 1.25<br>Chips, tags, meta lines, table headers.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-button</code></div>
+            <div class="tsample"><span class="text-button">See my work</span></div>
+            <div class="tspec">Atkinson Hyperlegible Next, bold, 17–18px, line height 1.2<br>Buttons and button-like links.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-code</code></div>
+            <div class="tsample"><span class="text-code">git switch -c feat/pigments</span></div>
+            <div class="tspec">Atkinson Hyperlegible Mono, regular, 14–15px, line height 1.55<br>Code, commit hashes and branch names.</div>
+          </div>
+          <div class="tstyle">
+            <div class="tname"><code>.text-signature</code></div>
+            <div class="tsample"><span class="text-signature">Art Van der Vennet</span></div>
+            <div class="tspec">Kristi, regular, 28.8–35.2px, line height 1<br>The signature in the footer, like the name in the corner of a painting. Once per page, through <code>&lt;art-signature&gt;</code>.</div>
+          </div>
+        </div>
+        </div>
+        <art-drip class="section-drip" pigment="--surface" seed="type" count="8" run></art-drip>
+      </section>
+
+      <!-- ───────────────── Space & shape ───────────────── -->
+      <section id="shape" aria-labelledby="shape-h" data-paint="4">
+        <div class="inner">
+        <h2 id="shape-h">Space and shape</h2>
+        <p class="intro">Spacing runs on a 4px grid, like brush sizes: the bigger the number, the broader the brush. Shapes follow the material they describe.</p>
+
+        <h3>Spacing</h3>
+        <div class="spaces">
+          <div><code>--space-1</code><span class="bar" style="--s:var(--space-1)"></span></div>
+          <div><code>--space-2</code><span class="bar" style="--s:var(--space-2)"></span></div>
+          <div><code>--space-3</code><span class="bar" style="--s:var(--space-3)"></span></div>
+          <div><code>--space-4</code><span class="bar" style="--s:var(--space-4)"></span></div>
+          <div><code>--space-6</code><span class="bar" style="--s:var(--space-6)"></span></div>
+          <div><code>--space-8</code><span class="bar" style="--s:var(--space-8)"></span></div>
+          <div><code>--space-12</code><span class="bar" style="--s:var(--space-12)"></span></div>
+          <div><code>--space-16</code><span class="bar" style="--s:var(--space-16)"></span></div>
+          <div><code>--space-24</code><span class="bar" style="--s:var(--space-24)"></span></div>
+          <div><code>--space-32</code><span class="bar" style="--s:var(--space-32)"></span></div>
+        </div>
+
+        <h3>Radius and depth</h3>
+        <div class="shapes">
+          <div><div class="shape" style="border-radius:var(--radius-canvas);box-shadow:0 0 0 1px var(--rule),var(--shadow-canvas-edge)"></div><code>--radius-canvas</code><p class="muted">Stretched canvas: nearly square, with a painted edge as its shadow.</p></div>
+          <div><div class="shape" style="border-radius:var(--radius-chip);box-shadow:0 0 0 1px var(--rule),var(--shadow-tape)"></div><code>--radius-chip</code><p class="muted">Paint chips and inputs.</p></div>
+          <div><div class="shape dab" style="border-radius:var(--radius-dab)"></div><code>--radius-dab</code><p class="muted">Buttons. A dab of paint is never a perfect pill.</p></div>
+          <div><div class="shape" style="border-radius:var(--radius-round);box-shadow:0 0 0 1px var(--rule),var(--shadow-lifted)"></div><code>--radius-round</code><p class="muted">Paint wells and toggles only.</p></div>
+        </div>
+
+        </div>
+        <art-drip class="section-drip" pigment="--surface" seed="shape" count="8" run></art-drip>
+      </section>
+
+      <!-- ───────────────── Animation ───────────────── -->
+      <section id="motion" aria-labelledby="motion-h" data-paint="5">
+        <div class="inner">
+        <h2 id="motion-h">Animation</h2>
+        <p class="intro">Motion in Gesso is wet paint: drips that run, colour that soaks in, a dab where you press. It's decoration and feedback only. Content is on the page from the first frame and never waits for an animation to finish.</p>
+
+        <div class="dodont">
+          <div style="--c:var(--success)">
+            <h4>Animate</h4>
+            <ul>
+              <li>Decoration: drips running, a stroke being painted, the git graph filling in.</li>
+              <li>Responses to someone's action: a press, a hover, a selection, a theme change.</li>
+              <li>Buttons never move. They respond with paint, not position.</li>
+              <li>With the motion tokens below, never with ad-hoc timings.</li>
+              <li>Once. A drip runs when its section first comes into view, then stays put.</li>
+            </ul>
+          </div>
+          <div style="--c:var(--danger)">
+            <h4>Never</h4>
+            <ul>
+              <li>Fade, slide or reveal text, images or cards as they scroll in or as the page loads.</li>
+              <li>Delay content or input: no splash screens, no loading animations for decoration, no clicks that wait for an animation.</li>
+              <li>Loop forever, or move something while people are reading it.</li>
+              <li>Animate anything when reduced motion is on: every animation then jumps straight to its end state.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Drips run</h3>
+        <p>When a section scrolls into view, the wet edge is already there and its drips run down into the next section, once.</p>
+        <div class="demo stack">
+          <div class="band">
+            <div class="fill">Paint running down</div>
+            <art-drip id="drip-demo" pigment="accent" seed="run" count="7" height="4rem" run></art-drip>
+          </div>
+          <p><art-button variant="secondary" size="s" nodrip><button type="button" id="drip-replay">Run it again</button></art-button></p>
+        </div>
+
+        <h3>The rail fills in</h3>
+        <p>As you scroll, paint runs down the navigation's lane to the section you're in. Dabs you pass fill in, and the current one swells and gets a ring. Select a section here to see it:</p>
+        <div class="demo">
+          <art-railnav id="rail-demo" label="Rail animation demo" style="inline-size:15rem">
+            <a href="#rail-demo-a">Sketch</a>
+            <a href="#rail-demo-b">Underpainting</a>
+            <a href="#rail-demo-c">Glazing</a>
+            <a href="#rail-demo-d">Varnish</a>
+          </art-railnav>
+        </div>
+
+        <h3>Buttons fill with paint</h3>
+        <p>Buttons never move. Hover or focus one and paint spreads from its centre until it's filled: an outline button fills with the brand colour, a filled one deepens. Pressing leaves a dab of paint where you pressed, and the action itself happens at once.</p>
+        <div class="demo">
+          <art-button><button type="button">Press me</button></art-button>
+          <art-button variant="secondary"><button type="button">Or me</button></art-button>
+        </div>
+
+        <h3>Paint washes over</h3>
+        <p>When the theme changes, every section washes into its new colour instead of jumping. Try it here:</p>
+        <div class="demo">
+          <art-theme label="Theme, again"></art-theme>
+        </div>
+
+        <h3>Every animation</h3>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th scope="col">Animation</th><th scope="col">Trigger</th><th scope="col">What moves</th><th scope="col">Timing</th><th scope="col">With reduced motion</th></tr></thead>
+            <tbody>
+              <tr><td>Drips run</td><td>A section scrolls into view, once</td><td>Drips grow down out of the wet edge</td><td><code>--dur-drip</code>, <code>--ease-drip</code></td><td>Drips shown in full</td></tr>
+              <tr><td>Hero stroke</td><td>Page load, once</td><td>The stroke under the wordmark is painted left to right; the wordmark is there from the start</td><td><code>--dur-stroke</code>, <code>--ease-brush</code></td><td>Stroke shown in full</td></tr>
+              <tr><td>Git graph</td><td>Scrolling</td><td>The graph paints down beside the list; the list itself never moves</td><td>Follows the scroll</td><td>Graph shown in full</td></tr>
+              <tr><td>Rail progress</td><td>A section comes into view</td><td>Paint runs down the lane to its dab; passed dabs fill, the current one swells with a ring</td><td><code>--dur-wash</code>, <code>--ease-settle</code></td><td>Changes at once</td></tr>
+              <tr><td>Button press</td><td>Pointer down, Enter or Space</td><td>A dab spreads from the press point and fades</td><td><code>--dur-wash</code> × 1.5, <code>--ease-settle</code></td><td>No dab</td></tr>
+              <tr><td>Button hover</td><td>Hover or keyboard focus</td><td>Paint spreads from the centre until the button is filled; the button itself never moves. On a primary button two drips run</td><td><code>--dur-wash</code>, <code>--ease-settle</code>; drips <code>--dur-drip</code></td><td>Filled at once, no drips</td></tr>
+              <tr><td>Theme change</td><td>A theme is picked</td><td>Backgrounds and text wash to the new colours</td><td><code>--dur-wash</code>, <code>--ease-brush</code></td><td>Changes at once</td></tr>
+              <tr><td>Card hover</td><td>Hover</td><td>Canvases lift 2px. Swatches and theme palettes are buttons, so they don't move: their outline darkens</td><td><code>--dur-dab</code>, <code>--ease-brush</code></td><td>Changes at once</td></tr>
+              <tr><td>Link hover</td><td>Hover</td><td>The underline thickens</td><td><code>--dur-dab</code>, <code>--ease-brush</code></td><td>Changes at once</td></tr>
+              <tr><td>Signature</td><td>The footer scrolls into view, once</td><td>The name is painted left to right, then the flourish</td><td><code>--dur-stroke</code>, <code>--ease-brush</code></td><td>Shown in full</td></tr>
+              <tr><td>Copied</td><td>A swatch is selected</td><td>"Copied" fades in, and out after 1.6 seconds</td><td><code>--dur-dab</code></td><td>Appears at once</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Durations and curves</h3>
+        <p>Four durations and three curves, named after what paint does. Nothing takes longer than a drip.</p>
+        <div class="motion" id="motion-demo">
+          <div class="track"><code>--ease-brush</code><div class="lane"><span style="--e:var(--ease-brush)"></span></div></div>
+          <div class="track"><code>--ease-drip</code><div class="lane"><span style="--e:var(--ease-drip)"></span></div></div>
+          <div class="track"><code>--ease-settle</code><div class="lane"><span style="--e:var(--ease-settle)"></span></div></div>
+        </div>
+        <p style="margin-block-start:var(--space-4)"><art-button variant="secondary" size="s" nodrip><button type="button" id="motion-play">Play the curves</button></art-button></p>
+        <table style="margin-block-start:var(--space-6)">
+          <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Use it for</th></tr></thead>
+          <tbody>
+            <tr><td><code>--dur-dab</code></td><td>140ms</td><td>Hover and press feedback</td></tr>
+            <tr><td><code>--dur-wash</code></td><td>400ms</td><td>A background or tint changing colour: a chip being selected, a theme change</td></tr>
+            <tr><td><code>--dur-stroke</code></td><td>650ms</td><td>A brushstroke being painted, a panel opening</td></tr>
+            <tr><td><code>--dur-drip</code></td><td>1100ms</td><td>Paint running down, once per section</td></tr>
+            <tr><td><code>--ease-brush</code></td><td>slow start, confident middle, soft lift-off</td><td>Most changes</td></tr>
+            <tr><td><code>--ease-drip</code></td><td>speeds up like gravity</td><td>Drips</td></tr>
+            <tr><td><code>--ease-settle</code></td><td>fast, then settles gently</td><td>Selections and presses</td></tr>
+          </tbody>
+        </table>
+
+        <h3>For designers</h3>
+        <p>In Figma prototypes, use Smart animate with these durations and name the token in the annotation (<code>--dur-wash</code>, <code>--ease-settle</code>). Don't prototype content that fades in: in the build, it won't.</p>
+        </div>
+        <art-drip class="section-drip" pigment="--surface" seed="motion" count="8" run></art-drip>
+      </section>
+
+      <!-- ───────────────── Components ───────────────── -->
+      <section id="components" aria-labelledby="components-h" data-paint="6">
+        <div class="inner">
+        <h2 id="components-h">Components</h2>
+        <p class="intro">Eleven custom elements with no framework and no build step. They read the tokens, enhance native HTML where they can, and keep all decoration hidden from assistive technology.</p>
+
+        <h3 id="c-stroke">art-stroke</h3>
+        <p>A hand-painted brushstroke under, behind or through inline text. Use it once per view, on the words that matter most.</p>
+        <div class="demo stack" data-code>
+          <p class="big">Clean code and a <art-stroke>nice gitflow</art-stroke></p>
+          <p class="big">Good UX is <art-stroke variant="highlight">accessible first</art-stroke></p>
+          <p class="big">Ship it on <art-stroke variant="strike" pigment="complement">Friday</art-stroke> Monday</p>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>variant</code></td><td><code>underline</code> (default), <code>highlight</code> or <code>strike</code></td></tr>
+            <tr><td><code>pigment</code></td><td>Any pigment or role. Defaults to <code>stroke</code>, or <code>highlight</code> for highlights.</td></tr>
+            <tr><td><code>seed</code></td><td>Any word or number. Defaults to the text, so the same words always get the same stroke.</td></tr>
+            <tr><td><code>animate</code></td><td>Paints the stroke in once, when it scrolls into view.</td></tr>
+          </tbody></table>
+        </details>
+        <p class="a11y">The stroke is aria-hidden. A strike-through is decoration too: if the crossed-out word carries meaning, also wrap it in <code>&lt;del&gt;</code>.</p>
+
+        <h3 id="c-button">art-button</h3>
+        <p>Wraps a real <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code> and styles it as a dab of paint. It never moves: on hover or focus, paint spreads from the centre until the button is filled.</p>
+        <div class="demo" data-code>
+          <art-button><button type="button">Send message</button></art-button>
+          <art-button variant="secondary"><a href="#gitflow">See my history</a></art-button>
+          <art-button variant="quiet"><a href="#install">Read the install guide</a></art-button>
+          <art-button size="s"><button type="button" disabled>Sending</button></art-button>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>variant</code></td><td><code>primary</code> (default), <code>secondary</code> or <code>quiet</code>. One primary per view.</td></tr>
+            <tr><td><code>size</code></td><td><code>s</code>, <code>m</code> (default) or <code>l</code>. Every size is at least 44px tall, except <code>s</code> at 36px for dense toolbars.</td></tr>
+            <tr><td><code>nodrip</code></td><td>Turns off the drip on hover.</td></tr>
+          </tbody></table>
+        </details>
+        <p class="a11y">Focus, form submission and keyboard behaviour come from the native element. Use a link when it goes somewhere and a button when it does something.</p>
+
+        <h3 id="c-swatch">art-swatch</h3>
+        <p>A paint chip that documents a colour token: its hex value, its contrast with the page and with ink, and a copy action.</p>
+        <div class="demo" data-code>
+          <div style="inline-size:14rem"><art-swatch token="--pigment-complement" name="Complement" code="the third pigment"></art-swatch></div>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>token</code></td><td>The custom property to show. Required.</td></tr>
+            <tr><td><code>name</code>, <code>code</code></td><td>Display name and a pigment code or note.</td></tr>
+            <tr><td><code>size</code></td><td><code>s</code> for a compact chip.</td></tr>
+          </tbody></table>
+        </details>
+
+        <h3 id="c-canvas">art-canvas</h3>
+        <p>A stretched canvas for a project, post or talk. Give it an image in <code>slot="media"</code>, or let it paint a study of its own. The first link inside becomes the target for the whole canvas.</p>
+        <div class="demo" data-code>
+          <div class="cards">
+            <art-canvas pigment="brand" seed="pod">
+              <h3><a href="#c-canvas">Solid notes</a></h3>
+              <p>A notes app that keeps everything in your own Solid pod.</p>
+              <art-tape>Solid</art-tape>
+            </art-canvas>
+            <art-canvas pigment="complement" seed="fedi" wet>
+              <h3><a href="#c-canvas">Fediverse inbox</a></h3>
+              <p>Following ActivityPub accounts from a personal site.</p>
+              <art-tape>ActivityPub</art-tape>
+            </art-canvas>
+            <art-canvas pigment="partner" seed="easel">
+              <h3><a href="#c-canvas">vandervennet.art</a></h3>
+              <p>This portfolio, painted on an easel.</p>
+              <art-tape>Web components</art-tape>
+            </art-canvas>
+          </div>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>pigment</code></td><td>Main colour of the painted study.</td></tr>
+            <tr><td><code>seed</code></td><td>Changes the composition of the study.</td></tr>
+            <tr><td><code>wet</code></td><td>Marks work in progress with a "Still wet" tape label.</td></tr>
+          </tbody></table>
+        </details>
+        <p class="a11y">The whole canvas is clickable, but only the heading link is in the tab order and read out. Keep one link per canvas.</p>
+
+        <h3 id="c-tape">art-tape</h3>
+        <p>A strip of tape in the complement colour, for tags and labels, with dark ink.</p>
+        <div class="demo" data-code>
+          <div class="tapes">
+            <art-tape>Accessibility</art-tape>
+            <art-tape>Solid pods</art-tape>
+            <art-tape>ActivityPub</art-tape>
+            <art-tape pigment="brand">Live</art-tape>
+            <art-tape pigment="partner">In review</art-tape>
+            <art-tape flat>Flat for dense lists</art-tape>
+          </div>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>pigment</code></td><td>Adds a dab of colour before the text. The text must still say what the colour means.</td></tr>
+            <tr><td><code>seed</code></td><td>Changes the tear and tilt. Defaults to the text.</td></tr>
+            <tr><td><code>flat</code></td><td>No tilt.</td></tr>
+          </tbody></table>
+        </details>
+
+        <h3 id="c-railnav">art-railnav</h3>
+        <p>Section navigation drawn as a git branch, like the timeline it was inspired by. A painted lane runs beside the links with a dab per section: sections you've passed are filled, the one you're in is bigger with a ring, the ones ahead are hollow. It's the navigation beside this page.</p>
+        <div class="demo" data-code>
+          <art-railnav label="Example sections" style="inline-size:15rem">
+            <a href="#c-stroke">Strokes</a>
+            <a href="#c-button">Buttons</a>
+            <a href="#c-canvas">Canvases</a>
+            <a href="#c-tape">Tape</a>
+          </art-railnav>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>label</code></td><td>Accessible name of the navigation landmark.</td></tr>
+            <tr><td>Links</td><td>Plain <code>&lt;a href="#section-id"&gt;</code> children, one per section, in page order.</td></tr>
+          </tbody></table>
+        </details>
+        <p class="a11y">Renders a <code>&lt;nav&gt;</code> landmark and sets <code>aria-current="location"</code> on the link for the section in view. The current link is also bold, so it doesn't rely on the dab alone.</p>
+
+        <h3 id="c-decor">art-drip and art-splatter</h3>
+        <p>Decoration, used sparingly. Every section ends in a drip of its own paint; here it ends a block of colour inside one. A splatter belongs on an empty state or a 404, one per view.</p>
+        <div class="demo stack" data-code>
+          <div class="band">
+            <div class="fill">The end of a coloured band</div>
+            <art-drip pigment="accent" seed="band" count="6" height="3rem"></art-drip>
+          </div>
+          <div class="empty">
+            <art-splatter pigment="complement" seed="empty" size="11rem"></art-splatter>
+            <h4>No posts yet</h4>
+            <p class="muted">The first one goes here when it's dry.</p>
+            <art-button><button type="button">Write the first post</button></art-button>
+          </div>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>pigment</code>, <code>seed</code></td><td>Colour and shape. Both components default to <code>accent</code>.</td></tr>
+            <tr><td><code>count</code>, <code>height</code>, <code>run</code></td><td>Drip only: number of drips, height of the edge, and running once when scrolled into view.</td></tr>
+            <tr><td><code>size</code></td><td>Splatter only: width and height.</td></tr>
+          </tbody></table>
+        </details>
+
+  
+        <h3 id="c-signature">art-signature</h3>
+        <p>Your tag, like the signature in the corner of a painting. It goes in the footer of every page, once, bottom right, and signs itself as the footer comes into view.</p>
+        <div class="demo" data-code style="justify-content:flex-end">
+          <art-signature year="2026">Art Van der Vennet</art-signature>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>year</code></td><td>Painted after the name as painters do, like <code>’26</code>. Leave it out for none.</td></tr>
+            <tr><td><code>pigment</code></td><td>Paint colour. Defaults to <code>stroke</code>, which reads on every paint.</td></tr>
+            <tr><td><code>animate</code></td><td>Signs once when it scrolls into view. The name is readable text from the start.</td></tr>
+          </tbody></table>
+        </details>
+        <p class="a11y">Screen readers hear "Signed: Art Van der Vennet, 2026". The painted version is hidden from them.</p>
+        </div>
+        <art-drip class="section-drip" pigment="--surface" seed="components" count="8" run></art-drip>
+      </section>
+
+      <!-- ───────────────── Gitflow ───────────────── -->
+      <section id="gitflow" aria-labelledby="gitflow-h" data-paint="7">
+        <div class="inner">
+        <h2 id="gitflow-h">Gitflow</h2>
+        <p class="intro"><code>&lt;art-gitflow&gt;</code> turns an ordinary list into a painted git graph: branches fork, run beside each other and merge back as you scroll. On vandervennet.art it tells your career. Here it tells how Gesso was made.</p>
+
+        <div class="demo stack" data-code>
+          <art-gitflow seed="gesso">
+            <ol>
+              <li data-branch="main">
+                <span class="when">v0.1</span>
+                <h4>Primed the canvas</h4>
+                <p>One tokens file in the W3C format, built to CSS custom properties by a small script.</p>
+              </li>
+              <li data-branch="feat/pigments" data-pigment="complement">
+                <span class="when">v0.2</span>
+                <h4>Mixed the paint box</h4>
+                <p>Three pigments and eleven shades of green, all in OKLCH.</p>
+              </li>
+              <li data-branch="feat/pigments">
+                <span class="when">v0.3</span>
+                <h4>Checked every pairing</h4>
+                <p>A contrast script covers every pairing and fails on anything below AA.</p>
+              </li>
+              <li data-branch="feat/brush" data-pigment="partner">
+                <span class="when">v0.4</span>
+                <h4>Built the brush engine</h4>
+                <p>Seeded strokes, splatters and drips, so every render paints the same way.</p>
+              </li>
+              <li data-branch="feat/components" data-pigment="neutral-500">
+                <span class="when">v0.5</span>
+                <h4>Wrapped the native elements</h4>
+                <p>Buttons, links and lists keep their own semantics inside the components.</p>
+              </li>
+              <li data-branch="feat/brush">
+                <span class="when">v0.6</span>
+                <h4>Added dry-brush streaks</h4>
+                <p>Thin gaps where the canvas shows through the paint.</p>
+              </li>
+              <li data-branch="feat/components">
+                <span class="when">v0.9</span>
+                <h4>Painted the git graph</h4>
+                <p>This list, revealed as you scroll.</p>
+              </li>
+              <li data-branch="main">
+                <span class="when">v1.0</span>
+                <h4>Released Gesso</h4>
+                <p>Tokens, eleven components, three themes and this page.</p>
+              </li>
+              <li data-branch="next/portfolio" data-pigment="complement" data-open data-current>
+                <span class="when">Now</span>
+                <h4>Painting vandervennet.art</h4>
+                <p>The portfolio itself, built on Gesso.</p>
+              </li>
+            </ol>
+          </art-gitflow>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>data-branch</code> on an item</td><td>The branch it was committed to. Defaults to <code>main</code>. Shown as text next to the date.</td></tr>
+            <tr><td><code>data-pigment</code> on an item</td><td>The branch colour, set on its first item.</td></tr>
+            <tr><td><code>data-open</code> on an item</td><td>The branch is still running and never merges back.</td></tr>
+            <tr><td><code>data-current</code> on an item</td><td>Rings the commit you're at now.</td></tr>
+            <tr><td><code>&lt;time&gt;</code> or <code>.when</code></td><td>The date or version, moved onto the meta line.</td></tr>
+            <tr><td><code>seed</code>, <code>static</code></td><td>On the element: changes the brushwork, or turns off the scroll reveal.</td></tr>
+          </tbody></table>
+        </details>
+        <p class="a11y">It stays an ordered list for screen readers. The graph is aria-hidden; branch names are inserted as visible text. With reduced motion the whole graph is painted at once.</p>
+        </div>
+        <art-drip class="section-drip" pigment="--surface" seed="gitflow" count="8" run></art-drip>
+      </section>
+
+      <!-- ───────────────── Voice ───────────────── -->
+      <section id="voice" aria-labelledby="voice-h" data-paint="8">
+        <div class="inner">
+        <h2 id="voice-h">Voice</h2>
+        <p class="intro">The paint puns stay in the frame: token names, component names, this page. The words people act on stay plain.</p>
+        <div class="dodont">
+          <div style="--c:var(--success)">
+            <h4>Do</h4>
+            <ul>
+              <li>Write in sentence case: "See my work".</li>
+              <li>Name buttons after what happens: "Send message".</li>
+              <li>Keep the same verb all the way: "Send message" leads to "Message sent".</li>
+              <li>Say what went wrong and how to fix it: "That email address is missing an @".</li>
+            </ul>
+          </div>
+          <div style="--c:var(--danger)">
+            <h4>Don't</h4>
+            <ul>
+              <li>Put puns on buttons: "Brush it off" can't tell you what it does.</li>
+              <li>Write labels in capitals or add arrows to link text.</li>
+              <li>Apologise in errors, or blame the reader.</li>
+              <li>Use colour as the only signal for a status.</li>
+            </ul>
+          </div>
+        </div>
+        </div>
+        <art-drip class="section-drip" pigment="--surface" seed="voice" count="8" run></art-drip>
+      </section>
+
+      <!-- ───────────────── For designers ───────────────── -->
+      <section id="designers" aria-labelledby="designers-h" data-paint="1">
+        <div class="inner">
+        <h2 id="designers-h">For designers</h2>
+        <p class="intro">Everything on this page also comes as a design kit: the same tokens in hex for design tools, the fonts, and the brushwork as SVG. Design with it and every frame maps straight onto code.</p>
+
+        <h3>What's in the kit</h3>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th scope="col">Folder</th><th scope="col">Contents</th></tr></thead>
+            <tbody>
+              <tr><td><code>fonts/</code></td><td>Young Serif, Atkinson Hyperlegible Next (with italic), Atkinson Hyperlegible Mono, and Kristi for the signature. Free under the SIL Open Font License.</td></tr>
+              <tr><td><code>tokens/figma/</code></td><td>One file per collection mode, in the W3C design-tokens format with hex values: <code>primitives</code>, <code>size.mobile</code>, <code>size.desktop</code>, <code>text-styles.mobile</code> and <code>text-styles.desktop</code>, and a folder per theme with one <code>color</code> file per paint (<code>deep</code> and <code>1</code> to <code>8</code>).</td></tr>
+              <tr><td><code>tokens/tokens-studio.json</code></td><td>Everything in one file for the Tokens Studio plugin, with aliases kept.</td></tr>
+              <tr><td><code>assets/</code></td><td>Six underline strokes, three highlights, a strike, three drip edges, four splatters, three tape strips, a canvas study per pigment, the gitflow parts and a printable palette sheet per theme. No filters, so they import cleanly into Figma, Penpot or Sketch.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Setting up Figma</h3>
+        <ol class="principles">
+          <li><strong>Install the fonts</strong>Install the three families from <code>fonts/</code> before opening any file, so text doesn't fall back.</li>
+          <li><strong>Import the variables</strong>Make a Primitives collection, a Size collection (modes Mobile and Desktop), and a Color collection per theme with one mode per paint: Deep and 1 to 8. Import each file from <code>tokens/figma/</code> into its mode. If you'd rather keep aliases, load <code>tokens-studio.json</code> in the Tokens Studio plugin instead.</li>
+          <li><strong>Create the text styles</strong>Load <code>tokens-studio.json</code> in the Tokens Studio plugin and create text styles from its typography tokens: <code>wordmark</code>, <code>heading-1</code> to <code>heading-4</code>, <code>lead</code>, <code>body</code>, <code>small</code>, <code>label</code>, <code>button</code>, <code>code</code> and <code>signature</code>. Use only these.</li>
+          <li><strong>Turn the assets into components</strong>Drag in the SVGs and make each one a component. Name components after the code: <code>art-stroke/underline</code>, <code>art-button/secondary/l</code>, <code>art-tape</code>.</li>
+          <li><strong>Design with roles, not pigments</strong>Fill and text colours come from the Color collection (<code>surface</code>, <code>ink</code>, <code>accent</code>). Set each section frame's mode to its paint (Deep, 1, 2…) and the colours inside follow. Switch to another theme's collection to change theme. Use pigments directly only for strokes, dabs and paintings.</li>
+        </ol>
+
+        <h3>Page anatomy</h3>
+        <p>A page is a stack of painted sections, each a different colour, each ending in a drip of its own paint that runs into the next. The header and the last section use the deep paint, so a page opens and closes in the same colour. The sections in between take paints 1, 2, 3 and so on, in order.</p>
+        <figure class="anatomy" aria-label="Page anatomy: a header in the deep paint, then sections in paints 1 to 4, ending with a last section in the deep paint. Each section drips into the next.">
+          <div class="a-sec" data-paint="deep"><span>Header and hero, deep</span><art-drip class="a-drip" pigment="--surface" seed="a1" count="7"></art-drip></div>
+          <div class="a-sec" data-paint="1"><span>Section, paint 1</span><art-drip class="a-drip" pigment="--surface" seed="a2" count="7"></art-drip></div>
+          <div class="a-sec" data-paint="2"><span>Section, paint 2</span><art-drip class="a-drip" pigment="--surface" seed="a3" count="7"></art-drip></div>
+          <div class="a-sec" data-paint="3"><span>Section, paint 3</span><art-drip class="a-drip" pigment="--surface" seed="a4" count="7"></art-drip></div>
+          <div class="a-sec" data-paint="4"><span>Section, paint 4, and so on</span><art-drip class="a-drip" pigment="--surface" seed="a5" count="7"></art-drip></div>
+          <div class="a-sec" data-paint="deep"><span>Last section and footer, deep again</span></div>
+        </figure>
+        <p>Content inside a section stays within 68 characters per line; canvases, demos and the gitflow can go wider. On screens of 960px and up, the gitflow rail navigation hangs at the side.</p>
+
+        <h3>Grid and breakpoints</h3>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th scope="col">Frame</th><th scope="col">Width</th><th scope="col">Columns</th><th scope="col">Margin and gap</th><th scope="col">Type sizes</th></tr></thead>
+            <tbody>
+              <tr><td>Mobile</td><td>360px</td><td>4</td><td>20px</td><td><code>size.mobile</code></td></tr>
+              <tr><td>Tablet</td><td>768px, from 640px</td><td>8</td><td>32px</td><td>Between the two</td></tr>
+              <tr><td>Desktop</td><td>1280px, from 960px</td><td>12</td><td>48px</td><td><code>size.desktop</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-block-start:var(--space-4)">Content never grows past 1280px. Type sizes scale smoothly between the mobile and desktop values, so designing both ends is enough. Space vertically with the spacing tokens only: <code>space-16</code> between sections, <code>space-4</code> under a heading, <code>space-8</code> between list items.</p>
+
+        <h3>Rules to design by</h3>
+        <div class="dodont">
+          <div style="--c:var(--pigment-brand)">
+            <h4>Every frame</h4>
+            <ul>
+              <li>Every section is painted and ends in a drip. Header and last section deep; between them paints 1 to 8 in order, so no two sections share a colour.</li>
+              <li>Beyond the drips, one loud thing per screen: a painted heading or a splatter.</li>
+              <li>Every piece of text uses one of the twelve text styles.</li>
+              <li>Animate decoration and responses only. Content never fades or slides in, and never waits.</li>
+                            <li>Each theme is three pigments, no more: brand, partner and complement. The complement is the accent: use it sparingly.</li>
+                            <li>Text on the deep paint is gesso white. Text on paints 1 to 8, on the partner and on tape is dark.</li>
+              <li>Body text at least 17px, nothing below 14px. Touch targets at least 44px.</li>
+                          </ul>
+          </div>
+          <div style="--c:var(--pigment-complement-light)">
+            <h4>Brushwork</h4>
+            <ul>
+              <li>Use the strokes from <code>assets/</code>. Stretch them horizontally as much as you like; keep their height.</li>
+              <li>Under a big heading, a stroke is about 15% of the type size. Under body text, about 40%.</li>
+              <li>A splatter never sits behind text.</li>
+              <li>Strokes and drips are decoration: the text above them must read without them.</li>
+              <li>Give a drip a thin edge in its own paint, a shade darker, so it reads on the next section.</li>
+              <li>Drips hang from the bottom edge of a section, in that section's paint.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Handing off</h3>
+        <p>Name layers after components and their attributes (<code>art-canvas · pigment=complement · wet</code>), and colours after variables, never hex. Mark motion with the motion tokens instead of drawing it. For a gitflow, list each entry's branch, colour and whether it's still open; the code paints the graph.</p>
+        </div>
+        <art-drip class="section-drip" pigment="--surface" seed="designers" count="8" run></art-drip>
+      </section>
+
+      <!-- ───────────────── Install ───────────────── -->
+      <section id="install" aria-labelledby="install-h" data-paint="deep">
+        <div class="inner">
+        <h2 id="install-h">Install</h2>
+        <p class="intro">Gesso installs straight from git, and every project picks its own theme. The built CSS is committed, so projects never build Gesso themselves.</p>
+        <h3>Add it to a project</h3>
+<pre><code>npm install github:artvandervennet/gesso#v1.0.0</code></pre>
+        <p>The tag pins a release, so a project only changes when you bump it.</p>
+        <h3>Load the styles and one theme</h3>
+<pre><code>@import "@vandervennet/gesso/fonts.css";         /* self-hosted fonts */
+@import "@vandervennet/gesso/core.css";          /* spacing, type, motion, paints */
+@import "@vandervennet/gesso/base.css";          /* plain HTML */
+@import "@vandervennet/gesso/themes/harbour.css"; /* this project's theme */</code></pre>
+        <h3>Load the components</h3>
+<pre><code>import '@vandervennet/gesso';                            // every component
+import '@vandervennet/gesso/components/art-gitflow.js'; // or one at a time</code></pre>
+        <h3>Give a project its own theme</h3>
+        <p>Write a recipe like the one in <a href="#pigments">Themes and pigments</a>, then build it into the project and import it instead of a built-in theme. The command checks every pairing and stops with an explanation if something fails.</p>
+<pre><code>npx gesso-theme theme.json --out src/styles/theme.css --hex design/theme.hex.json</code></pre>
+        <h3>Change Gesso itself</h3>
+<pre><code>npm run build          # tokens, themes, contrast check, design kit
+npm version minor      # bump and tag
+git push --follow-tags</code></pre>
+        <h3>What's in the box</h3>
+<pre><code>gesso/
+├── bin/gesso-theme.mjs       builds a project's own theme
+├── tokens/tokens.json        shared tokens (W3C design tokens)
+├── tokens/themes.json        the built-in theme recipes
+├── css/core.css              shared tokens, paints, text styles
+├── css/themes/*.css          one file per built-in theme
+├── css/base.css, fonts.css   plain HTML styles, self-hosted fonts
+├── components/               eleven custom elements, brush.js, themes.js
+├── scripts/                  build, contrast check, design kit export
+├── design-kit/               fonts, Figma tokens, SVG brushwork, PDF guide
+└── index.html                this page</code></pre>
+
+      <footer class="site-footer">
+        <div class="footer-notes">
+          <span>Gesso 1.0, for vandervennet.art</span>
+          <span>Inspired by the work of Bart Delrue and Michiel Van de Velde, with their blessing.</span>
+        </div>
+        <art-signature year="2026" animate>Art Van der Vennet</art-signature>
+      </footer>
+        </div>
+        <art-drip class="section-drip" pigment="--surface" seed="install" count="8" run></art-drip>
+      </section>
+
+  </main>
+
+  <script>
+    // Show each demo's markup underneath it, captured before the components upgrade.
+    for (const demo of document.querySelectorAll('.demo[data-code]')) {
+      const lines = demo.innerHTML.replace(/^\n+|\s+$/g, '').split('\n');
+      const indent = Math.min(...lines.filter((l) => l.trim()).map((l) => l.match(/^ */)[0].length));
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.textContent = lines.map((l) => l.slice(indent)).join('\n').replace(/=""/g, '');
+      pre.append(code);
+      if (lines.length > 24) {
+        const d = document.createElement('details'); d.className = 'api';
+        d.innerHTML = '<summary>Show the markup</summary>'; d.append(pre); demo.after(d);
+      } else demo.after(pre);
+    }
+    // Play the motion curves on request.
+    document.getElementById('motion-play').addEventListener('click', () => {
+      const m = document.getElementById('motion-demo');
+      m.removeAttribute('data-play'); void m.offsetWidth; m.setAttribute('data-play', '');
+    });
+    // Animation demos: run the drip again, pick a chip.
+    document.getElementById('drip-replay').addEventListener('click', () => document.getElementById('drip-demo').replay());
+    const rail = document.getElementById('rail-demo');
+    rail.querySelectorAll('a').forEach((a, i) => a.addEventListener('click', (e) => { e.preventDefault(); rail.select(i); }));
+    customElements.whenDefined('art-railnav').then(() => requestAnimationFrame(() => rail.select(0)));
+    // Pigment chips follow the chosen theme.
+    import('./components/themes.js').then(({ THEMES }) => {
+      const box = document.getElementById('theme-swatches');
+      const roles = { brand: 'the brand', partner: 'the partner', complement: 'the complement' };
+      const draw = () => {
+        const id = document.documentElement.dataset.theme || THEMES[0].id;
+        const t = THEMES.find((x) => x.id === id) || THEMES[0];
+        box.innerHTML = Object.entries(roles).map(([k, r]) => `<art-swatch token="--pigment-${k}" name="${t.pigments[k].name}" code="${t.pigments[k].code}, ${r}"></art-swatch>`).join('');
+      };
+      draw();
+      document.addEventListener('gesso:themechange', draw);
+    });
+  </script>
+</body>
+</html>

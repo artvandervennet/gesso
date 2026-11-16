@@ -1,0 +1,92 @@
+{
+  "color": {
+    "surface": {
+      "$type": "color",
+      "$value": "#fac8d7"
+    },
+    "surface-raised": {
+      "$type": "color",
+      "$value": "#fffdfe"
+    },
+    "surface-sunken": {
+      "$type": "color",
+      "$value": "#efb9ca"
+    },
+    "canvas": {
+      "$type": "color",
+      "$value": "#fffdfe"
+    },
+    "on-canvas": {
+      "$type": "color",
+      "$value": "#1a0816"
+    },
+    "ink": {
+      "$type": "color",
+      "$value": "#1a0816"
+    },
+    "ink-muted": {
+      "$type": "color",
+      "$value": "#5f4b5a"
+    },
+    "rule": {
+      "$type": "color",
+      "$value": "#dcabba"
+    },
+    "rule-strong": {
+      "$type": "color",
+      "$value": "#86637e"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "#6f2563"
+    },
+    "accent-wash": {
+      "$type": "color",
+      "$value": "#fde2f6"
+    },
+    "on-accent": {
+      "$type": "color",
+      "$value": "#faf5f9"
+    },
+    "link": {
+      "$type": "color",
+      "$value": "#6f2563"
+    },
+    "focus": {
+      "$type": "color",
+      "$value": "#276018"
+    },
+    "success": {
+      "$type": "color",
+      "$value": "#6f2563"
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "#714c00"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "#a02427"
+    },
+    "info": {
+      "$type": "color",
+      "$value": "#5f4b5a"
+    },
+    "stroke": {
+      "$type": "color",
+      "$value": "#efba64"
+    },
+    "highlight": {
+      "$type": "color",
+      "$value": "#efba64"
+    },
+    "tape": {
+      "$type": "color",
+      "$value": "#bfdab9"
+    },
+    "on-tape": {
+      "$type": "color",
+      "$value": "#15300f"
+    }
+  }
+}

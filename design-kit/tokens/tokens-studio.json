@@ -1,0 +1,1870 @@
+{
+  "core": {
+    "space": {
+      "0": {
+        "value": "0px",
+        "type": "spacing"
+      },
+      "1": {
+        "value": "4px",
+        "type": "spacing"
+      },
+      "2": {
+        "value": "8px",
+        "type": "spacing"
+      },
+      "3": {
+        "value": "12px",
+        "type": "spacing"
+      },
+      "4": {
+        "value": "16px",
+        "type": "spacing"
+      },
+      "6": {
+        "value": "24px",
+        "type": "spacing"
+      },
+      "8": {
+        "value": "32px",
+        "type": "spacing"
+      },
+      "12": {
+        "value": "48px",
+        "type": "spacing"
+      },
+      "16": {
+        "value": "64px",
+        "type": "spacing"
+      },
+      "24": {
+        "value": "96px",
+        "type": "spacing"
+      },
+      "32": {
+        "value": "128px",
+        "type": "spacing"
+      }
+    },
+    "borderRadius": {
+      "canvas": {
+        "value": "2px",
+        "type": "borderRadius"
+      },
+      "chip": {
+        "value": "5px",
+        "type": "borderRadius"
+      },
+      "round": {
+        "value": "999px",
+        "type": "borderRadius"
+      },
+      "dab": {
+        "value": "12px",
+        "type": "borderRadius"
+      }
+    },
+    "fontFamilies": {
+      "signature": {
+        "value": "Kristi",
+        "type": "fontFamilies"
+      },
+      "display": {
+        "value": "Young Serif",
+        "type": "fontFamilies"
+      },
+      "body": {
+        "value": "Atkinson Hyperlegible Next",
+        "type": "fontFamilies"
+      },
+      "mono": {
+        "value": "Atkinson Hyperlegible Mono",
+        "type": "fontFamilies"
+      }
+    },
+    "fontWeights": {
+      "regular": {
+        "value": "400",
+        "type": "fontWeights"
+      },
+      "medium": {
+        "value": "550",
+        "type": "fontWeights"
+      },
+      "bold": {
+        "value": "720",
+        "type": "fontWeights"
+      }
+    },
+    "lineHeights": {
+      "tight": {
+        "value": "105%",
+        "type": "lineHeights"
+      },
+      "snug": {
+        "value": "125%",
+        "type": "lineHeights"
+      },
+      "body": {
+        "value": "160%",
+        "type": "lineHeights"
+      }
+    },
+    "fontSizes": {
+      "step-0": {
+        "mobile": {
+          "value": "17px",
+          "type": "fontSizes"
+        },
+        "desktop": {
+          "value": "18px",
+          "type": "fontSizes"
+        }
+      },
+      "step-1": {
+        "mobile": {
+          "value": "20px",
+          "type": "fontSizes"
+        },
+        "desktop": {
+          "value": "22.4px",
+          "type": "fontSizes"
+        }
+      },
+      "step-2": {
+        "mobile": {
+          "value": "24px",
+          "type": "fontSizes"
+        },
+        "desktop": {
+          "value": "28px",
+          "type": "fontSizes"
+        }
+      },
+      "step-3": {
+        "mobile": {
+          "value": "28.8px",
+          "type": "fontSizes"
+        },
+        "desktop": {
+          "value": "35.2px",
+          "type": "fontSizes"
+        }
+      },
+      "step-4": {
+        "mobile": {
+          "value": "35.2px",
+          "type": "fontSizes"
+        },
+        "desktop": {
+          "value": "54.4px",
+          "type": "fontSizes"
+        }
+      },
+      "step-5": {
+        "mobile": {
+          "value": "48px",
+          "type": "fontSizes"
+        },
+        "desktop": {
+          "value": "102.4px",
+          "type": "fontSizes"
+        }
+      },
+      "step--1": {
+        "mobile": {
+          "value": "14px",
+          "type": "fontSizes"
+        },
+        "desktop": {
+          "value": "15px",
+          "type": "fontSizes"
+        }
+      }
+    },
+    "typography": {
+      "mobile": {
+        "wordmark": {
+          "value": {
+            "fontFamily": "Young Serif",
+            "fontWeight": "400",
+            "fontSize": "72px",
+            "lineHeight": "90%",
+            "letterSpacing": "-4.5%"
+          },
+          "type": "typography",
+          "description": "The site name in the hero. Once per page."
+        },
+        "heading-1": {
+          "value": {
+            "fontFamily": "Young Serif",
+            "fontWeight": "400",
+            "fontSize": "48px",
+            "lineHeight": "105%",
+            "letterSpacing": "-2.5%"
+          },
+          "type": "typography",
+          "description": "Page titles."
+        },
+        "heading-2": {
+          "value": {
+            "fontFamily": "Young Serif",
+            "fontWeight": "400",
+            "fontSize": "35.2px",
+            "lineHeight": "105%",
+            "letterSpacing": "-2%"
+          },
+          "type": "typography",
+          "description": "Section titles."
+        },
+        "heading-3": {
+          "value": {
+            "fontFamily": "Young Serif",
+            "fontWeight": "400",
+            "fontSize": "24px",
+            "lineHeight": "125%",
+            "letterSpacing": "-1%"
+          },
+          "type": "typography",
+          "description": "Sub-sections and canvas titles."
+        },
+        "heading-4": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "720",
+            "fontSize": "20px",
+            "lineHeight": "125%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Small headings inside a block of text."
+        },
+        "lead": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "400",
+            "fontSize": "20px",
+            "lineHeight": "150%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "The first paragraph of a section."
+        },
+        "body": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "400",
+            "fontSize": "17px",
+            "lineHeight": "160%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Everything people read for a while."
+        },
+        "small": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "400",
+            "fontSize": "14px",
+            "lineHeight": "150%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Captions, footnotes, help text."
+        },
+        "label": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "550",
+            "fontSize": "14px",
+            "lineHeight": "125%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Chips, tags, meta lines, table headers."
+        },
+        "button": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "720",
+            "fontSize": "17px",
+            "lineHeight": "120%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Buttons and button-like links."
+        },
+        "code": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Mono",
+            "fontWeight": "400",
+            "fontSize": "14px",
+            "lineHeight": "155%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Code, commit hashes and branch names."
+        },
+        "signature": {
+          "value": {
+            "fontFamily": "Kristi",
+            "fontWeight": "400",
+            "fontSize": "28.8px",
+            "lineHeight": "100%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "The signature in the footer, like the name in the corner of a painting. Once per page."
+        }
+      },
+      "desktop": {
+        "wordmark": {
+          "value": {
+            "fontFamily": "Young Serif",
+            "fontWeight": "400",
+            "fontSize": "208px",
+            "lineHeight": "90%",
+            "letterSpacing": "-4.5%"
+          },
+          "type": "typography",
+          "description": "The site name in the hero. Once per page."
+        },
+        "heading-1": {
+          "value": {
+            "fontFamily": "Young Serif",
+            "fontWeight": "400",
+            "fontSize": "102.4px",
+            "lineHeight": "105%",
+            "letterSpacing": "-2.5%"
+          },
+          "type": "typography",
+          "description": "Page titles."
+        },
+        "heading-2": {
+          "value": {
+            "fontFamily": "Young Serif",
+            "fontWeight": "400",
+            "fontSize": "54.4px",
+            "lineHeight": "105%",
+            "letterSpacing": "-2%"
+          },
+          "type": "typography",
+          "description": "Section titles."
+        },
+        "heading-3": {
+          "value": {
+            "fontFamily": "Young Serif",
+            "fontWeight": "400",
+            "fontSize": "28px",
+            "lineHeight": "125%",
+            "letterSpacing": "-1%"
+          },
+          "type": "typography",
+          "description": "Sub-sections and canvas titles."
+        },
+        "heading-4": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "720",
+            "fontSize": "22.4px",
+            "lineHeight": "125%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Small headings inside a block of text."
+        },
+        "lead": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "400",
+            "fontSize": "22.4px",
+            "lineHeight": "150%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "The first paragraph of a section."
+        },
+        "body": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "400",
+            "fontSize": "18px",
+            "lineHeight": "160%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Everything people read for a while."
+        },
+        "small": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "400",
+            "fontSize": "15px",
+            "lineHeight": "150%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Captions, footnotes, help text."
+        },
+        "label": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "550",
+            "fontSize": "15px",
+            "lineHeight": "125%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Chips, tags, meta lines, table headers."
+        },
+        "button": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Next",
+            "fontWeight": "720",
+            "fontSize": "18px",
+            "lineHeight": "120%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Buttons and button-like links."
+        },
+        "code": {
+          "value": {
+            "fontFamily": "Atkinson Hyperlegible Mono",
+            "fontWeight": "400",
+            "fontSize": "15px",
+            "lineHeight": "155%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "Code, commit hashes and branch names."
+        },
+        "signature": {
+          "value": {
+            "fontFamily": "Kristi",
+            "fontWeight": "400",
+            "fontSize": "35.2px",
+            "lineHeight": "100%",
+            "letterSpacing": "0%"
+          },
+          "type": "typography",
+          "description": "The signature in the footer, like the name in the corner of a painting. Once per page."
+        }
+      }
+    }
+  },
+  "$themes": [
+    {
+      "id": "studio-deep",
+      "name": "Studio, paint deep",
+      "group": "Studio",
+      "selectedTokenSets": {
+        "core": "source",
+        "studio/base": "enabled",
+        "studio/paint-deep": "enabled"
+      }
+    },
+    {
+      "id": "studio-1",
+      "name": "Studio, paint 1",
+      "group": "Studio",
+      "selectedTokenSets": {
+        "core": "source",
+        "studio/base": "enabled",
+        "studio/paint-1": "enabled"
+      }
+    },
+    {
+      "id": "studio-2",
+      "name": "Studio, paint 2",
+      "group": "Studio",
+      "selectedTokenSets": {
+        "core": "source",
+        "studio/base": "enabled",
+        "studio/paint-2": "enabled"
+      }
+    },
+    {
+      "id": "studio-3",
+      "name": "Studio, paint 3",
+      "group": "Studio",
+      "selectedTokenSets": {
+        "core": "source",
+        "studio/base": "enabled",
+        "studio/paint-3": "enabled"
+      }
+    },
+    {
+      "id": "studio-4",
+      "name": "Studio, paint 4",
+      "group": "Studio",
+      "selectedTokenSets": {
+        "core": "source",
+        "studio/base": "enabled",
+        "studio/paint-4": "enabled"
+      }
+    },
+    {
+      "id": "studio-5",
+      "name": "Studio, paint 5",
+      "group": "Studio",
+      "selectedTokenSets": {
+        "core": "source",
+        "studio/base": "enabled",
+        "studio/paint-5": "enabled"
+      }
+    },
+    {
+      "id": "studio-6",
+      "name": "Studio, paint 6",
+      "group": "Studio",
+      "selectedTokenSets": {
+        "core": "source",
+        "studio/base": "enabled",
+        "studio/paint-6": "enabled"
+      }
+    },
+    {
+      "id": "studio-7",
+      "name": "Studio, paint 7",
+      "group": "Studio",
+      "selectedTokenSets": {
+        "core": "source",
+        "studio/base": "enabled",
+        "studio/paint-7": "enabled"
+      }
+    },
+    {
+      "id": "studio-8",
+      "name": "Studio, paint 8",
+      "group": "Studio",
+      "selectedTokenSets": {
+        "core": "source",
+        "studio/base": "enabled",
+        "studio/paint-8": "enabled"
+      }
+    },
+    {
+      "id": "harbour-deep",
+      "name": "Harbour, paint deep",
+      "group": "Harbour",
+      "selectedTokenSets": {
+        "core": "source",
+        "harbour/base": "enabled",
+        "harbour/paint-deep": "enabled"
+      }
+    },
+    {
+      "id": "harbour-1",
+      "name": "Harbour, paint 1",
+      "group": "Harbour",
+      "selectedTokenSets": {
+        "core": "source",
+        "harbour/base": "enabled",
+        "harbour/paint-1": "enabled"
+      }
+    },
+    {
+      "id": "harbour-2",
+      "name": "Harbour, paint 2",
+      "group": "Harbour",
+      "selectedTokenSets": {
+        "core": "source",
+        "harbour/base": "enabled",
+        "harbour/paint-2": "enabled"
+      }
+    },
+    {
+      "id": "harbour-3",
+      "name": "Harbour, paint 3",
+      "group": "Harbour",
+      "selectedTokenSets": {
+        "core": "source",
+        "harbour/base": "enabled",
+        "harbour/paint-3": "enabled"
+      }
+    },
+    {
+      "id": "harbour-4",
+      "name": "Harbour, paint 4",
+      "group": "Harbour",
+      "selectedTokenSets": {
+        "core": "source",
+        "harbour/base": "enabled",
+        "harbour/paint-4": "enabled"
+      }
+    },
+    {
+      "id": "harbour-5",
+      "name": "Harbour, paint 5",
+      "group": "Harbour",
+      "selectedTokenSets": {
+        "core": "source",
+        "harbour/base": "enabled",
+        "harbour/paint-5": "enabled"
+      }
+    },
+    {
+      "id": "harbour-6",
+      "name": "Harbour, paint 6",
+      "group": "Harbour",
+      "selectedTokenSets": {
+        "core": "source",
+        "harbour/base": "enabled",
+        "harbour/paint-6": "enabled"
+      }
+    },
+    {
+      "id": "harbour-7",
+      "name": "Harbour, paint 7",
+      "group": "Harbour",
+      "selectedTokenSets": {
+        "core": "source",
+        "harbour/base": "enabled",
+        "harbour/paint-7": "enabled"
+      }
+    },
+    {
+      "id": "harbour-8",
+      "name": "Harbour, paint 8",
+      "group": "Harbour",
+      "selectedTokenSets": {
+        "core": "source",
+        "harbour/base": "enabled",
+        "harbour/paint-8": "enabled"
+      }
+    },
+    {
+      "id": "plum-deep",
+      "name": "Plum, paint deep",
+      "group": "Plum",
+      "selectedTokenSets": {
+        "core": "source",
+        "plum/base": "enabled",
+        "plum/paint-deep": "enabled"
+      }
+    },
+    {
+      "id": "plum-1",
+      "name": "Plum, paint 1",
+      "group": "Plum",
+      "selectedTokenSets": {
+        "core": "source",
+        "plum/base": "enabled",
+        "plum/paint-1": "enabled"
+      }
+    },
+    {
+      "id": "plum-2",
+      "name": "Plum, paint 2",
+      "group": "Plum",
+      "selectedTokenSets": {
+        "core": "source",
+        "plum/base": "enabled",
+        "plum/paint-2": "enabled"
+      }
+    },
+    {
+      "id": "plum-3",
+      "name": "Plum, paint 3",
+      "group": "Plum",
+      "selectedTokenSets": {
+        "core": "source",
+        "plum/base": "enabled",
+        "plum/paint-3": "enabled"
+      }
+    },
+    {
+      "id": "plum-4",
+      "name": "Plum, paint 4",
+      "group": "Plum",
+      "selectedTokenSets": {
+        "core": "source",
+        "plum/base": "enabled",
+        "plum/paint-4": "enabled"
+      }
+    },
+    {
+      "id": "plum-5",
+      "name": "Plum, paint 5",
+      "group": "Plum",
+      "selectedTokenSets": {
+        "core": "source",
+        "plum/base": "enabled",
+        "plum/paint-5": "enabled"
+      }
+    },
+    {
+      "id": "plum-6",
+      "name": "Plum, paint 6",
+      "group": "Plum",
+      "selectedTokenSets": {
+        "core": "source",
+        "plum/base": "enabled",
+        "plum/paint-6": "enabled"
+      }
+    },
+    {
+      "id": "plum-7",
+      "name": "Plum, paint 7",
+      "group": "Plum",
+      "selectedTokenSets": {
+        "core": "source",
+        "plum/base": "enabled",
+        "plum/paint-7": "enabled"
+      }
+    },
+    {
+      "id": "plum-8",
+      "name": "Plum, paint 8",
+      "group": "Plum",
+      "selectedTokenSets": {
+        "core": "source",
+        "plum/base": "enabled",
+        "plum/paint-8": "enabled"
+      }
+    }
+  ],
+  "studio/base": {
+    "pigment": {
+      "brand": {
+        "body": {
+          "value": "#005c3f",
+          "type": "color",
+          "description": "Phthalo green (PG7)"
+        },
+        "light": {
+          "value": "#78d3b1",
+          "type": "color"
+        },
+        "wash": {
+          "value": "#d8f3e7",
+          "type": "color"
+        }
+      },
+      "partner": {
+        "body": {
+          "value": "#f1bf5b",
+          "type": "color",
+          "description": "Yellow ochre (PY43)"
+        },
+        "light": {
+          "value": "#f9d595",
+          "type": "color"
+        },
+        "wash": {
+          "value": "#fef0d8",
+          "type": "color"
+        }
+      },
+      "complement": {
+        "body": {
+          "value": "#9b2549",
+          "type": "color",
+          "description": "Rose (PR122)"
+        },
+        "light": {
+          "value": "#fbbfc8",
+          "type": "color"
+        },
+        "wash": {
+          "value": "#ffecef",
+          "type": "color"
+        }
+      }
+    },
+    "neutral": {
+      "50": {
+        "value": "#f2f9f6",
+        "type": "color"
+      },
+      "100": {
+        "value": "#deebe6",
+        "type": "color"
+      },
+      "200": {
+        "value": "#c4dad1",
+        "type": "color"
+      },
+      "300": {
+        "value": "#9cbdaf",
+        "type": "color"
+      },
+      "400": {
+        "value": "#6e9a89",
+        "type": "color"
+      },
+      "500": {
+        "value": "#3b7a63",
+        "type": "color"
+      },
+      "600": {
+        "value": "#005c3f",
+        "type": "color"
+      },
+      "700": {
+        "value": "#004931",
+        "type": "color"
+      },
+      "800": {
+        "value": "#003825",
+        "type": "color"
+      },
+      "900": {
+        "value": "#00271a",
+        "type": "color"
+      },
+      "950": {
+        "value": "#00170e",
+        "type": "color"
+      }
+    },
+    "surface": {
+      "value": "#d6f8e9",
+      "type": "color"
+    },
+    "surface-raised": {
+      "value": "#fcfefd",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#c6ebdc",
+      "type": "color"
+    },
+    "canvas": {
+      "value": "#fcfefd",
+      "type": "color"
+    },
+    "on-canvas": {
+      "value": "#00170e",
+      "type": "color"
+    },
+    "ink": {
+      "value": "#00170e",
+      "type": "color"
+    },
+    "ink-muted": {
+      "value": "#40594f",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#b9dacc",
+      "type": "color"
+    },
+    "rule-strong": {
+      "value": "#477765",
+      "type": "color"
+    },
+    "accent": {
+      "value": "#005c3f",
+      "type": "color"
+    },
+    "accent-wash": {
+      "value": "#d8f3e7",
+      "type": "color"
+    },
+    "on-accent": {
+      "value": "#f2f9f6",
+      "type": "color"
+    },
+    "link": {
+      "value": "#005c3f",
+      "type": "color"
+    },
+    "focus": {
+      "value": "#9b2549",
+      "type": "color"
+    },
+    "success": {
+      "value": "#005c3f",
+      "type": "color"
+    },
+    "warning": {
+      "value": "#704c00",
+      "type": "color"
+    },
+    "danger": {
+      "value": "#9b2549",
+      "type": "color"
+    },
+    "info": {
+      "value": "#40594f",
+      "type": "color"
+    },
+    "stroke": {
+      "value": "#f1bf5b",
+      "type": "color"
+    },
+    "highlight": {
+      "value": "#f1bf5b",
+      "type": "color"
+    },
+    "tape": {
+      "value": "#fbbfc8",
+      "type": "color"
+    },
+    "on-tape": {
+      "value": "#491121",
+      "type": "color"
+    }
+  },
+  "studio/paint-deep": {
+    "surface": {
+      "value": "#005c3f",
+      "type": "color"
+    },
+    "surface-raised": {
+      "value": "#004931",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#003825",
+      "type": "color"
+    },
+    "ink": {
+      "value": "#f2f9f6",
+      "type": "color"
+    },
+    "ink-muted": {
+      "value": "#c4dad1",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#3c7964",
+      "type": "color"
+    },
+    "rule-strong": {
+      "value": "#9cbdaf",
+      "type": "color"
+    },
+    "accent": {
+      "value": "#f1bf5b",
+      "type": "color"
+    },
+    "accent-wash": {
+      "value": "#374619",
+      "type": "color"
+    },
+    "on-accent": {
+      "value": "#00170e",
+      "type": "color"
+    },
+    "link": {
+      "value": "#f9d595",
+      "type": "color"
+    },
+    "focus": {
+      "value": "#fbbfc8",
+      "type": "color"
+    },
+    "success": {
+      "value": "#78d3b1",
+      "type": "color"
+    },
+    "warning": {
+      "value": "#f1bf5b",
+      "type": "color"
+    },
+    "danger": {
+      "value": "#f8b6c1",
+      "type": "color"
+    },
+    "info": {
+      "value": "#deebe6",
+      "type": "color"
+    },
+    "stroke": {
+      "value": "#f1bf5b",
+      "type": "color"
+    },
+    "highlight": {
+      "value": "#8b2a44",
+      "type": "color"
+    }
+  },
+  "studio/paint-1": {
+    "surface": {
+      "value": "#d6f8e9",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#c6ebdc",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#b9dacc",
+      "type": "color"
+    }
+  },
+  "studio/paint-2": {
+    "surface": {
+      "value": "#c0e3c0",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#b1d6b1",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#a3c5a3",
+      "type": "color"
+    }
+  },
+  "studio/paint-3": {
+    "surface": {
+      "value": "#e9f3d6",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#dce7c6",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#ccd6b9",
+      "type": "color"
+    }
+  },
+  "studio/paint-4": {
+    "surface": {
+      "value": "#e1d9ac",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#d4cc9b",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#c4bc90",
+      "type": "color"
+    }
+  },
+  "studio/paint-5": {
+    "surface": {
+      "value": "#feecd1",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#f3dec1",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#e0ceb4",
+      "type": "color"
+    }
+  },
+  "studio/paint-6": {
+    "surface": {
+      "value": "#f8ceb3",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#edc0a3",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#dab197",
+      "type": "color"
+    }
+  },
+  "studio/paint-7": {
+    "surface": {
+      "value": "#ffe5de",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#fed7cf",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#eac8c1",
+      "type": "color"
+    }
+  },
+  "studio/paint-8": {
+    "surface": {
+      "value": "#fcc8d0",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#f1bac2",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#deabb3",
+      "type": "color"
+    }
+  },
+  "harbour/base": {
+    "pigment": {
+      "brand": {
+        "body": {
+          "value": "#004d72",
+          "type": "color",
+          "description": "Prussian blue (PB27)"
+        },
+        "light": {
+          "value": "#89c6ee",
+          "type": "color"
+        },
+        "wash": {
+          "value": "#dbeefc",
+          "type": "color"
+        }
+      },
+      "partner": {
+        "body": {
+          "value": "#e9d38f",
+          "type": "color",
+          "description": "Naples yellow (PY35)"
+        },
+        "light": {
+          "value": "#eadaac",
+          "type": "color"
+        },
+        "wash": {
+          "value": "#f7f2e0",
+          "type": "color"
+        }
+      },
+      "complement": {
+        "body": {
+          "value": "#963300",
+          "type": "color",
+          "description": "Cadmium orange (PO20)"
+        },
+        "light": {
+          "value": "#f7c4ab",
+          "type": "color"
+        },
+        "wash": {
+          "value": "#ffeee5",
+          "type": "color"
+        }
+      }
+    },
+    "neutral": {
+      "50": {
+        "value": "#f3f8fb",
+        "type": "color"
+      },
+      "100": {
+        "value": "#e0e9f0",
+        "type": "color"
+      },
+      "200": {
+        "value": "#c6d7e2",
+        "type": "color"
+      },
+      "300": {
+        "value": "#a1b8c8",
+        "type": "color"
+      },
+      "400": {
+        "value": "#7594a9",
+        "type": "color"
+      },
+      "500": {
+        "value": "#47718d",
+        "type": "color"
+      },
+      "600": {
+        "value": "#004d72",
+        "type": "color"
+      },
+      "700": {
+        "value": "#003d5b",
+        "type": "color"
+      },
+      "800": {
+        "value": "#002e46",
+        "type": "color"
+      },
+      "900": {
+        "value": "#032030",
+        "type": "color"
+      },
+      "950": {
+        "value": "#01111c",
+        "type": "color"
+      }
+    },
+    "surface": {
+      "value": "#d7f3ff",
+      "type": "color"
+    },
+    "surface-raised": {
+      "value": "#fdfeff",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#c7e6fc",
+      "type": "color"
+    },
+    "canvas": {
+      "value": "#fdfeff",
+      "type": "color"
+    },
+    "on-canvas": {
+      "value": "#01111c",
+      "type": "color"
+    },
+    "ink": {
+      "value": "#01111c",
+      "type": "color"
+    },
+    "ink-muted": {
+      "value": "#435561",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#bad5e9",
+      "type": "color"
+    },
+    "rule-strong": {
+      "value": "#527389",
+      "type": "color"
+    },
+    "accent": {
+      "value": "#004d72",
+      "type": "color"
+    },
+    "accent-wash": {
+      "value": "#dbeefc",
+      "type": "color"
+    },
+    "on-accent": {
+      "value": "#f3f8fb",
+      "type": "color"
+    },
+    "link": {
+      "value": "#004d72",
+      "type": "color"
+    },
+    "focus": {
+      "value": "#963300",
+      "type": "color"
+    },
+    "success": {
+      "value": "#004d72",
+      "type": "color"
+    },
+    "warning": {
+      "value": "#62521f",
+      "type": "color"
+    },
+    "danger": {
+      "value": "#963300",
+      "type": "color"
+    },
+    "info": {
+      "value": "#435561",
+      "type": "color"
+    },
+    "stroke": {
+      "value": "#e9d38f",
+      "type": "color"
+    },
+    "highlight": {
+      "value": "#e9d38f",
+      "type": "color"
+    },
+    "tape": {
+      "value": "#f7c4ab",
+      "type": "color"
+    },
+    "on-tape": {
+      "value": "#481800",
+      "type": "color"
+    }
+  },
+  "harbour/paint-deep": {
+    "surface": {
+      "value": "#004d72",
+      "type": "color"
+    },
+    "surface-raised": {
+      "value": "#003d5b",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#002e46",
+      "type": "color"
+    },
+    "ink": {
+      "value": "#f3f8fb",
+      "type": "color"
+    },
+    "ink-muted": {
+      "value": "#c6d7e2",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#456e89",
+      "type": "color"
+    },
+    "rule-strong": {
+      "value": "#a1b8c8",
+      "type": "color"
+    },
+    "accent": {
+      "value": "#e9d38f",
+      "type": "color"
+    },
+    "accent-wash": {
+      "value": "#0b4834",
+      "type": "color"
+    },
+    "on-accent": {
+      "value": "#01111c",
+      "type": "color"
+    },
+    "link": {
+      "value": "#eadaac",
+      "type": "color"
+    },
+    "focus": {
+      "value": "#f7c4ab",
+      "type": "color"
+    },
+    "success": {
+      "value": "#89c6ee",
+      "type": "color"
+    },
+    "warning": {
+      "value": "#e9d38f",
+      "type": "color"
+    },
+    "danger": {
+      "value": "#f4bca0",
+      "type": "color"
+    },
+    "info": {
+      "value": "#e0e9f0",
+      "type": "color"
+    },
+    "stroke": {
+      "value": "#e9d38f",
+      "type": "color"
+    },
+    "highlight": {
+      "value": "#883600",
+      "type": "color"
+    }
+  },
+  "harbour/paint-1": {
+    "surface": {
+      "value": "#d7f3ff",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#c7e6fc",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#bad5e9",
+      "type": "color"
+    }
+  },
+  "harbour/paint-2": {
+    "surface": {
+      "value": "#aae3ee",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#99d7e3",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#8dc6d0",
+      "type": "color"
+    }
+  },
+  "harbour/paint-3": {
+    "surface": {
+      "value": "#d2f8f1",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#c1ece4",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#b5dad4",
+      "type": "color"
+    }
+  },
+  "harbour/paint-4": {
+    "surface": {
+      "value": "#b8e4c8",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#a8d8b9",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#9cc7ab",
+      "type": "color"
+    }
+  },
+  "harbour/paint-5": {
+    "surface": {
+      "value": "#e6f4d8",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#d8e8c8",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#c9d7bb",
+      "type": "color"
+    }
+  },
+  "harbour/paint-6": {
+    "surface": {
+      "value": "#dfdaac",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#d2cd9c",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#c2bd90",
+      "type": "color"
+    }
+  },
+  "harbour/paint-7": {
+    "surface": {
+      "value": "#ffebd2",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#f3dec1",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#e1ceb5",
+      "type": "color"
+    }
+  },
+  "harbour/paint-8": {
+    "surface": {
+      "value": "#faccb6",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#efbfa6",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#dcb09a",
+      "type": "color"
+    }
+  },
+  "plum/base": {
+    "pigment": {
+      "brand": {
+        "body": {
+          "value": "#6f2563",
+          "type": "color",
+          "description": "Quinacridone violet (PV19)"
+        },
+        "light": {
+          "value": "#ef9fdd",
+          "type": "color"
+        },
+        "wash": {
+          "value": "#fde2f6",
+          "type": "color"
+        }
+      },
+      "partner": {
+        "body": {
+          "value": "#efba64",
+          "type": "color",
+          "description": "Gold ochre (PY42)"
+        },
+        "light": {
+          "value": "#fad59c",
+          "type": "color"
+        },
+        "wash": {
+          "value": "#fef0da",
+          "type": "color"
+        }
+      },
+      "complement": {
+        "body": {
+          "value": "#276018",
+          "type": "color",
+          "description": "Sap green (PG36)"
+        },
+        "light": {
+          "value": "#bfdab9",
+          "type": "color"
+        },
+        "wash": {
+          "value": "#ecf5ea",
+          "type": "color"
+        }
+      }
+    },
+    "neutral": {
+      "50": {
+        "value": "#faf5f9",
+        "type": "color"
+      },
+      "100": {
+        "value": "#efe4ec",
+        "type": "color"
+      },
+      "200": {
+        "value": "#e1cedc",
+        "type": "color"
+      },
+      "300": {
+        "value": "#c5abbe",
+        "type": "color"
+      },
+      "400": {
+        "value": "#a5839d",
+        "type": "color"
+      },
+      "500": {
+        "value": "#875b7d",
+        "type": "color"
+      },
+      "600": {
+        "value": "#6f2563",
+        "type": "color"
+      },
+      "700": {
+        "value": "#53234a",
+        "type": "color"
+      },
+      "800": {
+        "value": "#401939",
+        "type": "color"
+      },
+      "900": {
+        "value": "#2c1227",
+        "type": "color"
+      },
+      "950": {
+        "value": "#1a0816",
+        "type": "color"
+      }
+    },
+    "surface": {
+      "value": "#ffe5f9",
+      "type": "color"
+    },
+    "surface-raised": {
+      "value": "#fffdfe",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#f5d7ed",
+      "type": "color"
+    },
+    "canvas": {
+      "value": "#fffdfe",
+      "type": "color"
+    },
+    "on-canvas": {
+      "value": "#1a0816",
+      "type": "color"
+    },
+    "ink": {
+      "value": "#1a0816",
+      "type": "color"
+    },
+    "ink-muted": {
+      "value": "#5f4b5a",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#e2c8dc",
+      "type": "color"
+    },
+    "rule-strong": {
+      "value": "#86637e",
+      "type": "color"
+    },
+    "accent": {
+      "value": "#6f2563",
+      "type": "color"
+    },
+    "accent-wash": {
+      "value": "#fde2f6",
+      "type": "color"
+    },
+    "on-accent": {
+      "value": "#faf5f9",
+      "type": "color"
+    },
+    "link": {
+      "value": "#6f2563",
+      "type": "color"
+    },
+    "focus": {
+      "value": "#276018",
+      "type": "color"
+    },
+    "success": {
+      "value": "#6f2563",
+      "type": "color"
+    },
+    "warning": {
+      "value": "#714c00",
+      "type": "color"
+    },
+    "danger": {
+      "value": "#a02427",
+      "type": "color"
+    },
+    "info": {
+      "value": "#5f4b5a",
+      "type": "color"
+    },
+    "stroke": {
+      "value": "#efba64",
+      "type": "color"
+    },
+    "highlight": {
+      "value": "#efba64",
+      "type": "color"
+    },
+    "tape": {
+      "value": "#bfdab9",
+      "type": "color"
+    },
+    "on-tape": {
+      "value": "#15300f",
+      "type": "color"
+    }
+  },
+  "plum/paint-deep": {
+    "surface": {
+      "value": "#6f2563",
+      "type": "color"
+    },
+    "surface-raised": {
+      "value": "#591b4e",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#44133c",
+      "type": "color"
+    },
+    "ink": {
+      "value": "#faf5f9",
+      "type": "color"
+    },
+    "ink-muted": {
+      "value": "#e1cedc",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#89547e",
+      "type": "color"
+    },
+    "rule-strong": {
+      "value": "#c5abbe",
+      "type": "color"
+    },
+    "accent": {
+      "value": "#efba64",
+      "type": "color"
+    },
+    "accent-wash": {
+      "value": "#00474f",
+      "type": "color"
+    },
+    "on-accent": {
+      "value": "#1a0816",
+      "type": "color"
+    },
+    "link": {
+      "value": "#fad59c",
+      "type": "color"
+    },
+    "focus": {
+      "value": "#bfdab9",
+      "type": "color"
+    },
+    "success": {
+      "value": "#ef9fdd",
+      "type": "color"
+    },
+    "warning": {
+      "value": "#efba64",
+      "type": "color"
+    },
+    "danger": {
+      "value": "#fbb7b0",
+      "type": "color"
+    },
+    "info": {
+      "value": "#efe4ec",
+      "type": "color"
+    },
+    "stroke": {
+      "value": "#efba64",
+      "type": "color"
+    },
+    "highlight": {
+      "value": "#316026",
+      "type": "color"
+    }
+  },
+  "plum/paint-1": {
+    "surface": {
+      "value": "#ffe5f9",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#f5d7ed",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#e2c8dc",
+      "type": "color"
+    }
+  },
+  "plum/paint-2": {
+    "surface": {
+      "value": "#fac8d7",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#efb9ca",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#dcabba",
+      "type": "color"
+    }
+  },
+  "plum/paint-3": {
+    "surface": {
+      "value": "#ffe5e2",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#fed6d4",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#eac7c5",
+      "type": "color"
+    }
+  },
+  "plum/paint-4": {
+    "surface": {
+      "value": "#faccb7",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#f0bea8",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#dcaf9b",
+      "type": "color"
+    }
+  },
+  "plum/paint-5": {
+    "surface": {
+      "value": "#ffead2",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#f6ddc2",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#e3cdb5",
+      "type": "color"
+    }
+  },
+  "plum/paint-6": {
+    "surface": {
+      "value": "#e5d7ab",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#d9ca9a",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#c8ba8f",
+      "type": "color"
+    }
+  },
+  "plum/paint-7": {
+    "surface": {
+      "value": "#ecf2d4",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#dfe6c4",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#cfd5b7",
+      "type": "color"
+    }
+  },
+  "plum/paint-8": {
+    "surface": {
+      "value": "#c3e2bc",
+      "type": "color"
+    },
+    "surface-sunken": {
+      "value": "#b5d6ad",
+      "type": "color"
+    },
+    "rule": {
+      "value": "#a7c5a0",
+      "type": "color"
+    }
+  },
+  "$metadata": {
+    "tokenSetOrder": [
+      "core",
+      "studio/base",
+      "studio/paint-deep",
+      "studio/paint-1",
+      "studio/paint-2",
+      "studio/paint-3",
+      "studio/paint-4",
+      "studio/paint-5",
+      "studio/paint-6",
+      "studio/paint-7",
+      "studio/paint-8",
+      "harbour/base",
+      "harbour/paint-deep",
+      "harbour/paint-1",
+      "harbour/paint-2",
+      "harbour/paint-3",
+      "harbour/paint-4",
+      "harbour/paint-5",
+      "harbour/paint-6",
+      "harbour/paint-7",
+      "harbour/paint-8",
+      "plum/base",
+      "plum/paint-deep",
+      "plum/paint-1",
+      "plum/paint-2",
+      "plum/paint-3",
+      "plum/paint-4",
+      "plum/paint-5",
+      "plum/paint-6",
+      "plum/paint-7",
+      "plum/paint-8"
+    ]
+  }
+}

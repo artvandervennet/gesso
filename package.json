@@ -1,0 +1,35 @@
+{
+  "name": "@vandervennet/gesso",
+  "version": "1.0.0",
+  "description": "Gesso, Art Van der Vennet's paint-themed design system: tokens, themes and web components. Install it from git; every project picks its own theme.",
+  "author": "Art Van der Vennet <me@vandervennet.art>",
+  "homepage": "https://github.com/artvandervennet/gesso#readme",
+  "repository": { "type": "git", "url": "git+https://github.com/artvandervennet/gesso.git" },
+  "type": "module",
+  "main": "./components/index.js",
+  "exports": {
+    ".": "./components/index.js",
+    "./components/*": "./components/*",
+    "./fonts.css": "./css/fonts.css",
+    "./core.css": "./css/core.css",
+    "./base.css": "./css/base.css",
+    "./themes/*": "./css/themes/*",
+    "./tokens.css": "./css/tokens.css",
+    "./themes.json": "./tokens/themes.json",
+    "./tokens.json": "./tokens/tokens.json",
+    "./design-kit/*": "./design-kit/*",
+    "./package.json": "./package.json"
+  },
+  "bin": { "gesso-theme": "./bin/gesso-theme.mjs" },
+  "files": ["bin", "components", "css/core.css", "css/base.css", "css/fonts.css", "css/tokens.css", "css/themes", "scripts", "tokens", "design-kit"],
+  "sideEffects": ["./components/*.js", "*.css"],
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "node scripts/build-tokens.mjs && node scripts/check-contrast.mjs && node scripts/export-design-kit.mjs",
+    "tokens": "node scripts/build-tokens.mjs",
+    "check": "node scripts/check-contrast.mjs",
+    "kit": "node scripts/export-design-kit.mjs",
+    "docs": "python3 -m http.server 8080"
+  },
+  "keywords": ["design-system", "web-components", "design-tokens", "themes", "custom-elements"]
+}

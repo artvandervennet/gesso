@@ -1,0 +1,24 @@
+{
+  "$description": "Theme recipes. Each theme is three pigments: a brand colour, a partner that goes with it, and a complement from across the colour wheel. scripts/theme.mjs turns a recipe into pigments, neutrals, roles and eight section paints, and darkens or lightens anything that would fail contrast. Run `node scripts/build-tokens.mjs` after editing. The first theme is the default.",
+  "studio": {
+    "label": "Studio",
+    "description": "Phthalo green with yellow ochre and rose. The vandervennet.art portfolio.",
+    "brand":      { "name": "Phthalo green", "code": "PG7",   "oklch": [41, 0.105, 168] },
+    "partner":    { "name": "Yellow ochre",  "code": "PY43",  "oklch": [83, 0.13, 82] },
+    "complement": { "name": "Rose",          "code": "PR122", "oklch": [52, 0.155, 8] }
+  },
+  "harbour": {
+    "label": "Harbour",
+    "description": "Prussian blue with Naples yellow and cadmium orange. Cool and steady.",
+    "brand":      { "name": "Prussian blue",   "code": "PB27", "oklch": [40, 0.09, 238] },
+    "partner":    { "name": "Naples yellow",   "code": "PY35", "oklch": [87, 0.09, 92] },
+    "complement": { "name": "Cadmium orange",  "code": "PO20", "oklch": [60, 0.15, 48] }
+  },
+  "plum": {
+    "label": "Plum",
+    "description": "Quinacridone violet with gold and sap green. Rich and warm.",
+    "brand":      { "name": "Quinacridone violet", "code": "PV19", "oklch": [40, 0.13, 335] },
+    "partner":    { "name": "Gold ochre",          "code": "PY42", "oklch": [82, 0.12, 78] },
+    "complement": { "name": "Sap green",           "code": "PG36", "oklch": [55, 0.12, 140] }
+  }
+}
