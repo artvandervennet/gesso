@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "Gesso, Art Van der Vennet's paint-themed design system: tokens, themes and web components. Install it from git; every project picks its own theme.",
   "author": "Art Van der Vennet <me@vandervennet.art>",
+  "license": "MIT",
   "homepage": "https://github.com/artvandervennet/gesso#readme",
   "repository": {
     "type": "git",

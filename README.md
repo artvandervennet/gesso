@@ -292,6 +292,10 @@ Twelve text styles (`.text-wordmark` … `.text-signature`) are generated from t
 
 Paint puns live in the frame: token names, component names, the docs. Words people act on stay plain: sentence case, verbs that say what happens, the same verb through a whole flow, errors that say how to fix the problem.
 
+## Licence
+
+Gesso's code is MIT licensed (see `LICENSE`). The four typefaces in `design-kit/fonts/` keep their own SIL Open Font License; the licence texts are in that folder.
+
 ## Credits
 
 Inspired by the sites of Bart Delrue (ctrlaltdelrue.be) and Michiel Van de Velde (michielvandevelde.com), used with their permission. Gesso's git graph is a painted reinterpretation of the gitflow timeline on Michiel's site.

@@ -10,6 +10,7 @@ Dark schemes, and what an app needs.
 - `layout.css` gains patterns for apps: `.stack`, `.avatar`, `.dialog` (native dialog), `.menu` (popover API), `.tabs`, `.skeleton`, `.empty`.
 - New `components/vcard-paint.js`: repaints `<solid-vcard-card>` in Gesso.
 - The repository is public, so installing no longer needs a key.
+- MIT licence added (after the 1.2.0 tag; the code is the same).
 
 ## 1.1.0 — 2026-11-16
 
