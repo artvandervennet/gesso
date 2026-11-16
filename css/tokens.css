@@ -35,6 +35,7 @@
   --radius-round: 999px;
   --shadow-canvas-edge: 1px 1px 0 var(--rule), 2px 2px 0 var(--rule), 3px 3px 0 var(--rule), 4px 4px 0 var(--rule), 4px 6px 14px -4px oklch(20% 0.03 200 / 0.25);
   --shadow-tape: 0 1px 1.5px oklch(20% 0.03 200 / 0.18);
+  --shadow-card: 0 1px 1.5px oklch(20% 0.03 200 / 0.18), 0 10px 28px -18px oklch(20% 0.03 200 / 0.45); /* Every card: a canvas, a tile, a panel. No outline; the card stands off the page by this alone. */
   --shadow-lifted: 0 10px 30px -12px oklch(20% 0.03 200 / 0.35);
   --measure: 68ch; /* Max line length for prose */
   --canvas-max: 80rem; /* Max page width */

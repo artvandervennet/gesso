@@ -16,11 +16,14 @@
     "./fonts.css": "./css/fonts.css",
     "./core.css": "./css/core.css",
     "./base.css": "./css/base.css",
+    "./layout.css": "./css/layout.css",
     "./themes/*": "./css/themes/*",
     "./tokens.css": "./css/tokens.css",
     "./themes.json": "./tokens/themes.json",
     "./tokens.json": "./tokens/tokens.json",
     "./design-kit/*": "./design-kit/*",
+    "./scss": "./scss/_index.scss",
+    "./scss/*": "./scss/*",
     "./package.json": "./package.json"
   },
   "bin": {
@@ -31,12 +34,14 @@
     "components",
     "css/core.css",
     "css/base.css",
+    "css/layout.css",
     "css/fonts.css",
     "css/tokens.css",
     "css/themes",
     "scripts",
     "tokens",
-    "design-kit"
+    "design-kit",
+    "scss"
   ],
   "sideEffects": [
     "./components/*.js",

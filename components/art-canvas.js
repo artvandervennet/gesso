@@ -23,7 +23,7 @@ const css = sheet(`
     background: var(--surface-raised);
     border-radius: var(--radius-canvas);
     /* no outline: the canvas stands off the wall by its shadow alone */
-    box-shadow: var(--shadow-tape), 0 10px 28px -18px oklch(20% 0.03 200 / 0.45);
+    box-shadow: var(--shadow-card);
     position: relative;
     transition: scale var(--dur-dab) var(--ease-brush), box-shadow var(--dur-dab) var(--ease-brush);
   }

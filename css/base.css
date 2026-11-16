@@ -1,7 +1,7 @@
 /* Gesso base layer — the underpainting.
    Plain HTML should look finished with only tokens.css + base.css loaded. */
 
-@layer gesso.reset, gesso.base, gesso.utilities;
+@layer gesso.reset, gesso.base, gesso.layout, gesso.utilities;
 
 
 

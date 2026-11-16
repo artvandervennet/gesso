@@ -15,6 +15,10 @@ A new page anatomy, taken from the portfolio. This is the standard for every pro
 - `art-canvas` has no outline: it stands off the page by a soft shadow. New `bare` attribute for a text-only canvas with no painted study.
 - `art-drip` no longer squeezes on a narrow edge: `count` is the number of drips on a 1200px edge, and a narrower one gets fewer drips at their normal width.
 - `art-header` folds on small screens: under 48rem the links sit behind a labelled Menu button whose three lines turn into a cross.
+- New `layout.css`: the page anatomy as classes (`.band`, `.inner`, `.hero`, `.section` with a pinned title column, `.card`, `.card-grid`, `.page-footer`), in the cascade layer `gesso.layout`. The docs page uses it and nothing else.
+- New `scss/`: tokens as functions that fail the build on a wrong name, breakpoints and layers as mixins.
+- New token `--shadow-card`: the one card look, with no outline. `art-canvas` uses it.
+- The docs page loads the self-hosted fonts, not Google's.
 - `art-railnav` stays, for navigation inside a page.
 - The docs page follows the new anatomy.
 

@@ -5,6 +5,8 @@ The design system behind **vandervennet.art**. Gesso is the primer painters brus
 - **Tokens**: shared tokens in `tokens/tokens.json` and theme recipes in `tokens/themes.json`, built to CSS custom properties. A theme is three pigments (brand, partner, complement); everything else is generated and contrast-checked. Ships with three themes: Studio (phthalo green, the portfolio), Harbour and Plum.
 - **Paints**: every section of a page has its own background. Paints `1`…`8` walk the colour wheel from brand to partner to complement; `deep` is the brand itself, used for the header, the hero, the last section and the footer. Only the hero and the sticky header drip.
 - **Base**: `css/base.css` styles plain HTML: type, links, focus, forms, code, tables.
+- **Layout**: `css/layout.css` is the page anatomy as classes: bands, the hero, two-column sections, the one card, the footer. A new site that loads it has the same structure as the portfolio.
+- **Sass**: `scss/` has the tokens as checked functions and the breakpoints as mixins.
 - **Components**: twelve framework-free custom elements, prefixed `art-`.
 - **Docs**: `index.html` is a living reference that uses the system itself.
 
@@ -30,13 +32,14 @@ In CI, add a read-only deploy key for this repo, or a token with read access, to
 
 ### 2. Pick a theme
 
-Use a built-in theme (`studio`, `harbour` or `plum`), or make the project its own (see below). Then load the fonts, the core, the base styles and **one** theme, in that order:
+Use a built-in theme (`studio`, `harbour` or `plum`), or make the project its own (see below). Then load the fonts, the core, the base styles, the layout and **one** theme, in that order:
 
 ```css
 /* src/styles/main.css */
 @import "@vandervennet/gesso/fonts.css";      /* self-hosted fonts, no requests to Google */
 @import "@vandervennet/gesso/core.css";       /* spacing, type, motion, paints, text styles */
 @import "@vandervennet/gesso/base.css";       /* styles for plain HTML */
+@import "@vandervennet/gesso/layout.css";     /* the page anatomy: bands, sections, cards */
 @import "@vandervennet/gesso/themes/studio.css"; /* this project's theme */
 ```
 
@@ -51,7 +54,7 @@ import '@vandervennet/gesso/components/art-gitflow.js';      // or just the ones
 
 ### 4. Paint the page
 
-Every page follows the same anatomy:
+Every page follows the same anatomy, and `layout.css` has the classes for it:
 
 ```html
 <body>
@@ -66,24 +69,51 @@ Every page follows the same anatomy:
 
   <main id="main" tabindex="-1">
     <!-- 2. The hero, in the deep paint. The only band with a drip of its own. -->
-    <div id="top" data-paint="deep" style="position: relative">
-      <h1>…</h1>
-      <art-drip pigment="--surface" stagger flush style="position: absolute; inset: calc(100% - 1px) 0 auto"></art-drip>
+    <div class="band hero" data-paint="deep" id="top">
+      <div class="inner">
+        <h1>…</h1>
+        <p class="lead">…</p>
+        <div class="actions">…</div>
+      </div>
+      <art-drip class="band-drip" pigment="--surface" stagger flush></art-drip>
     </div>
 
-    <!-- 3. Sections in paints 1, 2, 3… in order, with straight edges. The last one is deep again. -->
-    <section id="about" data-paint="1">…</section>
-    <section id="work" data-paint="2">
-      <!-- A timeline is a git graph, newest first. -->
-      <art-gitflow newest-first><ol>…</ol></art-gitflow>
+    <!-- 3. Sections in paints 1, 2, 3… in order. Title on the left, content on the right. -->
+    <section class="band section" data-paint="1" id="about" aria-labelledby="about-h">
+      <div class="inner">
+        <div class="section-head">
+          <h2 id="about-h" class="section-title">…</h2>
+          <p class="intro">…</p>
+        </div>
+        <div class="section-body">…</div>
+      </div>
     </section>
-    <section id="contact" data-paint="deep">…</section>
+    <section class="band section" data-paint="2" id="work" aria-labelledby="work-h">
+      <!-- A timeline is a git graph, newest first. -->
+      … <art-gitflow newest-first><ol>…</ol></art-gitflow> …
+    </section>
+    <!-- The last section is deep again. -->
+    <section class="band section" data-paint="deep" id="contact" aria-labelledby="contact-h">…</section>
   </main>
 
   <!-- 4. The footer, after main, in the deep paint. Nothing comes after it, and it doesn't drip. -->
-  <footer data-paint="deep">… <art-signature year="2026">Art Van der Vennet</art-signature></footer>
+  <footer class="band page-footer" data-paint="deep">
+    <div class="inner"><art-signature year="2026">Art Van der Vennet</art-signature></div>
+  </footer>
 </body>
 ```
+
+| Class | What it is |
+|---|---|
+| `.band` | A painted band of the page. Put `data-paint` on it. |
+| `.inner` | The content of a band: centred, at most 80rem wide, with the page gutter. |
+| `.band-drip` | An `<art-drip>` on the bottom edge of a band. Only the hero has one. |
+| `.hero`, `.lead`, `.actions` | The opening band: a large title, one sentence, a row of buttons. |
+| `.section` | A band with a title column and a content column from 60rem up: `.section-head` (`.section-title`, optional `.intro`) and `.section-body`. The head stays in view while its section scrolls. |
+| `.prose` | Running text meant to be read, a step larger than body text. |
+| `.card`, `.card-grid` | The one card (no outline, `--shadow-card`), and a grid of them one or two wide. With an odd number the first card takes the whole first row. |
+| `.field-row`, `.form-message` | A field with its button beside it, and what the form says back. |
+| `.page-footer` | The footer: same paint as the last section, no rule, the signature bottom right. |
 
 The rules behind it:
 
@@ -96,6 +126,30 @@ The rules behind it:
 - **Drips stay in their section.** They hang straight off the header, with no band of paint under it, and never into the next section: as it comes up they get shorter, all together, and are gone when it reaches the header.
 - **The footer is outside `<main>`** and is the last thing on the page.
 - **Timelines read newest first**, like `git log`.
+- **Sections are two columns on wide screens**: the title and intro on the left, pinned while the section scrolls, the content on the right.
+- **There is one card.** No outline, square corners, a soft shadow. Every card on a page looks the same, and a grid of them never ends in a hole.
+- **Nothing changes place on hover.** Buttons and links respond with paint. A card may grow slightly, in place.
+- **A section link lands its section right under the header**, with the title clear of the drips.
+
+### With Sass
+
+```scss
+@use '@vandervennet/gesso/scss' as *;
+
+@include layers(components);        // Gesso's cascade layers first, then site.components
+
+@include layer(components) {
+  .price {
+    padding: space(4) space(6);     // tokens as functions; space(5) fails the build
+    color: role(ink-muted);
+    @include card;
+    @include from(wide) { padding: space(8); }
+  }
+}
+```
+
+Functions: `token()`, `space()`, `step()`, `role()`, `paint()`, `pigment()`, `font()`, `weight()`, `leading()`, `radius()`, `shadow()`, `dur()`, `ease()`, `rem()`, `fluid()`, `mix()`. Mixins: `from()`, `until()`, `layers()`, `layer()`, `motion-ok`, `not-upgraded`, `card`, `lead-card`. Breakpoints: `small` 40rem, `compact` 48rem (the header folds), `wide` 60rem (sections go two columns), `roomy` 72rem.
+
 
 ### A project's own theme
 
@@ -160,7 +214,7 @@ The built CSS is committed, so projects never need to build Gesso themselves.
 | Roles | `--surface`, `--surface-raised`, `--surface-sunken`, `--canvas`, `--on-canvas`, `--tape`, `--on-tape`, `--ink`, `--ink-muted`, `--rule`, `--rule-strong`, `--accent`, `--on-accent`, `--accent-wash`, `--link`, `--focus`, `--stroke`, `--highlight`, `--success`, `--warning`, `--danger`, `--info` | Switch with the theme. Components only use roles. |
 | Type | `--font-display` (Young Serif), `--font-body` (Atkinson Hyperlegible Next), `--font-mono` (Atkinson Hyperlegible Mono), `--step--1` … `--step-5`, `--leading-*`, `--weight-*` | Fluid major-third scale from 18px. |
 | Space | `--space-1` … `--space-32` | 4px grid. |
-| Shape | `--radius-canvas`, `--radius-chip`, `--radius-dab`, `--radius-round`, `--shadow-canvas-edge`, `--shadow-tape`, `--shadow-lifted` | Shapes follow materials. |
+| Shape | `--radius-canvas`, `--radius-chip`, `--radius-dab`, `--radius-round`, `--shadow-card`, `--shadow-tape`, `--shadow-lifted`, `--shadow-canvas-edge` | Shapes follow materials. |
 | Layout | `--measure`, `--canvas-max`, `--gutter` | |
 | Motion | `--dur-dab`, `--dur-stroke`, `--dur-drip`, `--ease-brush`, `--ease-drip`, `--ease-settle` | |
 
@@ -169,7 +223,7 @@ Themes: give each website its theme with `<html data-theme="harbour">`; without 
 ### Changing a token
 
 ```sh
-npm run tokens   # tokens.json + themes.json → css/core.css, css/themes/*.css, css/tokens.css
+npm run tokens   # tokens.json + themes.json → css/core.css, css/themes/*.css, css/tokens.css, scss/_keys.scss
 npm run check    # contrast check for every pairing, paint and theme; exits 1 below WCAG AA
 ```
 

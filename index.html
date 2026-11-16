@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gesso — the design system of vandervennet.art</title>
   <meta name="description" content="Gesso is Art Van der Vennet's design system: paint-named tokens, web components and the rules behind vandervennet.art.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:ital,wght@0,400..800;1,400&family=Kristi&family=Young+Serif&display=swap">
+  <link rel="stylesheet" href="css/fonts.css">
   <script>try { const t = localStorage.getItem('gesso-theme'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/docs.css">
   <script type="module" src="components/index.js"></script>
 </head>
@@ -31,7 +30,7 @@
     <a href="#install">Install</a>
   </art-header>
 
-  <div class="paint-band hero" data-paint="deep" id="top">
+  <div class="band hero" data-paint="deep" id="top">
     <div class="inner">
       <h1><art-stroke pigment="stroke" seed="gesso" animate>Gesso</art-stroke></h1>
       <p class="lead">The primer under everything on vandervennet.art. Tokens, web components and the rules for using them.</p>
@@ -40,16 +39,19 @@
         <art-button size="l" variant="secondary"><a href="#components">Browse components</a></art-button>
       </div>
     </div>
-    <art-drip class="section-drip" pigment="--surface" seed="hero" count="9" stagger flush></art-drip>
+    <art-drip class="band-drip" pigment="--surface" seed="hero" count="9" stagger flush></art-drip>
   </div>
 
   <main id="main" tabindex="-1">
 
       <!-- ───────────────── Principles ───────────────── -->
-      <section id="principles" aria-labelledby="principles-h" data-paint="1">
+      <section id="principles" aria-labelledby="principles-h" class="band section" data-paint="1">
         <div class="inner">
-        <h2 id="principles-h">Principles</h2>
+        <div class="section-head">
+        <h2 id="principles-h" class="section-title">Principles</h2>
         <p class="intro">Gesso is the white primer painters brush onto a canvas before any colour goes on. This system does the same job for Art Van der Vennet's portfolio, side projects, slides and CV: a reliable ground, then paint on top.</p>
+        </div>
+        <div class="section-body">
         <ol class="principles">
           <li><strong>Prime before you paint</strong>Every page works as plain HTML first. Components wrap real buttons, links and lists, so nothing breaks when JavaScript is slow or off.</li>
           <li><strong>One bold stroke per view</strong>Choose one thing to be loud: a painted heading, a drip, a splatter. Everything around it stays quiet and disciplined.</li>
@@ -58,13 +60,17 @@
           <li><strong>Leave visible brushwork</strong>Strokes, tape and dabs are slightly irregular on purpose. The irregularity is seeded, so the same stroke paints the same way on every render.</li>
         </ol>
         </div>
+        </div>
       </section>
 
       <!-- ───────────────── Pigments ───────────────── -->
-      <section id="pigments" aria-labelledby="pigments-h" data-paint="2">
+      <section id="pigments" aria-labelledby="pigments-h" class="band section" data-paint="2">
         <div class="inner">
-        <h2 id="pigments-h">Themes and pigments</h2>
+        <div class="section-head">
+        <h2 id="pigments-h" class="section-title">Themes and pigments</h2>
         <p class="intro">Every website picks a theme. A theme is three pigments: a brand colour, a partner that goes with it, and a complement from across the colour wheel. Everything else is generated from those three, so each theme fits together on its own. Try them here.</p>
+        </div>
+        <div class="section-body">
         <art-theme remember label="Theme for this page"></art-theme>
 
         <h3>The three pigments</h3>
@@ -132,13 +138,17 @@
 }</code></pre>
         <p>Then give each website its theme: <code>&lt;html data-theme="harbour"&gt;</code>. Without one, a page uses the first theme in the file.</p>
         </div>
+        </div>
       </section>
 
       <!-- ───────────────── Type ───────────────── -->
-      <section id="type" aria-labelledby="type-h" data-paint="3">
+      <section id="type" aria-labelledby="type-h" class="band section" data-paint="3">
         <div class="inner">
-        <h2 id="type-h">Type</h2>
+        <div class="section-head">
+        <h2 id="type-h" class="section-title">Type</h2>
         <p class="intro">A soft, heavy serif with the weight of a loaded brush, set beside a sans drawn for legibility. Accessibility is part of the brand, so the reading face is the one built for it.</p>
+        </div>
+        <div class="section-body">
         <p class="specimen" aria-hidden="true">Primed, stretched and ready</p>
         <div class="fonts">
           <div>
@@ -235,13 +245,17 @@
           </div>
         </div>
         </div>
+        </div>
       </section>
 
       <!-- ───────────────── Space & shape ───────────────── -->
-      <section id="shape" aria-labelledby="shape-h" data-paint="4">
+      <section id="shape" aria-labelledby="shape-h" class="band section" data-paint="4">
         <div class="inner">
-        <h2 id="shape-h">Space and shape</h2>
+        <div class="section-head">
+        <h2 id="shape-h" class="section-title">Space and shape</h2>
         <p class="intro">Spacing runs on a 4px grid, like brush sizes: the bigger the number, the broader the brush. Shapes follow the material they describe.</p>
+        </div>
+        <div class="section-body">
 
         <h3>Spacing</h3>
         <div class="spaces">
@@ -259,20 +273,24 @@
 
         <h3>Radius and depth</h3>
         <div class="shapes">
-          <div><div class="shape" style="border-radius:var(--radius-canvas);box-shadow:0 0 0 1px var(--rule),var(--shadow-canvas-edge)"></div><code>--radius-canvas</code><p class="muted">Stretched canvas: nearly square, with a painted edge as its shadow.</p></div>
+          <div><div class="shape" style="border-radius:var(--radius-canvas);box-shadow:var(--shadow-card)"></div><code>--radius-canvas</code><p class="muted">Stretched canvas: nearly square, with a painted edge as its shadow.</p></div>
           <div><div class="shape" style="border-radius:var(--radius-chip);box-shadow:0 0 0 1px var(--rule),var(--shadow-tape)"></div><code>--radius-chip</code><p class="muted">Paint chips and inputs.</p></div>
           <div><div class="shape dab" style="border-radius:var(--radius-dab)"></div><code>--radius-dab</code><p class="muted">Buttons. A dab of paint is never a perfect pill.</p></div>
           <div><div class="shape" style="border-radius:var(--radius-round);box-shadow:0 0 0 1px var(--rule),var(--shadow-lifted)"></div><code>--radius-round</code><p class="muted">Paint wells and toggles only.</p></div>
         </div>
 
         </div>
+        </div>
       </section>
 
       <!-- ───────────────── Animation ───────────────── -->
-      <section id="motion" aria-labelledby="motion-h" data-paint="5">
+      <section id="motion" aria-labelledby="motion-h" class="band section" data-paint="5">
         <div class="inner">
-        <h2 id="motion-h">Animation</h2>
+        <div class="section-head">
+        <h2 id="motion-h" class="section-title">Animation</h2>
         <p class="intro">Motion in Gesso is wet paint: drips that run, colour that soaks in, a dab where you press. It's decoration and feedback only. Content is on the page from the first frame and never waits for an animation to finish.</p>
+        </div>
+        <div class="section-body">
 
         <div class="dodont">
           <div style="--c:var(--success)">
@@ -379,13 +397,17 @@
         <h3>For designers</h3>
         <p>In Figma prototypes, use Smart animate with these durations and name the token in the annotation (<code>--dur-wash</code>, <code>--ease-settle</code>). Don't prototype content that fades in: in the build, it won't.</p>
         </div>
+        </div>
       </section>
 
       <!-- ───────────────── Components ───────────────── -->
-      <section id="components" aria-labelledby="components-h" data-paint="6">
+      <section id="components" aria-labelledby="components-h" class="band section" data-paint="6">
         <div class="inner">
-        <h2 id="components-h">Components</h2>
+        <div class="section-head">
+        <h2 id="components-h" class="section-title">Components</h2>
         <p class="intro">Twelve custom elements with no framework and no build step. They read the tokens, enhance native HTML where they can, and keep all decoration hidden from assistive technology.</p>
+        </div>
+        <div class="section-body">
 
         <h3 id="c-stroke">art-stroke</h3>
         <p>A hand-painted brushstroke under, behind or through inline text. Use it once per view, on the words that matter most.</p>
@@ -437,7 +459,7 @@
         <h3 id="c-canvas">art-canvas</h3>
         <p>A stretched canvas for a project, post or talk. Give it an image in <code>slot="media"</code>, or let it paint a study of its own. The first link inside becomes the target for the whole canvas.</p>
         <div class="demo" data-code>
-          <div class="cards">
+          <div class="card-grid">
             <art-canvas pigment="brand" seed="pod">
               <h3><a href="#c-canvas">Solid notes</a></h3>
               <p>A notes app that keeps everything in your own Solid pod.</p>
@@ -562,13 +584,17 @@
         </details>
         <p class="a11y">Screen readers hear "Signed: Art Van der Vennet, 2026". The painted version is hidden from them.</p>
         </div>
+        </div>
       </section>
 
       <!-- ───────────────── Gitflow ───────────────── -->
-      <section id="gitflow" aria-labelledby="gitflow-h" data-paint="7">
+      <section id="gitflow" aria-labelledby="gitflow-h" class="band section" data-paint="7">
         <div class="inner">
-        <h2 id="gitflow-h">Gitflow</h2>
+        <div class="section-head">
+        <h2 id="gitflow-h" class="section-title">Gitflow</h2>
         <p class="intro"><code>&lt;art-gitflow&gt;</code> turns an ordinary list into a painted git graph: branches fork, run beside each other and merge back as you scroll. Write the list newest first, like <code>git log</code>, and add <code>newest-first</code>. On vandervennet.art it tells your career. Here it tells how Gesso was made.</p>
+        </div>
+        <div class="section-body">
 
         <div class="demo stack" data-code>
           <art-gitflow seed="gesso" newest-first>
@@ -634,13 +660,17 @@
         </details>
         <p class="a11y">It stays an ordered list for screen readers. The graph is aria-hidden; branch names are inserted as visible text. With reduced motion the whole graph is painted at once.</p>
         </div>
+        </div>
       </section>
 
       <!-- ───────────────── Voice ───────────────── -->
-      <section id="voice" aria-labelledby="voice-h" data-paint="8">
+      <section id="voice" aria-labelledby="voice-h" class="band section" data-paint="8">
         <div class="inner">
-        <h2 id="voice-h">Voice</h2>
+        <div class="section-head">
+        <h2 id="voice-h" class="section-title">Voice</h2>
         <p class="intro">The paint puns stay in the frame: token names, component names, this page. The words people act on stay plain.</p>
+        </div>
+        <div class="section-body">
         <div class="dodont">
           <div style="--c:var(--success)">
             <h4>Do</h4>
@@ -662,13 +692,17 @@
           </div>
         </div>
         </div>
+        </div>
       </section>
 
       <!-- ───────────────── For designers ───────────────── -->
-      <section id="designers" aria-labelledby="designers-h" data-paint="1">
+      <section id="designers" aria-labelledby="designers-h" class="band section" data-paint="1">
         <div class="inner">
-        <h2 id="designers-h">For designers</h2>
+        <div class="section-head">
+        <h2 id="designers-h" class="section-title">For designers</h2>
         <p class="intro">Everything on this page also comes as a design kit: the same tokens in hex for design tools, the fonts, and the brushwork as SVG. Design with it and every frame maps straight onto code.</p>
+        </div>
+        <div class="section-body">
 
         <h3>What's in the kit</h3>
         <div style="overflow-x:auto">
@@ -724,7 +758,11 @@
           <div style="--c:var(--pigment-brand)">
             <h4>Every frame</h4>
             <ul>
-              <li>Every section is painted and ends in a drip. Header and last section deep; between them paints 1 to 8 in order, so no two sections share a colour.</li>
+              <li>Every section is painted. Header, hero, last section and footer are deep; between them paints 1 to 8 in order, so no two sections share a colour.</li>
+              <li>Drips are rare: the hero ends in drips, the sticky header carries them down the page, and nothing else drips.</li>
+              <li>From 960px a section is two columns: title and intro on the left, content on the right.</li>
+              <li>One card everywhere: white, square corners, a soft shadow, no outline.</li>
+              <li>Nothing changes place on hover.</li>
               <li>Beyond the drips, one loud thing per screen: a painted heading or a splatter.</li>
               <li>Every piece of text uses one of the twelve text styles.</li>
               <li>Animate decoration and responses only. Content never fades or slides in, and never waits.</li>
@@ -741,7 +779,7 @@
               <li>A splatter never sits behind text.</li>
               <li>Strokes and drips are decoration: the text above them must read without them.</li>
               <li>Give a drip a thin edge in its own paint, a shade darker, so it reads on the next section.</li>
-              <li>Drips hang from the bottom edge of a section, in that section's paint.</li>
+              <li>Drips hang straight from the bottom edge of the hero or the header, in that band's paint, and never reach into the section after next. Narrow screens get fewer drips, never squeezed ones.</li>
             </ul>
           </div>
         </div>
@@ -749,13 +787,17 @@
         <h3>Handing off</h3>
         <p>Name layers after components and their attributes (<code>art-canvas · pigment=complement · wet</code>), and colours after variables, never hex. Mark motion with the motion tokens instead of drawing it. For a gitflow, list each entry's branch, colour and whether it's still open; the code paints the graph.</p>
         </div>
+        </div>
       </section>
 
       <!-- ───────────────── Install ───────────────── -->
-      <section id="install" aria-labelledby="install-h" data-paint="deep">
+      <section id="install" aria-labelledby="install-h" class="band section" data-paint="deep">
         <div class="inner">
-        <h2 id="install-h">Install</h2>
+        <div class="section-head">
+        <h2 id="install-h" class="section-title">Install</h2>
         <p class="intro">Gesso installs straight from git, and every project picks its own theme. The built CSS is committed, so projects never build Gesso themselves.</p>
+        </div>
+        <div class="section-body">
         <h3>Add it to a project</h3>
 <pre><code>npm install github:artvandervennet/gesso#v1.1.0</code></pre>
         <p>The tag pins a release, so a project only changes when you bump it.</p>
@@ -763,7 +805,80 @@
 <pre><code>@import "@vandervennet/gesso/fonts.css";         /* self-hosted fonts */
 @import "@vandervennet/gesso/core.css";          /* spacing, type, motion, paints */
 @import "@vandervennet/gesso/base.css";          /* plain HTML */
+@import "@vandervennet/gesso/layout.css";        /* the page anatomy: bands, sections, cards */
 @import "@vandervennet/gesso/themes/harbour.css"; /* this project's theme */</code></pre>
+        <h3 id="layout">Lay out the page</h3>
+        <p><code>layout.css</code> is the page anatomy as classes. With it a new site has the same structure as this one without writing layout of its own: this page uses nothing else.</p>
+<pre><code>&lt;art-header label="Sections" data-paint="deep"&gt;…&lt;/art-header&gt;
+
+&lt;main id="main" tabindex="-1"&gt;
+  &lt;div class="band hero" data-paint="deep" id="top"&gt;
+    &lt;div class="inner"&gt;
+      &lt;h1&gt;…&lt;/h1&gt;
+      &lt;p class="lead"&gt;…&lt;/p&gt;
+      &lt;div class="actions"&gt;…&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;art-drip class="band-drip" pigment="--surface" stagger flush&gt;&lt;/art-drip&gt;
+  &lt;/div&gt;
+
+  &lt;section class="band section" data-paint="1" id="about" aria-labelledby="about-h"&gt;
+    &lt;div class="inner"&gt;
+      &lt;div class="section-head"&gt;
+        &lt;h2 id="about-h" class="section-title"&gt;…&lt;/h2&gt;
+        &lt;p class="intro"&gt;…&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="section-body"&gt;…&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+
+&lt;footer class="band page-footer" data-paint="deep"&gt;
+  &lt;div class="inner"&gt;&lt;art-signature year="2026"&gt;…&lt;/art-signature&gt;&lt;/div&gt;
+&lt;/footer&gt;</code></pre>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th scope="col">Class</th><th scope="col">What it is</th></tr></thead>
+            <tbody>
+              <tr><td><code>.band</code></td><td>A painted band of the page. Put <code>data-paint</code> on it.</td></tr>
+              <tr><td><code>.inner</code></td><td>The content of a band: centred, at most 80rem wide, with the page gutter.</td></tr>
+              <tr><td><code>.band-drip</code></td><td>An <code>&lt;art-drip&gt;</code> on the bottom edge of a band. Only the hero has one.</td></tr>
+              <tr><td><code>.hero</code>, <code>.lead</code>, <code>.actions</code></td><td>The opening band: a large title, one sentence that says what this is, and a row of buttons.</td></tr>
+              <tr><td><code>.section</code></td><td>A band with a title column and a content column from 60rem up. Inside it: <code>.section-head</code> (with <code>.section-title</code> and an optional <code>.intro</code>) and <code>.section-body</code>. The head stays in view while its section scrolls.</td></tr>
+              <tr><td><code>.prose</code></td><td>Running text meant to be read, a step larger than body text.</td></tr>
+              <tr><td><code>.card</code></td><td>The one card: a raised surface with no outline, on <code>--shadow-card</code>. <code>&lt;art-canvas&gt;</code> looks the same.</td></tr>
+              <tr><td><code>.card-grid</code></td><td>Cards one or two wide. With an odd number, the first card takes the whole first row, so the last row never has a hole.</td></tr>
+              <tr><td><code>.field-row</code>, <code>.form-message</code></td><td>A field with its button beside it, and what the form says back.</td></tr>
+              <tr><td><code>.page-footer</code></td><td>The footer after <code>&lt;main&gt;</code>: same deep paint as the last section, no rule, the signature bottom right.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-block-start:var(--space-4)">Everything in it sits in the cascade layer <code>gesso.layout</code>, so a project's own styles override it without extra specificity.</p>
+        <h3>Write styles with Sass</h3>
+        <p>Projects that use Sass get the tokens as functions and the breakpoints as mixins. A token that doesn't exist fails the build: <code>space(5)</code> is an error, because the 4px grid has no step 5.</p>
+<pre><code>@use '@vandervennet/gesso/scss' as *;
+
+@include layers(components);     // Gesso's layers first, then site.components
+
+@include layer(components) {
+  .price {
+    padding: space(4) space(6);
+    font-size: step(1);
+    color: role(ink-muted);
+    @include card;
+    @include from(wide) { padding: space(8); }
+  }
+}</code></pre>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th scope="col">Breakpoint</th><th scope="col">Width</th><th scope="col">What changes</th></tr></thead>
+            <tbody>
+              <tr><td><code>small</code></td><td>40rem</td><td>Phones end here.</td></tr>
+              <tr><td><code>compact</code></td><td>48rem</td><td>Below this, the header folds its links into a menu.</td></tr>
+              <tr><td><code>wide</code></td><td>60rem</td><td>Sections become two columns.</td></tr>
+              <tr><td><code>roomy</code></td><td>72rem</td><td>Room for something beside the content column.</td></tr>
+            </tbody>
+          </table>
+        </div>
         <h3>Load the components</h3>
 <pre><code>import '@vandervennet/gesso';                            // every component
 import '@vandervennet/gesso/components/art-gitflow.js'; // or one at a time</code></pre>
@@ -788,11 +903,12 @@ git push --follow-tags</code></pre>
 └── index.html                this page</code></pre>
 
         </div>
+        </div>
       </section>
 
   </main>
 
-  <footer class="paint-band site-footer" data-paint="deep">
+  <footer class="band page-footer" data-paint="deep">
     <div class="inner">
       <div class="footer-notes">
         <span>Gesso 1.1, for vandervennet.art</span>

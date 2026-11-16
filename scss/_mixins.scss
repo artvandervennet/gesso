@@ -1,0 +1,69 @@
+@use 'sass:map';
+@use 'sass:list';
+@use 'functions' as *;
+
+// Gesso's breakpoints. They can't be custom properties (media queries don't read those),
+// so they live here. layout.css and the components use the same values.
+$breakpoints: (
+  small: 40rem,    // phones end here
+  compact: 48rem,  // below this, <art-header> folds its links into a menu
+  wide: 60rem,     // sections become two columns
+  roomy: 72rem,    // room for something beside the content column
+);
+
+@function breakpoint($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error 'No breakpoint named #{$name}. Use one of #{map.keys($breakpoints)}.';
+  }
+  @return map.get($breakpoints, $name);
+}
+
+/// From a breakpoint up.
+@mixin from($name) {
+  @media (width >= #{breakpoint($name)}) { @content; }
+}
+
+/// Below a breakpoint.
+@mixin until($name) {
+  @media (width < #{breakpoint($name)}) { @content; }
+}
+
+/// Declare the cascade layers of a site, once, before any other rule: Gesso's own first, then
+/// the site's, in the order given. Later layers win, so site styles override Gesso's by layer
+/// order and never need extra specificity.
+///   @include layers(components);   →   @layer gesso.reset, …, gesso.utilities, site.components;
+@mixin layers($names...) {
+  $all: ('gesso.reset', 'gesso.base', 'gesso.layout', 'gesso.utilities');
+  @each $name in $names { $all: list.append($all, 'site.#{$name}', comma); }
+  @layer #{$all};
+}
+
+/// Put rules in one of the site's cascade layers.
+@mixin layer($name) {
+  @layer site.#{$name} { @content; }
+}
+
+/// Only when the visitor hasn't asked for reduced motion.
+@mixin motion-ok {
+  @media (prefers-reduced-motion: no-preference) { @content; }
+}
+
+/// Styles for a custom element before its script has loaded (or when JavaScript is off).
+@mixin not-upgraded {
+  &:not(:defined) { @content; }
+}
+
+/// The one card: a raised surface with no outline, standing off the page by a soft shadow.
+/// <art-canvas> and the .card class look like this; use the mixin for anything else that is a card.
+@mixin card {
+  background: role(surface-raised);
+  border-radius: radius(canvas);
+  box-shadow: shadow(card);
+}
+
+/// For a grid of cards that is two wide. An odd number of cards would leave a hole at the end
+/// of the last row, so the first card takes the whole first row instead and the rest pair up.
+/// The .card-grid class already does this.
+@mixin lead-card {
+  > :first-child:nth-last-child(odd) { grid-column: 1 / -1; }
+}

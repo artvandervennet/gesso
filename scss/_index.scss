@@ -1,0 +1,4 @@
+// Gesso for Sass.
+//   @use '@vandervennet/gesso/scss' as *;
+@forward 'functions';
+@forward 'mixins';

@@ -31,12 +31,19 @@ Read **Gesso-design-guide.pdf** first. It's the full system: principles, themes 
 
 - Beyond the drips, one loud thing per screen: a painted heading or a splatter.
 - Each website has one theme: three pigments, a brand, a partner that goes with it and a complement. Use the complement sparingly.
-- Every section has its own background and ends in a drip of its own paint. The header and last section are deep; between them paints 1 to 8 in order.
+- Every section has its own background. The header, the hero, the last section and the footer are deep; between them paints 1 to 8 in order.
+- Drips are rare. Only the hero ends in drips, and the sticky header carries them down the page. Sections and the footer have straight edges.
+- The header takes the paint of the section above the one being read.
+- From 960px a section is two columns: title and intro on the left, content on the right.
+- There is one card: white, square corners, a soft shadow, no outline. In a two-wide grid with an odd number of cards, the first card spans both columns.
 - Text on the deep paint is gesso white. Text on paints 1 to 8, on the partner and on tape is dark.
 - Body text at least 17px, nothing under 14px, touch targets at least 44px.
 - Frames at 360px and 1280px; columns 4 and 12; margins and gaps 20px and 48px.
-- Animate decoration and responses only: drips running, the nav's rail filling in, a dab on press, colours washing on a theme change. Content never fades or slides in, and never waits.
-- Every page footer carries the signature, bottom right, like the corner of a painting.
+- Animate decoration and responses only: drips running, the header repainting as you scroll, a dab on press, colours washing on a theme change. Content never fades or slides in, and never waits.
+- Nothing changes place on hover. Buttons and links respond with paint; a card may grow slightly, in place.
+- Every page footer carries the signature, bottom right, like the corner of a painting. The footer has no rule above it: it reads as one block with the last section.
+- Timelines are git graphs, newest first.
+- On phones the header folds its links into a labelled Menu button.
 - Sentence case everywhere. Puns stay in names, never on buttons.
 
 The colour values here are generated from the code's source of truth. If they ever disagree with the guide, ask Art to re-run `node scripts/export-design-kit.mjs`.

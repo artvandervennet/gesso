@@ -1,0 +1,198 @@
+/* Gesso layout — the page anatomy as classes.
+   A page is a stack of painted bands: the hero, a section per topic, the footer. Load this after
+   base.css and the page has the standard look without writing any layout of its own.
+
+     <art-header data-paint="deep">…</art-header>
+     <main>
+       <div class="band hero" data-paint="deep" id="top">
+         <div class="inner">
+           <h1>…</h1> <p class="lead">…</p> <div class="actions">…</div>
+         </div>
+         <art-drip class="band-drip" pigment="--surface" stagger flush></art-drip>
+       </div>
+       <section class="band section" data-paint="1" id="about" aria-labelledby="about-h">
+         <div class="inner">
+           <div class="section-head"><h2 id="about-h" class="section-title">…</h2><p class="intro">…</p></div>
+           <div class="section-body">…</div>
+         </div>
+       </section>
+     </main>
+     <footer class="band page-footer" data-paint="deep"><div class="inner"><art-signature>…</art-signature></div></footer>
+*/
+
+@layer gesso.layout {
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+
+  /* ── Bands ─────────────────────────────────────────────────────────────── */
+
+  /* A painted band. Put data-paint on it. */
+  .band { position: relative; }
+
+  /* The content of a band: centred, as wide as the canvas, with the page gutter. */
+  .inner {
+    max-inline-size: var(--canvas-max);
+    margin-inline: auto;
+    padding: var(--space-24) var(--gutter) var(--space-16);
+  }
+
+  /* An <art-drip> on the bottom edge of a band, running into the next one. Only the hero has
+     one; after that <art-header> carries the drips. */
+  .band-drip {
+    --art-drip-height: 4.5rem;
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: calc(100% - 1px);
+    z-index: 2;
+    /* a wet edge: the drip's own paint, a shade darker */
+    filter: drop-shadow(0 2px 0 color-mix(in oklch, var(--surface), black 16%));
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────────── */
+
+  .hero .inner { padding-block: var(--space-16) var(--space-12); }
+
+  .hero h1 {
+    font-size: clamp(3.25rem, 1.333rem + 9.583vw, 9rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .hero art-stroke {
+    --art-stroke-offset: 0.2em;
+    --art-stroke-size: 0.15em;
+    --art-stroke-paper: var(--surface);
+  }
+
+  /* The sentence under a title that says what this is. */
+  .lead {
+    font-size: var(--step-2);
+    line-height: 1.35;
+    max-inline-size: 34ch;
+    text-wrap: balance;
+  }
+  .hero .lead { margin-block: var(--space-12) var(--space-8); }
+
+  /* A row of buttons. One primary, at most one or two secondary. */
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  /* On the deep paint a secondary button takes the ink colour. */
+  [data-paint="deep"] art-button[variant="secondary"] {
+    --accent: var(--ink);
+    --accent-wash: color-mix(in oklch, var(--ink) 14%, transparent);
+  }
+
+  /* ── Sections ──────────────────────────────────────────────────────────── */
+
+  .section-title { margin-block-end: var(--space-4); }
+
+  .intro {
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--ink-muted);
+    margin-block-end: var(--space-8);
+  }
+
+  /* Running text that is meant to be read, a step larger than body text. */
+  .prose {
+    display: grid;
+    gap: var(--space-4);
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+
+  /* From 60rem a section is two columns: its title and intro on the left, its content on the
+     right. The title column sticks under the header for as long as its section is on screen,
+     so the left half is never empty beside long content. */
+  @media (width >= 60rem) {
+    .section > .inner {
+      display: grid;
+      grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr);
+      column-gap: var(--space-16);
+      align-items: start;
+    }
+    .section-head {
+      position: sticky;
+      /* what the sticky header and its drips take off the top of the viewport */
+      inset-block-start: 8.5rem;
+    }
+    .section-head .intro { margin-block-end: 0; }
+    /* line the content up with the cap height of the title beside it */
+    .section-body { padding-block-start: var(--space-2); min-inline-size: 0; }
+  }
+
+  /* ── Cards ─────────────────────────────────────────────────────────────── */
+
+  /* The one card: a raised surface with no outline. <art-canvas> looks the same. */
+  .card {
+    padding: var(--space-6);
+    background: var(--surface-raised);
+    border-radius: var(--radius-canvas);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* A grid of cards, one or two wide. With an odd number the first card takes the whole first
+     row, so the last row never has a hole in it. */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
+    gap: var(--space-8);
+    list-style: none;
+    padding: 0;
+  }
+  .card-grid > * {
+    display: grid; /* the card fills its cell, so a row of cards ends level */
+    max-inline-size: none;
+  }
+  .card-grid > :first-child:nth-last-child(odd) { grid-column: 1 / -1; }
+
+  /* ── Forms ─────────────────────────────────────────────────────────────── */
+
+  /* A field with its button beside it; the button drops below when there is no room. */
+  .field-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .field-row > :is(input, select, textarea) {
+    flex: 1 1 16rem;
+    min-block-size: 2.75rem;
+  }
+
+  /* What a form says back. Errors get a bar in the danger colour and say how to fix the problem. */
+  .form-message {
+    font-size: var(--step--1);
+    font-weight: var(--weight-medium);
+  }
+  .form-message[role="alert"] {
+    border-inline-start: 4px solid var(--danger);
+    padding-inline-start: var(--space-3);
+  }
+
+  /* ── Footer ────────────────────────────────────────────────────────────── */
+
+  /* The footer comes after <main>, in the same deep paint as the last section, and reads as
+     one block with it: no rule, no gap of its own. The signature sits bottom right, like in
+     the corner of a painting. */
+  .page-footer .inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--space-4);
+    padding-block: 0 var(--space-12);
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+  .page-footer art-signature { margin-inline-start: auto; }
+
+  @media print {
+    .band-drip { --art-drip-height: 3rem; }
+    .section-head { position: static; }
+  }
+}

@@ -1,0 +1,60 @@
+// Gesso for Sass: functions that turn token names into var() references.
+// Every name is checked against the list generated from the tokens, so a token that doesn't
+// exist fails the build instead of rendering as nothing: space(5) is an error, because the
+// 4px grid has no step 5.
+@use 'sass:list';
+@use 'sass:math';
+@use 'keys';
+
+/// Any Gesso custom property by name, without the leading dashes: token('surface-raised').
+@function token($name) {
+  @if not list.index(keys.$properties, '#{$name}') {
+    @error 'Gesso has no token --#{$name}. See css/core.css and css/themes/ in @vandervennet/gesso.';
+  }
+  @return var(--#{$name});
+}
+
+/// Spacing on the 4px grid: space(4) is 1rem.
+@function space($n) { @return token('space-#{$n}'); }
+
+/// Type scale step, from -1 to 5.
+@function step($n) { @return token('step-#{$n}'); }
+
+/// Semantic colour role: role(ink), role(surface-raised), role(accent).
+@function role($name) { @return token($name); }
+
+/// Section paint 1…8, optionally its `sunken` or `rule` shade.
+@function paint($n, $shade: null) {
+  @if $shade { @return token('paint-#{$n}-#{$shade}'); }
+  @return token('paint-#{$n}');
+}
+
+/// Theme pigment (brand, partner, complement), optionally `light` or `wash`.
+@function pigment($name, $shade: null) {
+  @if $shade { @return token('pigment-#{$name}-#{$shade}'); }
+  @return token('pigment-#{$name}');
+}
+
+@function font($name) { @return token('font-#{$name}'); }
+@function weight($name) { @return token('weight-#{$name}'); }
+@function leading($name) { @return token('leading-#{$name}'); }
+@function radius($name) { @return token('radius-#{$name}'); }
+@function shadow($name) { @return token('shadow-#{$name}'); }
+@function dur($name) { @return token('dur-#{$name}'); }
+@function ease($name) { @return token('ease-#{$name}'); }
+
+/// Pixels to rem: rem(24) is 1.5rem.
+@function rem($px) { @return math.div($px, 16) * 1rem; }
+
+/// A fluid size that grows from $min at the $from viewport width to $max at $to.
+/// All four arguments are in rem.
+@function fluid($min, $max, $from: 20rem, $to: 80rem) {
+  $slope: math.div($max - $min, $to - $from);
+  $intercept: $min - $slope * $from;
+  @return clamp(#{$min}, #{$intercept} + #{$slope * 100vw}, #{$max});
+}
+
+/// A colour mixed with another in OKLCH, as Gesso's own components do.
+@function mix($color, $amount, $with: transparent) {
+  @return color-mix(in oklch, #{$color} #{$amount}, #{$with});
+}
