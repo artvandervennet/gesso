@@ -281,7 +281,7 @@ Put `npm run check` in CI.
 | `<art-stroke>` | Painted underline, highlight or strike behind inline text. `variant`, `pigment`, `seed`, `animate`. |
 | `<art-button>` | Wraps a native `<button>` or `<a>`; paint drips on hover. `variant` (primary, secondary, quiet), `size`, `nodrip`. |
 | `<art-swatch>` | Paint chip documenting a colour token, with live contrast and copy. `token`, `name`, `code`, `size`. |
-| `<art-canvas>` | Stretched-canvas card; paints its own study when there's no image. Whole card follows its first link. `pigment`, `seed`, `wet`. |
+| `<art-canvas>` | Stretched-canvas card; paints its own study when there's no image. Whole card follows the link in its heading; other links inside stay ordinary links. `pigment`, `seed`, `wet`. |
 | `<art-tape>` | Tape tag in the complement colour. `pigment`, `seed`, `flat`. |
 | `<art-signature>` | Your tag in the footer, like the signature on a painting. `year`, `pigment`, `animate`. |
 | `<art-theme>` | Theme picker: palettes for every theme in `themes.json`. `label`, `remember`. Fires `gesso:themechange`. |

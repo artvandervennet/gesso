@@ -3,8 +3,11 @@ import { strokePath, roughFilter, paint, rng, seedFrom, PIGMENTS, sheet, define 
 /**
  * <art-canvas> — a stretched canvas for a project, post or case study.
  * Put an image in slot="media", or leave it out and the canvas paints its own study.
- * The first link inside becomes the card's target: clicking anywhere on the canvas follows it,
- * while keyboard and screen reader users get one clean link.
+ * The link in the card's heading becomes the card's target: clicking anywhere on the canvas
+ * follows it, while keyboard and screen reader users get one clean link. Any other link inside
+ * (a name in the credits, a source) stays an ordinary link, and a card whose heading has no
+ * link is not a link at all. To point the card at a link outside the heading, mark that link
+ * with data-card-link.
  *
  *   <art-canvas pigment="complement">
  *     <h3><a href="/work/solid-notes">Solid notes</a></h3>
@@ -64,7 +67,7 @@ class ArtCanvas extends HTMLElement {
       <div class="media${hasMedia ? ' has-image' : ''}" part="media"><slot name="media">${hasMedia || this.hasAttribute('bare') ? '' : this.study(seed)}</slot></div>
       <div class="body" part="body"><slot></slot></div>
       ${this.hasAttribute('wet') ? '<span class="wet">Still wet</span>' : ''}`;
-    const link = this.querySelector('a[href]');
+    const link = this.querySelector('a[href][data-card-link], :is(h1, h2, h3, h4, h5, h6) a[href]');
     if (link) {
       this.setAttribute('data-linked', '');
       this.addEventListener('click', (e) => {

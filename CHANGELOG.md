@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.5 — 2026-11-17
+
+- `art-canvas` follows the link in its heading, not the first link of any kind. A link elsewhere in the card, such as a name in the credits, used to turn the whole card into a link to that address when the heading had none. To point a card at a link outside its heading, give that link `data-card-link`.
+
 ## 1.2.4 — 2026-11-16
 
 - `art-scheme` has parts, `button` and `name`, so a crowded header can hide the word and keep the dab: `art-scheme::part(name) { display: none; }`.
