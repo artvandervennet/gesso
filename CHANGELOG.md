@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1 — 2026-11-17
+
+- `.prose` is now `.longform`. `.prose` is Tailwind Typography's class, and the two fought wherever both were loaded. **Rename it in your markup when you update.**
+- README: how to load Gesso inside a framework that has its own base styles.
+- MIT licence.
+
 ## 1.2.0 — 2026-11-17
 
 Dark schemes, and what an app needs.
@@ -10,7 +16,6 @@ Dark schemes, and what an app needs.
 - `layout.css` gains patterns for apps: `.stack`, `.avatar`, `.dialog` (native dialog), `.menu` (popover API), `.tabs`, `.skeleton`, `.empty`.
 - New `components/vcard-paint.js`: repaints `<solid-vcard-card>` in Gesso.
 - The repository is public, so installing no longer needs a key.
-- MIT licence added (after the 1.2.0 tag; the code is the same).
 
 ## 1.1.0 — 2026-11-16
 

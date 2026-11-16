@@ -103,7 +103,7 @@ Every page follows the same anatomy, and `layout.css` has the classes for it:
 | `.band-drip` | An `<art-drip>` on the bottom edge of a band. Only the hero has one. |
 | `.hero`, `.lead`, `.actions` | The opening band: a large title, one sentence, a row of buttons. |
 | `.section` | A band with a title column and a content column from 60rem up: `.section-head` (`.section-title`, optional `.intro`) and `.section-body`. The head stays in view while its section scrolls. |
-| `.prose` | Running text meant to be read, a step larger than body text. |
+| `.longform` | Running text meant to be read, a step larger than body text. |
 | `.card`, `.card-grid` | The one card (no outline, `--shadow-card`), and a grid of them one or two wide. With an odd number the first card takes the whole first row. |
 | `.field-row`, `.form-message` | A field with its button beside it, and what the form says back. |
 | `.stack`, `.avatar`, `.dialog`, `.menu`, `.tabs`, `.skeleton`, `.empty` | For apps: a feed, a person, a native dialog, a popover menu, tabs, loading and empty states. |
@@ -124,6 +124,22 @@ The rules behind it:
 - **There is one card.** No outline, square corners, a soft shadow. Every card on a page looks the same, and a grid of them never ends in a hole.
 - **Nothing changes place on hover.** Buttons and links respond with paint. A card may grow slightly, in place.
 - **A section link lands its section right under the header**, with the title clear of the drips.
+
+### Inside a framework that has its own base
+
+A docs framework or Tailwind already resets the page and styles plain elements. There, skip `base.css` and put Gesso's tokens in a cascade layer **before** the framework's, so its theme wins where the two use the same variable name (Tailwind's `--leading-tight` and `--font-mono`, for instance), and its utilities still win over Gesso's layout:
+
+```css
+@layer gesso.tokens, theme, base, gesso.layout, components, utilities;
+
+@import "tailwindcss";
+@import "@vandervennet/gesso/fonts.css";
+@import "@vandervennet/gesso/core.css" layer(gesso.tokens);
+@import "./gesso-theme.css" layer(gesso.tokens);
+@import "@vandervennet/gesso/layout.css";
+```
+
+The components and the layout classes work as usual. Gesso's long-text class is `.longform`, not `.prose`, so it doesn't collide with Tailwind Typography.
 
 ### Light and dark
 

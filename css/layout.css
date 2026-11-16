@@ -99,7 +99,7 @@
   }
 
   /* Running text that is meant to be read, a step larger than body text. */
-  .prose {
+  .longform {
     display: grid;
     gap: var(--space-4);
     font-size: var(--step-1);
