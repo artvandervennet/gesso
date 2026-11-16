@@ -15,23 +15,27 @@ import { rng, seedFrom, dripShape, roughFilter, sheet, define } from './brush.js
 const css = sheet(`
   :host { display: inline-block; position: relative; vertical-align: middle; isolation: isolate;
     --base: var(--accent); --fill: color-mix(in oklch, var(--accent), black 24%); --ink-base: var(--on-accent); --ink-fill: var(--on-accent); --ring: transparent; }
+  /* The declarations marked !important are the ones a page's reset tends to set on every
+     element or every link (padding, font, colour, underline, corners). A rule in the page
+     beats a ::slotted rule from in here unless this one is important, and without them a
+     framework's reset (Tailwind's, for one) takes the button's shape and ink away. */
   ::slotted(button), ::slotted(a) {
     all: unset;
     box-sizing: border-box; position: relative; z-index: 1;
     display: inline-flex; align-items: center; gap: var(--space-2);
     min-block-size: 2.75rem; /* 44px target */
-    padding: var(--space-2) var(--space-6);
-    font: var(--weight-bold) var(--step-0)/1.2 var(--font-body);
-    border-radius: var(--radius-dab);
+    padding: var(--space-2) var(--space-6) !important;
+    font: var(--weight-bold) var(--step-0)/1.2 var(--font-body) !important;
+    border-radius: var(--radius-dab) !important;
     cursor: pointer;
-    text-decoration: none;
-    background: transparent;
-    color: var(--ink-base);
+    text-decoration: none !important;
+    background: transparent !important;
+    color: var(--ink-base) !important;
     /* text changes colour when the paint is about halfway, coming and going */
     transition: color var(--dur-dab) linear calc(var(--dur-wash) * 0.55);
   }
-  :host([size="s"]) ::slotted(*) { min-block-size: 2.25rem; padding: var(--space-1) var(--space-4); font-size: var(--step--1); }
-  :host([size="l"]) ::slotted(*) { min-block-size: 3.25rem; padding: var(--space-3) var(--space-8); font-size: var(--step-1); }
+  :host([size="s"]) ::slotted(*) { min-block-size: 2.25rem; padding: var(--space-1) var(--space-4) !important; font-size: var(--step--1) !important; }
+  :host([size="l"]) ::slotted(*) { min-block-size: 3.25rem; padding: var(--space-3) var(--space-8) !important; font-size: var(--step-1) !important; }
 
   /* The button never moves. On hover or focus, paint spreads from the centre until it's full. */
   .paint { position: absolute; inset: 0; z-index: 0; border-radius: var(--radius-dab); overflow: hidden; background: var(--base); box-shadow: inset 0 0 0 2px var(--ring); pointer-events: none; }
@@ -43,14 +47,14 @@ const css = sheet(`
     transition: transform calc(var(--dur-wash) * 1.25) var(--ease-brush);
   }
   :host(:hover:not([data-disabled])) .blob, :host(:focus-within:not([data-disabled])) .blob { transform: scale(1) rotate(0deg); }
-  :host(:hover:not([data-disabled])) ::slotted(*), :host(:focus-within:not([data-disabled])) ::slotted(*) { color: var(--ink-fill); transition-delay: calc(var(--dur-wash) * 0.45); }
+  :host(:hover:not([data-disabled])) ::slotted(*), :host(:focus-within:not([data-disabled])) ::slotted(*) { color: var(--ink-fill) !important; transition-delay: calc(var(--dur-wash) * 0.45); }
 
   /* primary: the brand pigment, deepening from the centre */
   /* secondary: an outline that fills with the brand pigment */
   :host([variant="secondary"]) { --base: transparent; --ring: var(--accent); --fill: var(--accent); --ink-base: var(--accent); --ink-fill: var(--on-accent); }
   /* quiet: a text link that fills with a wash */
   :host([variant="quiet"]) { --base: transparent; --fill: var(--accent-wash); --ink-base: var(--accent); --ink-fill: var(--accent); }
-  :host([variant="quiet"]) ::slotted(*) { padding-inline: var(--space-3); text-decoration: underline; text-decoration-thickness: 0.08em; text-underline-offset: 0.25em; }
+  :host([variant="quiet"]) ::slotted(*) { padding-inline: var(--space-3) !important; text-decoration: underline !important; text-decoration-thickness: 0.08em !important; text-underline-offset: 0.25em; }
 
   ::slotted(*:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
   ::slotted([disabled]), ::slotted([aria-disabled="true"]) { cursor: not-allowed; }

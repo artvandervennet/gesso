@@ -18,7 +18,7 @@ const css = sheet(`
     display: inline-block; position: relative;
     color: var(--art-signature-colour);
     transform: rotate(-5deg); transform-origin: right bottom;
-    padding: 0 var(--space-2) var(--space-3);
+    padding: 0 var(--space-2) var(--space-3) !important; /* holds against a page reset; see art-button.js */
   }
   .name {
     font-family: var(--font-signature); font-size: calc(var(--step-3) * 1.35); line-height: 1;

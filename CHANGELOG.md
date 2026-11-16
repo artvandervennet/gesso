@@ -1,12 +1,17 @@
 # Changelog
 
-## 1.2.1 — 2026-11-17
+## 1.2.2 — 2026-11-16
+
+- `art-button`, `art-header`, `art-tape` and `art-signature` keep their padding, fonts and colours on a page with a reset such as Tailwind's. A page rule like `* { padding: 0 }` or `a { color: inherit }` used to win over what a component gives the link or button inside it; those declarations are now `!important`. Pages without such a reset look the same as before.
+- README: the layer order for loading Gesso inside a framework was wrong. `gesso.layout` sorts together with `gesso.tokens`, ahead of the framework's reset. Import `layout.css` with `layer(gesso-layout)` instead.
+
+## 1.2.1 — 2026-11-16
 
 - `.prose` is now `.longform`. `.prose` is Tailwind Typography's class, and the two fought wherever both were loaded. **Rename it in your markup when you update.**
 - README: how to load Gesso inside a framework that has its own base styles.
 - MIT licence.
 
-## 1.2.0 — 2026-11-17
+## 1.2.0 — 2026-11-16
 
 Dark schemes, and what an app needs.
 

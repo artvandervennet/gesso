@@ -74,8 +74,10 @@ const css = sheet(`
   .acts { display: flex; align-items: center; gap: var(--space-3); }
   .acts:not(.filled), .wipe .acts:not(.filled) { display: none; }
   .wipe .acts { inline-size: var(--acts-width, 0); flex: none; }
+  /* !important on the slotted links: a page's reset (a { color: inherit }, * { padding: 0 })
+     would otherwise win over these rules. See art-button.js. */
   ::slotted([slot="wordmark"]), .wipe .wordmark {
-    font: var(--step-1)/1 var(--font-display); color: var(--ink); text-decoration: none; white-space: nowrap;
+    font: var(--step-1)/1 var(--font-display) !important; color: var(--ink) !important; text-decoration: none !important; white-space: nowrap;
   }
   nav, .wipe .links { min-inline-size: 0; }
   .list {
@@ -104,13 +106,13 @@ const css = sheet(`
   :host([data-open]) .lines span:last-child { translate: 0; rotate: -45deg; }
   :host([data-open]) .lines span:nth-child(2) { opacity: 0; }
   ::slotted(a:not([slot])), .wipe .links .list span {
-    display: block; padding-block: var(--space-3); white-space: nowrap;
-    color: var(--ink-muted); text-decoration: none;
-    font: var(--weight-medium) var(--step--1)/1.25 var(--font-body);
+    display: block; padding-block: var(--space-3) !important; white-space: nowrap;
+    color: var(--ink-muted) !important; text-decoration: none !important;
+    font: var(--weight-medium) var(--step--1)/1.25 var(--font-body) !important;
   }
-  ::slotted(a:not([slot]):hover) { color: var(--ink); }
+  ::slotted(a:not([slot]):hover) { color: var(--ink) !important; }
   /* where you are: bolder, darker and with a brushstroke under it, never colour alone */
-  ::slotted(a[aria-current]), .wipe .links .current { color: var(--ink); font-weight: var(--weight-bold); }
+  ::slotted(a[aria-current]), .wipe .links .current { color: var(--ink) !important; font-weight: var(--weight-bold) !important; }
   /* the brushstroke: the same paint engine as <art-stroke>, laid under the current link and
      painted in from the left each time you arrive in a section */
   .mark {
@@ -189,7 +191,7 @@ const css = sheet(`
     }
     .fold { min-block-size: 0; overflow: hidden; }
     .list { flex-direction: column; align-items: flex-start; gap: 0; padding-block: var(--space-1) var(--space-4); overflow: visible; }
-    ::slotted(a:not([slot])), .wipe .links .list span { font-size: var(--step-0); padding-block: var(--space-3); }
+    ::slotted(a:not([slot])), .wipe .links .list span { font-size: var(--step-0) !important; padding-block: var(--space-3) !important; }
     /* the open list covers the bar's bottom edge, so there is nothing for drips to hang from */
     :host([data-open]) .drips { visibility: hidden; }
   }

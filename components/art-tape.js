@@ -19,7 +19,7 @@ const css = sheet(`
     color: var(--on-tape);
     background: var(--tape);
     background-image: repeating-linear-gradient(90deg, oklch(100% 0 0 / 0.08) 0 2px, transparent 2px 5px);
-    padding: 0.3em 0.85em;
+    padding: 0.3em 0.85em !important; /* holds against a page reset; see art-button.js */
     box-shadow: var(--shadow-tape);
     transform: rotate(var(--tilt, 0deg));
     clip-path: var(--tear);

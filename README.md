@@ -130,16 +130,20 @@ The rules behind it:
 A docs framework or Tailwind already resets the page and styles plain elements. There, skip `base.css` and put Gesso's tokens in a cascade layer **before** the framework's, so its theme wins where the two use the same variable name (Tailwind's `--leading-tight` and `--font-mono`, for instance), and its utilities still win over Gesso's layout:
 
 ```css
-@layer gesso.tokens, theme, base, gesso.layout, components, utilities;
+@layer gesso.tokens, theme, base, gesso-layout, components, utilities;
 
 @import "tailwindcss";
 @import "@vandervennet/gesso/fonts.css";
 @import "@vandervennet/gesso/core.css" layer(gesso.tokens);
 @import "./gesso-theme.css" layer(gesso.tokens);
-@import "@vandervennet/gesso/layout.css";
+@import "@vandervennet/gesso/layout.css" layer(gesso-layout);
 ```
 
-The components and the layout classes work as usual. Gesso's long-text class is `.longform`, not `.prose`, so it doesn't collide with Tailwind Typography.
+The layout stylesheet goes in a layer with a name of its own (`gesso-layout`, with a hyphen). Its rules are written in `gesso.layout`, and every `gesso.*` layer sorts together at the position of the first one, so without the extra name the layout would land before the framework's reset and lose its padding to it.
+
+The components hold their shape under such a reset: the padding, fonts and colours they give their own links and buttons are marked `!important`, because a page rule like `* { padding: 0 }` or `a { color: inherit }` otherwise beats a component's styles for the elements you put inside it. Change how they look through the tokens and the documented custom properties.
+
+The layout classes work as usual. Gesso's long-text class is `.longform`, not `.prose`, so it doesn't collide with Tailwind Typography.
 
 ### Light and dark
 
