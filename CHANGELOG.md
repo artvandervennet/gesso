@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0 — 2026-11-19
+
+- A name that takes more than one line in the hero can fly into the header too. Mark each line, not the `<h1>`: `<h1><span data-wordmark>Art Van</span> <span data-wordmark>der Vennet</span></h1>`. Each line flies to its own words in the wordmark, so the lines come together into one on the way up. A whole `<h1 data-wordmark>` on two lines used to land as two small lines on top of the one-line wordmark. `layout.css` keeps each marked line together, so the name breaks between them. A title marked on the `<h1>` flies the same as before.
+
 ## 1.4.0 — 2026-11-18
 
 - New `art-password`: wrap an `<input type="password">` and it gets an eye at its end that shows and hides what was typed. The eye is a real button with a fixed name (`label`, default "Show password") and `aria-pressed`. A mouse press leaves the cursor in the field, and the field is a password field again when its form is sent, so a password manager still offers to save it.

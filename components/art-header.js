@@ -55,6 +55,14 @@ import './art-decor.js'; // the header carries an <art-drip>
  * leave data-wordmark off: their header shows the wordmark all the time. With reduced motion
  * the title scrolls away as usual and the wordmark appears once it is gone under the header.
  *
+ * A name that takes more than one line in the hero is marked line by line, not on the <h1>:
+ *
+ *   <h1><span data-wordmark>Art Van</span> <span data-wordmark>der Vennet</span></h1>
+ *
+ * Each line flies to its own words in the wordmark, so the lines come together into one on
+ * the way up. Keep the same words in the same order as the wordmark. layout.css makes each
+ * marked line a block that stays together, so the name breaks between them.
+ *
  * On small screens (under 48rem) the links fold away under a "Menu" button. The button says
  * whether the menu is open (aria-expanded), its three lines turn into a cross, and the list
  * opens by growing. A link, the button or Escape closes it again.
@@ -223,7 +231,7 @@ const still = matchMedia('(prefers-reduced-motion: reduce)');
 const FLIGHT = ['translate', 'scale', 'transform-origin', 'opacity', 'position', 'z-index'];
 
 class ArtHeader extends HTMLElement {
-  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = ''; #resized; #marked; #title = null;
+  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = ''; #resized; #marked; #title = [];
   constructor() { super(); this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [css]; }
 
   connectedCallback() {
@@ -291,7 +299,7 @@ class ArtHeader extends HTMLElement {
     removeEventListener('resize', this.#schedule);
     this.#resized?.disconnect();
     this.#marked?.disconnect();
-    this.fly(null);
+    this.fly([]);
   }
 
   /** Open or close the folded menu (small screens). */
@@ -328,7 +336,7 @@ class ArtHeader extends HTMLElement {
     const at = (line) => Math.max(0, tops.findLastIndex((top) => top <= line));
     const under = at(edge), reading = at(edge + innerHeight * 0.25);
     const wipe = this.shadowRoot.querySelector('.wipe');
-    this.fly(bands[0].querySelector('[data-wordmark]'), box, open);
+    this.fly([...bands[0].querySelectorAll('[data-wordmark]')], box, open);
 
     if (reading !== this.#reading) {
       this.#reading = reading;
@@ -431,48 +439,82 @@ class ArtHeader extends HTMLElement {
    * fades out while the header's wordmark fades in; after that it stays in its place, unseen,
    * so the page keeps its heading for screen readers. With no title to fly, the wordmark is
    * simply there.
+   * A title marked line by line flies line by line: each one goes to its own words in the
+   * wordmark, so the lines of a long name come together into one on the way up.
    */
-  fly(title, box, open) {
-    if (title !== this.#title) {
-      for (const prop of FLIGHT) this.#title?.style.removeProperty(prop);
-      this.#title = title;
+  fly(lines, box, open) {
+    if (lines.length !== this.#title.length || lines.some((line, i) => line !== this.#title[i])) {
+      for (const line of this.#title) for (const prop of FLIGHT) line.style.removeProperty(prop);
+      this.#title = lines;
     }
     const wordmark = this.querySelector(':scope > [slot="wordmark"]');
-    if (!title || !wordmark) {
+    if (!lines.length || !wordmark) {
       this.removeAttribute('data-wordmark-away');
       this.style.removeProperty('--wordmark-in');
       return;
     }
-    // where the title is when nothing moves it: offsets leave transforms out
-    let top = 0, left = 0;
-    for (let el = title; el; el = el.offsetParent) { top += el.offsetTop; left += el.offsetLeft; }
-    const length = top + title.offsetHeight - box.bottom; // how far you scroll before it is under the header
+    // where each line is when nothing moves it: offsets leave transforms out
+    const places = lines.map((line) => {
+      let top = 0, left = 0;
+      for (let el = line; el; el = el.offsetParent) { top += el.offsetTop; left += el.offsetLeft; }
+      return { top, left, bottom: top + line.offsetHeight };
+    });
+    const length = Math.max(...places.map((place) => place.bottom)) - box.bottom; // how far you scroll before it is under the header
     const done = length > 0 ? Math.min(1, Math.max(0, scrollY / length)) : 1;
     // the last stretch: the title goes, the wordmark comes
     const handover = still.matches ? Math.floor(done) : Math.min(1, Math.max(0, (done - 0.85) / 0.15));
     this.toggleAttribute('data-wordmark-away', handover === 0);
     this.style.setProperty('--wordmark-in', handover.toFixed(3));
 
-    const s = title.style;
     if (still.matches || done === 0 || done === 1) {
-      for (const prop of FLIGHT) if (prop !== 'opacity') s.removeProperty(prop);
-      if (done === 1) s.setProperty('opacity', '0'); else s.removeProperty('opacity');
+      for (const { style } of lines) {
+        for (const prop of FLIGHT) if (prop !== 'opacity') style.removeProperty(prop);
+        if (done === 1) style.setProperty('opacity', '0'); else style.removeProperty('opacity');
+      }
       return;
     }
-    const to = wordmark.getBoundingClientRect();
-    const size = parseFloat(getComputedStyle(wordmark).fontSize) / parseFloat(getComputedStyle(title).fontSize);
+    const landings = this.landings(lines, wordmark);
+    const small = parseFloat(getComputedStyle(wordmark).fontSize);
     // From where it stood at the top of the page to the wordmark, in step with the scroll but
     // slower than the page, so it never overshoots. It is there when the hand-over starts, so
     // the two swap in the same place. The page moved it by the scroll; undo that.
     const flown = Math.min(1, done / 0.85);
-    const x = left + (to.left - left) * flown, y = top + (to.top - top) * flown;
-    s.setProperty('transform-origin', '0 0');
-    s.setProperty('translate', `${(x - left + scrollX).toFixed(1)}px ${(y - top + scrollY).toFixed(1)}px`);
-    s.setProperty('scale', (size ** flown).toFixed(4)); // even steps to the eye: shrinking by a factor, not by an amount
-    s.setProperty('opacity', (1 - handover).toFixed(3));
-    // over the header, except when the open menu hangs there
-    if (open) { s.removeProperty('position'); s.removeProperty('z-index'); }
-    else { s.setProperty('position', 'relative'); s.setProperty('z-index', '31'); }
+    lines.forEach((line, i) => {
+      const { top, left } = places[i], to = landings[i], s = line.style;
+      const size = small / parseFloat(getComputedStyle(line).fontSize);
+      const x = left + (to.left - left) * flown, y = top + (to.top - top) * flown;
+      s.setProperty('transform-origin', '0 0');
+      s.setProperty('translate', `${(x - left + scrollX).toFixed(1)}px ${(y - top + scrollY).toFixed(1)}px`);
+      s.setProperty('scale', (size ** flown).toFixed(4)); // even steps to the eye: shrinking by a factor, not by an amount
+      s.setProperty('opacity', (1 - handover).toFixed(3));
+      // over the header, except when the open menu hangs there
+      if (open) { s.removeProperty('position'); s.removeProperty('z-index'); }
+      else { s.setProperty('position', 'relative'); s.setProperty('z-index', '31'); }
+    });
+  }
+
+  /**
+   * Where each line of the title lands. A title in one piece lands on the wordmark's corner.
+   * Lines land on their own words: the first on the wordmark's first word, the next on the
+   * word after the first line's last, and so on. A line the wordmark has no words left for
+   * lands on the corner too.
+   */
+  landings(lines, wordmark) {
+    const corner = wordmark.getBoundingClientRect();
+    if (lines.length === 1) return [corner];
+    const words = []; // where each word of the wordmark starts: its text node, and how far in
+    const texts = document.createTreeWalker(wordmark, NodeFilter.SHOW_TEXT);
+    for (let node; (node = texts.nextNode());) for (const word of node.data.matchAll(/\S+/g)) words.push([node, word.index]);
+    let at = 0;
+    return lines.map((line) => {
+      const word = words[at];
+      at += line.textContent.trim().split(/\s+/).length;
+      if (!word) return corner;
+      const first = document.createRange(); // the word's first letter
+      first.setStart(...word);
+      first.setEnd(word[0], word[1] + 1);
+      return { left: first.getBoundingClientRect().left, top: corner.top };
+    });
   }
 
   /**

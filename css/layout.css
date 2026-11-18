@@ -61,6 +61,11 @@
     letter-spacing: -0.04em;
   }
 
+  /* A name that takes more than one line: mark each line, <span data-wordmark>, not the <h1>.
+     A line stays together, so the name breaks between two of them, and each one flies to its
+     own words in the wordmark. */
+  .hero h1 > [data-wordmark] { display: inline-block; }
+
   .hero art-stroke {
     --art-stroke-offset: 0.2em;
     --art-stroke-size: 0.15em;
