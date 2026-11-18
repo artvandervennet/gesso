@@ -42,6 +42,19 @@ import './art-decor.js'; // the header carries an <art-drip>
  * Put it first in <body>, before the hero, and end the hero in an <art-drip stagger flush>.
  * The hero and the header are the only things on the page that drip.
  *
+ * On a home page the hero's title can be the site's name, and the wordmark at the same time.
+ * Mark it with data-wordmark:
+ *
+ *   <div class="band hero" data-paint="deep" id="top">
+ *     <div class="inner"><h1 data-wordmark>Gesso</h1> …</div>
+ *   </div>
+ *
+ * At the top of the page the header then has no wordmark. As you scroll, the title moves up and
+ * shrinks until it sits where the wordmark goes, and there the header's own wordmark takes
+ * over. Scroll back up and the title comes back down. Pages whose hero holds a page title
+ * leave data-wordmark off: their header shows the wordmark all the time. With reduced motion
+ * the title scrolls away as usual and the wordmark appears once it is gone under the header.
+ *
  * On small screens (under 48rem) the links fold away under a "Menu" button. The button says
  * whether the menu is open (aria-expanded), its three lines turn into a cross, and the list
  * opens by growing. A link, the button or Escape closes it again.
@@ -79,6 +92,10 @@ const css = sheet(`
   ::slotted([slot="wordmark"]), .wipe .wordmark {
     font: var(--step-1)/1 var(--font-display) !important; color: var(--ink) !important; text-decoration: none !important; white-space: nowrap;
   }
+  /* The hero's title flying up to become the wordmark (see fly()): the wordmark comes in as
+     the title lands, and until then it is hidden for real, so it can't take keyboard focus. */
+  ::slotted([slot="wordmark"]), .wipe .wordmark { opacity: var(--wordmark-in, 1) !important; }
+  :host([data-wordmark-away]) ::slotted([slot="wordmark"]), :host([data-wordmark-away]) .wipe .wordmark { visibility: hidden !important; }
   nav, .wipe .links { min-inline-size: 0; }
   .list {
     display: flex; gap: var(--space-2) clamp(var(--space-3), 3vw, var(--space-8));
@@ -201,9 +218,12 @@ const css = sheet(`
 // the colours a paint gives to the things in the bar
 const ROLES = ['--surface', '--ink', '--ink-muted', '--accent', '--rule', '--focus'];
 const esc = (text) => text.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+const still = matchMedia('(prefers-reduced-motion: reduce)');
+// what fly() writes on the hero's title, so it can be taken off again
+const FLIGHT = ['translate', 'scale', 'transform-origin', 'opacity', 'position', 'z-index'];
 
 class ArtHeader extends HTMLElement {
-  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = ''; #resized; #marked;
+  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = ''; #resized; #marked; #title = null;
   constructor() { super(); this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [css]; }
 
   connectedCallback() {
@@ -271,6 +291,7 @@ class ArtHeader extends HTMLElement {
     removeEventListener('resize', this.#schedule);
     this.#resized?.disconnect();
     this.#marked?.disconnect();
+    this.fly(null);
   }
 
   /** Open or close the folded menu (small screens). */
@@ -307,6 +328,7 @@ class ArtHeader extends HTMLElement {
     const at = (line) => Math.max(0, tops.findLastIndex((top) => top <= line));
     const under = at(edge), reading = at(edge + innerHeight * 0.25);
     const wipe = this.shadowRoot.querySelector('.wipe');
+    this.fly(bands[0].querySelector('[data-wordmark]'), box, open);
 
     if (reading !== this.#reading) {
       this.#reading = reading;
@@ -399,6 +421,58 @@ class ArtHeader extends HTMLElement {
       if (repainting) this.#drip.style.setProperty('--surface', `color-mix(in oklch, ${this.#fresh} ${(Math.min(1, done * 2) * 100).toFixed(1)}%, ${stale})`);
       else this.#drip.style.removeProperty('--surface');
     }
+  }
+
+  /**
+   * The hero's title (data-wordmark) on its way up to become the wordmark. The flight follows
+   * the scroll: it starts at the top of the page and ends when the title's own place has gone
+   * under the header's bottom edge. On the way the title moves from its own place to the
+   * wordmark's and shrinks to the wordmark's size, over the header. Over the last stretch it
+   * fades out while the header's wordmark fades in; after that it stays in its place, unseen,
+   * so the page keeps its heading for screen readers. With no title to fly, the wordmark is
+   * simply there.
+   */
+  fly(title, box, open) {
+    if (title !== this.#title) {
+      for (const prop of FLIGHT) this.#title?.style.removeProperty(prop);
+      this.#title = title;
+    }
+    const wordmark = this.querySelector(':scope > [slot="wordmark"]');
+    if (!title || !wordmark) {
+      this.removeAttribute('data-wordmark-away');
+      this.style.removeProperty('--wordmark-in');
+      return;
+    }
+    // where the title is when nothing moves it: offsets leave transforms out
+    let top = 0, left = 0;
+    for (let el = title; el; el = el.offsetParent) { top += el.offsetTop; left += el.offsetLeft; }
+    const length = top + title.offsetHeight - box.bottom; // how far you scroll before it is under the header
+    const done = length > 0 ? Math.min(1, Math.max(0, scrollY / length)) : 1;
+    // the last stretch: the title goes, the wordmark comes
+    const handover = still.matches ? Math.floor(done) : Math.min(1, Math.max(0, (done - 0.85) / 0.15));
+    this.toggleAttribute('data-wordmark-away', handover === 0);
+    this.style.setProperty('--wordmark-in', handover.toFixed(3));
+
+    const s = title.style;
+    if (still.matches || done === 0 || done === 1) {
+      for (const prop of FLIGHT) if (prop !== 'opacity') s.removeProperty(prop);
+      if (done === 1) s.setProperty('opacity', '0'); else s.removeProperty('opacity');
+      return;
+    }
+    const to = wordmark.getBoundingClientRect();
+    const size = parseFloat(getComputedStyle(wordmark).fontSize) / parseFloat(getComputedStyle(title).fontSize);
+    // From where it stood at the top of the page to the wordmark, in step with the scroll but
+    // slower than the page, so it never overshoots. It is there when the hand-over starts, so
+    // the two swap in the same place. The page moved it by the scroll; undo that.
+    const flown = Math.min(1, done / 0.85);
+    const x = left + (to.left - left) * flown, y = top + (to.top - top) * flown;
+    s.setProperty('transform-origin', '0 0');
+    s.setProperty('translate', `${(x - left + scrollX).toFixed(1)}px ${(y - top + scrollY).toFixed(1)}px`);
+    s.setProperty('scale', (size ** flown).toFixed(4)); // even steps to the eye: shrinking by a factor, not by an amount
+    s.setProperty('opacity', (1 - handover).toFixed(3));
+    // over the header, except when the open menu hangs there
+    if (open) { s.removeProperty('position'); s.removeProperty('z-index'); }
+    else { s.setProperty('position', 'relative'); s.setProperty('z-index', '31'); }
   }
 
   /**

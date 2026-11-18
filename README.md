@@ -64,7 +64,7 @@ Every page follows the same anatomy, and `layout.css` has the classes for it:
     <!-- 2. The hero, in the deep paint. The only band with a drip of its own. -->
     <div class="band hero" data-paint="deep" id="top">
       <div class="inner">
-        <h1>…</h1>
+        <h1>…</h1>        <!-- on the home page, <h1 data-wordmark> with the site name -->
         <p class="lead">…</p>
         <div class="actions">…</div>
       </div>
@@ -116,6 +116,7 @@ The rules behind it:
 - **Drips are never there at once.** With `stagger`, every drip waits a few seconds, then runs down on its own time, once.
 - **The header takes the hero's drips along.** When the hero scrolls away, the same drips hang off the header without starting again; scroll back and they stay on the hero.
 - **The repaint follows the scroll.** While a section boundary passes behind the header, the new paint comes up through it as a soft blend: from the bottom edge upwards on the way down the page, from the top edge downwards on the way back up. The paints are mixed in OKLCH, so the blend passes through real in-between colours and never through grey.
+- **The home page's title becomes the wordmark.** With `<h1 data-wordmark>` in the hero, the header starts without a wordmark. As you scroll, the title moves up and shrinks into the wordmark's place, and the header's own wordmark takes over. Other pages leave it off and keep the wordmark in the header all the time.
 - **Fresh paint drips.** Every later section repaints the header, and it drips again: new drips, each after its own wait.
 - **Drips stay in their section.** They hang straight off the header, with no band of paint under it, and never into the next section: as it comes up they get shorter, all together, and are gone when it reaches the header.
 - **The footer is outside `<main>`** and is the last thing on the page.
@@ -286,7 +287,7 @@ Put `npm run check` in CI.
 | `<art-signature>` | Your tag in the footer, like the signature on a painting. `year`, `pigment`, `animate`. |
 | `<art-theme>` | Theme picker: palettes for every theme in `themes.json`. `label`, `remember`. Fires `gesso:themechange`. |
 | `<art-scheme>` | One button that switches between light, dark and the visitor's system, and says which in words. `remember`, `label`. Fires `gesso:schemechange`. |
-| `<art-header>` | The sticky page header and the standard navigation, folding into a labelled Menu button under 48rem: wordmark, section links (`aria-current="location"` on the one you're in), and drips: it carries the hero's along, and drips afresh each time a section repaints it. Wears the paint of the section above the current one. `label`, `nodrip`. |
+| `<art-header>` | The sticky page header and the standard navigation, folding into a labelled Menu button under 48rem: wordmark, section links (`aria-current="location"` on the one you're in), and drips: it carries the hero's along, and drips afresh each time a section repaints it. Wears the paint of the section above the current one. On a home page, give the hero's title `data-wordmark` and it flies up into the header as the wordmark. `label`, `nodrip`. |
 | `<art-railnav>` | Section nav drawn as a git branch, for use inside a page: a painted lane with a dab per section, filling as you scroll (`aria-current="location"`). `label`. |
 | `<art-gitflow>` | Turns an `<ol>` into a painted git graph that reveals on scroll. Write the list newest first and add `newest-first`. Items: `data-branch`, `data-pigment`, `data-open`, `data-current`. |
 | `<art-drip>` | Wet edge with drips, for the hero. `pigment`, `seed`, `count`, `height`, `run` (all drips run once, together), `stagger` (each drip waits a few seconds, then runs on its own), `flush` (no band of paint above the drips). The hero uses `stagger flush`. |

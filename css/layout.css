@@ -53,6 +53,8 @@
 
   .hero .inner { padding-block: var(--space-16) var(--space-12); }
 
+  /* On a home page whose title is the site name, <h1 data-wordmark>: <art-header> flies it up
+     into the wordmark's place as you scroll. */
   .hero h1 {
     font-size: clamp(3.25rem, 1.333rem + 9.583vw, 9rem);
     line-height: 0.95;

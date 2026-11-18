@@ -33,7 +33,7 @@
 
   <div class="band hero" data-paint="deep" id="top">
     <div class="inner">
-      <h1><art-stroke pigment="stroke" seed="gesso" animate>Gesso</art-stroke></h1>
+      <h1 data-wordmark><art-stroke pigment="stroke" seed="gesso" animate>Gesso</art-stroke></h1>
       <p class="lead">The primer under everything on vandervennet.art. Tokens, web components and the rules for using them.</p>
       <div class="actions">
         <art-button size="l"><a href="#pigments">Start with the pigments</a></art-button>
@@ -524,7 +524,7 @@
         </details>
 
         <h3 id="c-header">art-header</h3>
-        <p>The sticky page header, and the standard navigation: a wordmark, a link per section, and the hero's drips on its bottom edge. It takes the hero's drips along when the hero scrolls away and leaves them on the hero when you scroll back. Each later section repaints it with a soft blend that follows the scroll, bottom edge first on the way down and top edge first on the way up, and it drips again. It wears the paint of the section above the one you are reading, so the previous section seems to drip onto this one. The link to the section you are in is bold, with a brushstroke under it. It is the header of this page.</p>
+        <p>The sticky page header, and the standard navigation: a wordmark, a link per section, and the hero's drips on its bottom edge. It takes the hero's drips along when the hero scrolls away and leaves them on the hero when you scroll back. Each later section repaints it with a soft blend that follows the scroll, bottom edge first on the way down and top edge first on the way up, and it drips again. It wears the paint of the section above the one you are reading, so the previous section seems to drip onto this one. The link to the section you are in is bold, with a brushstroke under it. On a home page the hero's title can be the wordmark: at the top the header has none, and as you scroll the title moves up and shrinks into its place. It is the header of this page; scroll back to the top to see the title fly.</p>
 <pre><code>&lt;art-header label="Sections" data-paint="deep"&gt;
   &lt;a slot="wordmark" href="#top"&gt;Art Van der Vennet&lt;/a&gt;
   &lt;a href="#about"&gt;About&lt;/a&gt;
@@ -536,6 +536,7 @@
             <tr><td><code>nodrip</code></td><td>Never carry the drips.</td></tr>
             <tr><td>Hero drip</td><td>End the first band in an <code>&lt;art-drip stagger flush&gt;</code>. The header copies its seed, count and height, and joins in at the same point of its run.</td></tr>
             <tr><td><code>slot="wordmark"</code></td><td>One link with the site name.</td></tr>
+            <tr><td><code>data-wordmark</code></td><td>On the hero's title, when that title is the site name (a home page). The header starts without a wordmark; scrolling moves the title up and shrinks it into the wordmark's place, where the wordmark takes over. Leave it off on pages whose hero holds a page title. With reduced motion the title scrolls away as usual and the wordmark appears once it has gone.</td></tr>
             <tr><td>Small screens</td><td>Under 48rem the links fold away under a Menu button. Its three lines turn into a cross and the list opens by growing, over the page: it takes no room in the layout, so picking a link lands you exactly on that section. A link, the button or Escape closes it.</td></tr>
             <tr><td>Links</td><td>Plain <code>&lt;a href="#section-id"&gt;</code> children, one per section, in page order.</td></tr>
             <tr><td>Bands</td><td>Every top-level element with <code>data-paint</code> is a band. Put the header first in <code>&lt;body&gt;</code>, before the hero.</td></tr>
