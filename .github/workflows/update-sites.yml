@@ -1,0 +1,102 @@
+# Put each new Gesso release on the sites that use it.
+#
+# Pushing a tag (v1.5.0, say) sets that tag in each site's package.json and lockfile and
+# commits the change. The portfolio and OdyFeed get a commit on main, which their Raspberry
+# Pi picks up within a minute and deploys. artui gets a pull request, because its main
+# needs a review.
+#
+# It needs SITES_TOKEN: a fine-grained personal access token for those three repos with
+# Contents and Pull requests set to read and write. Run it by hand (Actions → Update the
+# sites → Run workflow) to put an older tag on the sites again.
+
+name: Update the sites
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: The Gesso tag to put on the sites, such as v1.4.0
+        required: true
+
+permissions: {} # the sites are reached with SITES_TOKEN, not with this repo's token
+
+concurrency: update-sites
+
+jobs:
+  site:
+    name: ${{ matrix.repo }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false # one site failing leaves the others updated
+      matrix:
+        include:
+          - repo: artvandervennet/vandervennet.art
+            package: .
+            scope: ''
+            via: push
+          - repo: artvandervennet/odyfeed
+            package: .
+            scope: ''
+            via: push
+          - repo: artvandervennet/artui
+            package: apps/docs
+            scope: '(docs)'
+            via: pr
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ matrix.repo }}
+          token: ${{ secrets.SITES_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # corepack runs the pnpm version each site names in its packageManager field
+      - run: corepack enable
+
+      - name: Set the tag in package.json and the lockfile
+        env:
+          PACKAGE: ${{ matrix.package }}
+        run: |
+          node -e '
+            const fs = require("fs"), file = `${process.env.PACKAGE}/package.json`;
+            const pkg = JSON.parse(fs.readFileSync(file, "utf8"));
+            const spec = `github:artvandervennet/gesso#${process.env.TAG}`;
+            const field = ["dependencies", "devDependencies"].find((f) => pkg[f]?.["@vandervennet/gesso"]);
+            if (!field) throw new Error(`${file} does not use @vandervennet/gesso`);
+            pkg[field]["@vandervennet/gesso"] = spec;
+            fs.writeFileSync(file, JSON.stringify(pkg, null, 2) + "\n");
+          '
+          pnpm install --lockfile-only --ignore-scripts
+
+      - name: Commit, and push or open a pull request
+        env:
+          GH_TOKEN: ${{ secrets.SITES_TOKEN }}
+          REPO: ${{ matrix.repo }}
+          SCOPE: ${{ matrix.scope }}
+          VIA: ${{ matrix.via }}
+        run: |
+          if git diff --quiet; then
+            echo "$REPO already uses Gesso $TAG"
+            exit 0
+          fi
+          version="${TAG#v}"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898283+github-actions[bot]@users.noreply.github.com'
+          git commit -am "chore$SCOPE: use Gesso $version" \
+            -m "What changed: https://github.com/artvandervennet/gesso/blob/$TAG/CHANGELOG.md"
+          if [ "$VIA" = push ]; then
+            git push origin HEAD:main
+          else
+            branch="chore/gesso-$version"
+            git push --force origin "HEAD:refs/heads/$branch"
+            gh pr view "$branch" --repo "$REPO" >/dev/null 2>&1 || gh pr create --repo "$REPO" --head "$branch" --base main --assignee artvandervennet \
+              --title "chore$SCOPE: use Gesso $version" \
+              --body "Gesso $version was released. What changed: https://github.com/artvandervennet/gesso/blob/$TAG/CHANGELOG.md"
+          fi
