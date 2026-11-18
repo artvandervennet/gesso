@@ -10,5 +10,6 @@ export * from './art-railnav.js';
 export * from './art-gitflow.js';
 export * from './art-theme.js';
 export * from './art-scheme.js';
+export * from './art-password.js';
 export * from './art-signature.js';
 export * from './themes.js';

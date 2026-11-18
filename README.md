@@ -7,7 +7,7 @@ The design system behind **vandervennet.art**. Gesso is the primer painters brus
 - **Base**: `css/base.css` styles plain HTML: type, links, focus, forms, code, tables.
 - **Layout**: `css/layout.css` is the page anatomy as classes: bands, the hero, two-column sections, the one card, the footer. A new site that loads it has the same structure as the portfolio.
 - **Sass**: `scss/` has the tokens as checked functions and the breakpoints as mixins.
-- **Components**: thirteen framework-free custom elements, prefixed `art-`.
+- **Components**: fourteen framework-free custom elements, prefixed `art-`.
 - **Light and dark**: every theme has both schemes, contrast-checked. A page is light unless it asks for dark.
 - **Docs**: `index.html` is a living reference that uses the system itself.
 
@@ -287,6 +287,7 @@ Put `npm run check` in CI.
 | `<art-signature>` | Your tag in the footer, like the signature on a painting. `year`, `pigment`, `animate`. |
 | `<art-theme>` | Theme picker: palettes for every theme in `themes.json`. `label`, `remember`. Fires `gesso:themechange`. |
 | `<art-scheme>` | One button that switches between light, dark and the visitor's system, and says which in words. `remember`, `label`. Fires `gesso:schemechange`. |
+| `<art-password>` | Wraps a native `<input type="password">` and puts an eye at its end that shows and hides what was typed; hidden again when the form is sent. `label`. |
 | `<art-header>` | The sticky page header and the standard navigation, folding into a labelled Menu button under 48rem: wordmark, section links (`aria-current="location"` on the one you're in), and drips: it carries the hero's along, and drips afresh each time a section repaints it. Wears the paint of the section above the current one. On a home page, give the hero's title `data-wordmark` and it flies up into the header as the wordmark. `label`, `nodrip`. |
 | `<art-railnav>` | Section nav drawn as a git branch, for use inside a page: a painted lane with a dab per section, filling as you scroll (`aria-current="location"`). `label`. |
 | `<art-gitflow>` | Turns an `<ol>` into a painted git graph that reveals on scroll. Write the list newest first and add `newest-first`. Items: `data-branch`, `data-pigment`, `data-open`, `data-current`. |
@@ -299,6 +300,7 @@ Put `npm run check` in CI.
 
 - All decoration is `aria-hidden`. Lists stay lists, links stay links.
 - `art-button` keeps native focus, keyboard and form behaviour; targets are 44px tall (36px for `size="s"`).
+- `art-password`'s eye is a real button with a fixed name and `aria-pressed`, so a screen reader hears "Show password, toggle button, pressed" rather than a name that changes under the focus.
 - Focus rings use `--focus` (the complement), 3px with a 3px offset, at least 3:1 on every paint.
 - Errors are always red or orange: when a theme's complement isn't, the generator mixes a red.
 - Status colours always come with a word; branch colours always come with a branch name.

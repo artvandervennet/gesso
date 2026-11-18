@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 — 2026-11-18
+
+- New `art-password`: wrap an `<input type="password">` and it gets an eye at its end that shows and hides what was typed. The eye is a real button with a fixed name (`label`, default "Show password") and `aria-pressed`. A mouse press leaves the cursor in the field, and the field is a password field again when its form is sent, so a password manager still offers to save it.
+
 ## 1.3.0 — 2026-11-18
 
 - `art-header` can take its wordmark from the hero. Give the hero's title `data-wordmark` on a home page whose title is the site name: at the top of the page the header has no wordmark, and as you scroll the title moves up and shrinks into the wordmark's place, where the header's own wordmark takes over. Scroll back and it comes down again. Pages without `data-wordmark` look the same as before. With reduced motion the title scrolls away as usual and the wordmark appears once it has gone under the header.

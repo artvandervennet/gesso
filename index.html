@@ -546,6 +546,19 @@
         </details>
         <p class="a11y">A real <code>&lt;nav&gt;</code> landmark with your label. The current link gets <code>aria-current="location"</code> and is marked by weight and a brushstroke, not colour alone. The menu button is a real <code>&lt;button&gt;</code> with the visible label "Menu" and <code>aria-expanded</code>; while the menu is closed its links can't be reached by keyboard or screen reader. The drips are hidden from assistive technology.</p>
 
+        <h3 id="c-password">art-password</h3>
+        <p>A password field with an eye at its end. Press the eye and you see what you typed; press it again, or send the form, and it is hidden again.</p>
+        <div class="demo" data-code>
+          <label for="demo-password">Password</label>
+          <art-password><input id="demo-password" type="password" autocomplete="new-password" value="correct horse"></art-password>
+        </div>
+        <details class="api"><summary>Attributes</summary>
+          <table><tbody>
+            <tr><td><code>label</code></td><td>The eye's name for screen readers and its tooltip. Default "Show password".</td></tr>
+          </tbody></table>
+        </details>
+        <p class="a11y">The input stays a real input with its own label, autofill and validation. The eye is a real button inside the field, 44px square, with a fixed name and <code>aria-pressed</code>. Pressed with a mouse, it leaves the cursor in the field. It turns back into a password field when the form is sent, so a password manager offers to save it.</p>
+
         <h3 id="c-scheme">art-scheme</h3>
         <p>One button that moves the page between light, dark and the visitor's system. It says the current choice in words, so it never relies on an icon alone.</p>
         <div class="demo" data-code>
