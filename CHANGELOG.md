@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.2 — 2026-11-19
+
+- The drips no longer flash when `art-header` takes them over. In Safari, for one frame at the moment the header put drips up (leaving the hero, and at every section that repaints it), they were drawn with no styles: both coats at full size and full length, the darker wet one on top, a little under the header. Safari loses the styles a shadow root adopts before it is in the page when anything reads a style between making the element and putting it in, and the header measured the hero's drips in exactly that gap. `art-drip` and `art-splatter` now put their styles on when they are connected, and the header measures first.
+
 ## 1.7.1 — 2026-11-19
 
 What went wrong with `art-header` on a phone. All of it was found in Safari on an iPhone.

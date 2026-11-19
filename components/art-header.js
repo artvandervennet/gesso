@@ -648,12 +648,14 @@ class ArtHeader extends HTMLElement {
     if (this.#drip && !carried && !repainting && under > from) return;
 
     const seed = source?.getAttribute('seed') ?? this.getAttribute('seed') ?? 'header';
+    // measured before the new drips are made: nothing reads a style between making an element
+    // and putting it in the page (see <art-drip>'s connectedCallback for what Safari does then)
+    this.#tall = source?.getBoundingClientRect().height ?? 0;
     const drip = document.createElement('art-drip');
     drip.setAttribute('flush', '');
     drip.setAttribute('pigment', '--surface');
     drip.setAttribute('seed', carried ? seed : `${seed}-${under}`);
     drip.setAttribute('count', source?.getAttribute('count') ?? this.getAttribute('drips') ?? '9');
-    this.#tall = source?.getBoundingClientRect().height ?? 0;
     if (this.#tall) drip.style.setProperty('--art-drip-height', `${this.#tall}px`);
     if (!carried || source.hasAttribute('stagger')) drip.setAttribute('stagger', '');
     if (carried) drip.style.setProperty('--art-drip-elapsed', `${((performance.now() - (source.startedAt ?? 0)) / 1000).toFixed(2)}s`);

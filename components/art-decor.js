@@ -51,8 +51,14 @@ const DESIGN_WIDTH = 1200, UNIT = 1.2, H = 100;
 
 class ArtDrip extends HTMLElement {
   #ro; #width = 0;
-  constructor() { super(); this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [dripCss]; }
+  constructor() { super(); this.attachShadow({ mode: 'open' }); }
   connectedCallback() {
+    // The styles are put on here, not in the constructor. Safari loses styles that a shadow root
+    // adopts before it is in the page, when anything reads a style between making the element
+    // and putting it in: the element is then drawn once with no styles at all. For drips that
+    // <art-header> makes, that was one frame of both coats at full size and full length, the
+    // wet one on top, under the header.
+    this.shadowRoot.adoptedStyleSheets = [dripCss];
     this.setAttribute('aria-hidden', 'true');
     if (this.hasAttribute('height')) this.style.setProperty('--art-drip-height', this.getAttribute('height'));
     this.startedAt = performance.now(); // so <art-header> can show the same drips at the same moment
@@ -139,8 +145,9 @@ const splatCss = sheet(`
 `);
 
 class ArtSplatter extends HTMLElement {
-  constructor() { super(); this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [splatCss]; }
+  constructor() { super(); this.attachShadow({ mode: 'open' }); }
   connectedCallback() {
+    this.shadowRoot.adoptedStyleSheets = [splatCss]; // here and not in the constructor: see <art-drip>
     this.setAttribute('aria-hidden', 'true');
     if (this.hasAttribute('size')) this.style.setProperty('--art-splatter-size', this.getAttribute('size'));
     const seed = seedFrom(this.getAttribute('seed'), 21);
