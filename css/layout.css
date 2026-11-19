@@ -46,7 +46,7 @@
     inset-block-start: calc(100% - 1px);
     z-index: 2;
     /* a wet edge: the drip's own paint, a shade darker */
-    filter: drop-shadow(0 2px 0 color-mix(in oklch, var(--surface), black 16%));
+    --art-drip-wet: color-mix(in oklch, var(--surface), black 16%);
   }
 
   /* ── Header ────────────────────────────────────────────────────────────── */

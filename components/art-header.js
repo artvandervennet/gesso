@@ -209,7 +209,7 @@ const css = sheet(`
      the same paint a shade darker */
   art-drip {
     position: absolute; inset: calc(100% - 1px) 0 auto; --art-drip-height: var(--art-header-drip, 4rem);
-    filter: drop-shadow(0 2px 0 color-mix(in oklch, var(--surface), black 16%));
+    --art-drip-wet: color-mix(in oklch, var(--surface), black 16%);
   }
 
   /* Small screens: the links fold away under a menu button. The bar keeps the wordmark and
@@ -252,7 +252,7 @@ const still = matchMedia('(prefers-reduced-motion: reduce)');
 const FLIGHT = ['translate', 'scale', 'transform-origin', 'opacity', 'position', 'z-index', 'letter-spacing', 'margin-inline-end'];
 
 class ArtHeader extends HTMLElement {
-  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = ''; #resized; #marked; #title = []; #rest = new Map(); #ascents = new Map();
+  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #tall = 0; #fresh = ''; #resized; #marked; #title = []; #rest = new Map(); #ascents = new Map();
   constructor() { super(); this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [css]; }
 
   connectedCallback() {
@@ -424,6 +424,11 @@ class ArtHeader extends HTMLElement {
         this.shadowRoot.querySelector('.paint').style.setProperty('--fresh', style.getPropertyValue('--surface'));
         this.#fresh = style.getPropertyValue('--surface');
       }
+      // The header's own background lies under the blend, where nobody sees it. A phone's browser
+      // reads it all the same: Safari paints the strip above the page, behind the clock, in it.
+      // Left on the old paint until the repaint was done, that strip stayed dark over a header
+      // that had turned light, and then jumped. So it follows the blend's top edge.
+      this.style.setProperty('background-color', `color-mix(in oklch, ${this.#fresh} ${(Math.min(1, Math.max(0, done * 2 - 1)) * 100).toFixed(1)}%, ${stale})`);
       for (const part of this.shadowRoot.querySelectorAll('.paint, .bar, .wipe, .lead, nav, .toggle')) {
         part.style.setProperty('--from', from.toFixed(3));
         part.style.setProperty('--to', to.toFixed(3));
@@ -440,6 +445,7 @@ class ArtHeader extends HTMLElement {
       this.#coat = null;
       wipe.removeAttribute('data-on');
       this.removeAttribute('data-repainting');
+      this.style.removeProperty('background-color');
       for (const role of ROLES) this.shadowRoot.querySelector('.bar[part] > .acts').style.removeProperty(role);
     }
 
@@ -448,7 +454,10 @@ class ArtHeader extends HTMLElement {
     // time it arrives. Scrolling back up they come out again the same way.
     // The band of paint above the drips is always cut away, so they hang straight off the header.
     if (this.#drip) {
-      const height = this.#drip.offsetHeight, band = height * 0.22;
+      // their height as drip() set it. Asking the drips themselves is a layout on every scroll,
+      // and Safari answers wrong the first time: 128px for drips that are 72px tall, which cut
+      // their wet edge off until the next scroll.
+      const height = this.#tall || this.#drip.offsetHeight, band = height * 0.22;
       const room = under + 1 < tops.length ? Math.max(0, tops[under + 1] - box.bottom) : Infinity;
       const cut = height - band - room;
       this.#drip.style.clipPath = `inset(${(band - 2).toFixed(1)}px -1% ${cut > 0 ? `${cut.toFixed(1)}px` : '-40%'} -1%)`;
@@ -644,7 +653,8 @@ class ArtHeader extends HTMLElement {
     drip.setAttribute('pigment', '--surface');
     drip.setAttribute('seed', carried ? seed : `${seed}-${under}`);
     drip.setAttribute('count', source?.getAttribute('count') ?? this.getAttribute('drips') ?? '9');
-    if (source) drip.style.setProperty('--art-drip-height', `${source.getBoundingClientRect().height}px`);
+    this.#tall = source?.getBoundingClientRect().height ?? 0;
+    if (this.#tall) drip.style.setProperty('--art-drip-height', `${this.#tall}px`);
     if (!carried || source.hasAttribute('stagger')) drip.setAttribute('stagger', '');
     if (carried) drip.style.setProperty('--art-drip-elapsed', `${((performance.now() - (source.startedAt ?? 0)) / 1000).toFixed(2)}s`);
     this.#drip = drip;

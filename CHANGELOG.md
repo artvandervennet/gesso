@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.7.1 — 2026-11-19
+
+What went wrong with `art-header` on a phone. All of it was found in Safari on an iPhone.
+
+- The drips have the header's colour again. Their rough edge comes from an SVG filter, and in Safari a colour does not come out of a filter the way it went in: in the dark scheme a header in `rgb(5 24 17)` hung drips in `rgb(0 22 13)`. `art-drip` now uses the filter only to roughen a white shape and paints a flat coat through that shape as a mask, so the paint itself never passes through the filter.
+- The wet edge under the drips is a second coat, 2px lower, and no longer a `drop-shadow` on the element, which is a filter over the paint as well. Set its colour with the new `--art-drip-wet` on an `<art-drip>`; without it there is no wet edge. `.band-drip` and `art-header` set it, so the hero and the header look the same as before. A `filter: drop-shadow(…)` of your own on an `<art-drip>` still works.
+- The strip above the page, behind the clock, follows the header while a section repaints it. Safari colours that strip with the header's own background, which kept the old paint until the repaint was done: halfway down the page a dark strip stood over a header that had already turned light, and then jumped. The background now follows the top edge of the blend.
+- Fresh drips keep their wet edge. Right after the header put new drips up, Safari gave their height as 128px where they are 72px, and the header cut their top edge off until the next scroll. It now uses the height it gave them, which also saves a layout on every scroll.
+
 ## 1.7.0 — 2026-11-19
 
 - New `art-share`: wrap a `<button>` and it shares a link. Where the browser has a share sheet (phones, Safari, Chrome and Edge) the button opens it with your words (`text`) and the link (`url`, default the page itself), to send on with any app there. Where it has none, the button copies the link. The link goes to the sheet inside the words, on a line of its own: handed over apart, WhatsApp, Messages and Mail on a Mac or an iPhone send the address and drop the words. Without a clipboard a field with the address appears under the button. `nosheet` makes it a copy button everywhere. `share()` opens the sheet from script, for a link that was just made, and resolves false when the browser won't; `gesso:share` fires when the link went out.

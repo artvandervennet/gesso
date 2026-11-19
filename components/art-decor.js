@@ -14,10 +14,19 @@ import { dripEdge, splatter, roughFilter, paint, rng, seedFrom, sheet, define, r
  *                      on its own time. Use it on the hero; <art-header> picks the same drips up.)
  *             flush (the drips hang directly off the edge above, with no band of paint under it.
  *                    Use it on the hero, so its drips line up with the header's.)
+ *
+ * Custom properties
+ *   --art-drip-height  how far the drips hang down (default 4rem)
+ *   --art-drip-wet     a colour for a wet edge: the same shape again, 2px lower, under the paint.
+ *                      Usually the paint a shade darker. Without it there is no wet edge.
+ *                      (Not a drop-shadow on the element: see render().)
  */
 const dripCss = sheet(`
-  :host { display: block; block-size: var(--art-drip-height, 4rem); pointer-events: none; margin-block-start: -1px; }
-  svg { inline-size: 100%; block-size: 100%; overflow: visible; }
+  /* one cell: the paint lies on top of its wet edge */
+  :host { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); block-size: var(--art-drip-height, 4rem); pointer-events: none; margin-block-start: -1px; }
+  svg { grid-area: 1 / 1; inline-size: 100%; block-size: 100%; overflow: visible; z-index: 1; }
+  /* moved, so it would be painted over the coat it belongs under: hence the z-index on both */
+  .under { translate: 0 2px; z-index: 0; }
   /* flush: no band of paint under the edge it hangs from. The band (the top 22%) slides up
      behind that edge, so the drips hang directly off it. */
   :host([flush]) { margin-block-start: calc(var(--art-drip-height, 4rem) * -0.22); }
@@ -74,12 +83,25 @@ class ArtDrip extends HTMLElement {
     const { d, drips } = dripEdge(W, H, seed, count);
     const fill = paint(this.getAttribute('pigment'), 'accent');
     const stagger = this.hasAttribute('stagger');
+    const wet = getComputedStyle(this).getPropertyValue('--art-drip-wet').trim();
     // painted again after a resize, staggered drips carry on from where they were
     const since = ((performance.now() - this.startedAt) / 1000).toFixed(2);
+    // The rough edge comes from a filter, and in Safari a colour does not come out of a filter
+    // the way it went in: the dark scheme's first paint, rgb(5 24 17) as a background, came out
+    // as rgb(0 22 13). Next to a header in that same paint, on a phone, the drips were visibly
+    // another colour. So the filter only roughens a white shape, and that shape is the mask of
+    // a flat coat of paint, which never passes through the filter.
+    // The wet edge is a second coat under the first, not a drop-shadow on the element: that
+    // would be a filter over the paint again.
+    const box = `x="-20" y="-20" width="${W + 40}" height="${H + 60}"`;
+    const coat = (name, colour) => `<g${stagger ? ` mask="url(#m${seed})"` : ''}><rect class="${name}" ${box} fill="${colour}" mask="url(#s${seed})"/></g>`;
+    const frame = `viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" focusable="false" style="--since:${since}s"`;
     this.shadowRoot.innerHTML = `
-      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" focusable="false" style="--since:${since}s">
-        <defs>${roughFilter(`d${seed}`, seed, 3, 0.02)}${stagger ? this.shutters(`m${seed}`, drips, W, H, seed) : ''}</defs>
-        <g${stagger ? ` mask="url(#m${seed})"` : ''}><path class="drop" d="${d}" fill="${fill}" filter="url(#d${seed})"/></g>
+      ${wet ? `<svg class="under" ${frame}>${coat('wet', 'var(--art-drip-wet)')}</svg>` : ''}
+      <svg ${frame}>
+        <defs>${roughFilter(`d${seed}`, seed, 3, 0.02)}${stagger ? this.shutters(`m${seed}`, drips, W, H, seed) : ''}
+          <mask id="s${seed}" maskUnits="userSpaceOnUse" ${box}><path d="${d}" fill="#fff" filter="url(#d${seed})"/></mask></defs>
+        ${coat('drop', fill)}
       </svg>`;
   }
 
