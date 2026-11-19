@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.2 — 2026-11-19
+
+- The hero's title lands exactly on the wordmark. It used to land up to a pixel beside and under it, which showed as a faint second name while the two swapped. Three causes, all gone:
+  - The title's place was read in whole pixels (`offsetTop`, `offsetLeft`). It is now measured to a fraction of a pixel.
+  - The title's box was put on the wordmark's box. The two are not the same height around their letters, because their line heights differ. Now the title's first letter is put on the same letter of the wordmark.
+  - A browser rounds a font's height to whole pixels, differently at the title's size and at the wordmark's, and Chrome and Firefox do not round the same way. The two now meet on their baselines, which the header measures on a hidden ruler of its own.
+
 ## 1.6.1 — 2026-11-19
 
 - The name no longer changes when the hero's title becomes the wordmark. The title is set tighter than the wordmark (`letter-spacing: -0.04em` on `.hero h1`), so the two did not cover each other when they swapped: for a moment you saw the name twice, a few pixels apart, and then it got wider. On the way up the title's letters now move apart to the wordmark's spacing, and every letter lands on its twin. A margin takes back the width that adds, so nothing beside the title moves.

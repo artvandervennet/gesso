@@ -113,6 +113,10 @@ const css = sheet(`
   .wipe .wordmark :is(img, svg) {
     display: inline-block; block-size: 1.5em; inline-size: auto; vertical-align: -0.375em; margin-inline-end: 0.4em;
   }
+  /* A letter and, after it, an empty box that stands on the letter's baseline: ascent() sets
+     a font on it and reads how far the baseline lies under the top of the letter's box. */
+  .ruler { position: absolute; inset: 0 auto auto 0; inline-size: 0; block-size: 0; overflow: hidden; visibility: hidden; pointer-events: none; white-space: nowrap; }
+  .ruler i { display: inline-block; inline-size: 0; block-size: 0; }
   /* The hero's title flying up to become the wordmark (see fly()): the wordmark comes in as
      the title lands, and until then it is hidden for real, so it can't take keyboard focus. */
   ::slotted([slot="wordmark"]), .wipe .wordmark { opacity: var(--wordmark-in, 1) !important; }
@@ -239,6 +243,8 @@ const css = sheet(`
 // the colours a paint gives to the things in the bar
 const ROLES = ['--surface', '--ink', '--ink-muted', '--accent', '--rule', '--focus'];
 const esc = (text) => text.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+// what makes a font: the properties ascent() copies onto its ruler
+const FONT = ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'fontStretch', 'fontVariationSettings', 'fontFeatureSettings', 'fontOpticalSizing'];
 // a logo in the wordmark: a picture, or a drawing in the page itself
 const isLogo = (node) => node.nodeType === Node.ELEMENT_NODE && ['img', 'svg'].includes(node.localName);
 const still = matchMedia('(prefers-reduced-motion: reduce)');
@@ -246,7 +252,7 @@ const still = matchMedia('(prefers-reduced-motion: reduce)');
 const FLIGHT = ['translate', 'scale', 'transform-origin', 'opacity', 'position', 'z-index', 'letter-spacing', 'margin-inline-end'];
 
 class ArtHeader extends HTMLElement {
-  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = ''; #resized; #marked; #title = []; #rest = new Map();
+  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = ''; #resized; #marked; #title = []; #rest = new Map(); #ascents = new Map();
   constructor() { super(); this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [css]; }
 
   connectedCallback() {
@@ -262,6 +268,7 @@ class ArtHeader extends HTMLElement {
         </button>
       </div>
       <div class="wipe" aria-hidden="true"></div>
+      <span class="ruler" aria-hidden="true">x<i></i></span>
       <div class="drips" part="drips"></div>`;
     this.shadowRoot.querySelector('nav').setAttribute('aria-label', this.getAttribute('label') || 'Sections');
     // every link in the navigation, and the ones that point at a band of this page
@@ -470,6 +477,7 @@ class ArtHeader extends HTMLElement {
       for (const line of this.#title) for (const prop of FLIGHT) line.style.removeProperty(prop);
       this.#title = lines;
       this.#rest.clear();
+      this.#ascents.clear();
     }
     const wordmark = this.querySelector(':scope > [slot="wordmark"]');
     if (!lines.length || !wordmark) {
@@ -477,10 +485,14 @@ class ArtHeader extends HTMLElement {
       this.style.removeProperty('--wordmark-in');
       return;
     }
-    // where each line is when nothing moves it: offsets leave transforms out
+    // Where each line is when nothing moves it, to a fraction of a pixel. The flight moves a
+    // line and shrinks it about its top left corner, so that corner is where it would be
+    // without the flight, plus the move. (offsetTop and offsetLeft are whole pixels: half a
+    // pixel out is enough to see the title and the wordmark side by side when they swap.)
     const places = lines.map((line) => {
-      let top = 0, left = 0;
-      for (let el = line; el; el = el.offsetParent) { top += el.offsetTop; left += el.offsetLeft; }
+      const box = line.getBoundingClientRect();
+      const [x = 0, y = 0] = (line.style.translate || '0').split(' ').map(parseFloat);
+      const top = box.top - y + scrollY, left = box.left - x + scrollX;
       return { top, left, bottom: top + line.offsetHeight };
     });
     const length = Math.max(...places.map((place) => place.bottom)) - box.bottom; // how far you scroll before it is under the header
@@ -496,6 +508,7 @@ class ArtHeader extends HTMLElement {
         if (done === 1) style.setProperty('opacity', '0'); else style.removeProperty('opacity');
       }
       this.#rest.clear();
+      this.#ascents.clear();
       return;
     }
     // What each line has when nothing moves it: its letter-spacing, as a part of its type size,
@@ -527,7 +540,7 @@ class ArtHeader extends HTMLElement {
       s.setProperty('margin-inline-end', `${(rest.margin - wider * rest.letters * big).toFixed(2)}px`);
       const x = left + (to.left - left) * flown, y = top + (to.top - top) * flown;
       s.setProperty('transform-origin', '0 0');
-      s.setProperty('translate', `${(x - left + scrollX).toFixed(1)}px ${(y - top + scrollY).toFixed(1)}px`);
+      s.setProperty('translate', `${(x - left + scrollX).toFixed(2)}px ${(y - top + scrollY).toFixed(2)}px`);
       s.setProperty('scale', (size ** flown).toFixed(4)); // even steps to the eye: shrinking by a factor, not by an amount
       s.setProperty('opacity', Math.min(1, 2 - handover * 2).toFixed(3)); // out over the second half
       // over the header, except when the open menu hangs there
@@ -537,37 +550,69 @@ class ArtHeader extends HTMLElement {
   }
 
   /**
-   * Where each line of the title lands. A title in one piece lands on the wordmark's corner.
-   * Lines land on their own words: the first on the wordmark's first word, the next on the
-   * word after the first line's last, and so on. A line the wordmark has no words left for
-   * lands on the corner too.
-   * A wordmark with a logo is wider and taller than its name. There every line lands on its
-   * words, a title in one piece on the first of them, and at the height of the name's own line.
+   * Where each line of the title lands: the place for its top left corner that puts its first
+   * letter exactly on the same letter of the wordmark. A title in one piece lands on the
+   * wordmark's first word. Lines land on their own words: the first on the first word, the
+   * next on the word after the first line's last, and so on. A line the wordmark has no
+   * words left for lands on the wordmark's corner.
+   * Letter on letter, not box on box: the wordmark's box can start with a logo, and the two
+   * boxes are not the same height around their letters (their line heights differ).
+   * Across, the letters' left edges meet. Down, their baselines meet: see ascent().
    */
   landings(lines, wordmark) {
     const corner = wordmark.getBoundingClientRect();
-    const logo = [...wordmark.children].some(isLogo);
-    if (lines.length === 1 && !logo) return [corner];
-    const words = []; // where each word of the wordmark starts: its text node, and how far in
-    const texts = document.createTreeWalker(wordmark, NodeFilter.SHOW_TEXT);
-    for (let node; (node = texts.nextNode());) {
-      if (node.parentElement.closest('svg')) continue; // a drawn logo's own text: its <title>, say
-      for (const word of node.data.matchAll(/\S+/g)) words.push([node, word.index]);
-    }
     const small = parseFloat(getComputedStyle(wordmark).fontSize);
+    // where each word starts, as a text node and how far into it
+    const starts = (el) => {
+      const words = [], texts = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      for (let node; (node = texts.nextNode());) {
+        if (node.parentElement.closest('svg')) continue; // a drawn logo's own text: its <title>, say
+        for (const word of node.data.matchAll(/\S+/g)) words.push([node, word.index]);
+      }
+      return words;
+    };
+    const letter = ([node, at]) => { // the box of a word's first letter
+      const range = document.createRange();
+      range.setStart(node, at);
+      range.setEnd(node, at + 1);
+      return range.getBoundingClientRect();
+    };
+    const words = starts(wordmark);
     let at = 0;
     return lines.map((line) => {
-      const word = words[at];
+      const own = starts(line), word = words[at];
       at += line.textContent.trim().split(/\s+/).length;
-      if (!word) return corner;
-      const first = document.createRange(); // the word's first letter
-      first.setStart(...word);
-      first.setEnd(word[0], word[1] + 1);
-      const letter = first.getBoundingClientRect();
-      // The name's line is as tall as its type size (line-height 1), centred on the letters' own
-      // box. Without a logo that line is the whole wordmark, and its top the corner's.
-      return { left: letter.left, top: logo ? letter.top + (letter.height - small) / 2 : corner.top };
+      if (!word || !own.length) return corner;
+      // how far the line's first letter stands inside the line's box, at the wordmark's size.
+      // The line is measured as it is now, shrunk by the flight so far; that is taken out.
+      const box = line.getBoundingClientRect(), mine = letter(own[0]), twin = letter(word);
+      const shrink = small / parseFloat(getComputedStyle(line).fontSize), size = shrink / (parseFloat(line.style.scale) || 1);
+      const baseline = twin.top + this.ascent(word[0].parentElement); // where the wordmark's letters stand
+      return {
+        left: twin.left - (mine.left - box.left) * size,
+        top: baseline - this.ascent(own[0][0].parentElement) * shrink - (mine.top - box.top) * size,
+      };
     });
+  }
+
+  /**
+   * How far the baseline lies under the top of a letter's box, in the font of the given
+   * element. A browser rounds this to whole pixels, each in its own way, so for the same
+   * typeface it is not the same share of the type size in the big title as in the small
+   * wordmark. Putting the tops of the two letters' boxes together leaves the letters
+   * themselves up to a pixel apart; putting the baselines together does not.
+   * Measured on a ruler in the header's own shadow tree, once per font per flight.
+   */
+  ascent(el) {
+    const own = getComputedStyle(el), key = FONT.map((prop) => own[prop]).join('|');
+    if (!this.#ascents.has(key)) {
+      const ruler = this.shadowRoot.querySelector('.ruler');
+      for (const prop of FONT) ruler.style[prop] = own[prop];
+      const letter = document.createRange();
+      letter.selectNodeContents(ruler.firstChild);
+      this.#ascents.set(key, ruler.lastChild.getBoundingClientRect().bottom - letter.getBoundingClientRect().top);
+    }
+    return this.#ascents.get(key);
   }
 
   /**
