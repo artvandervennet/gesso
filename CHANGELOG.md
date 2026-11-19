@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.8.0 — 2026-11-19
+
+All of it is `art-header`.
+
+- An action can fold away with the links. The `actions` slot stays in the bar on a small screen, which is right for the one or two things that must always be in reach, and left no place for a button that may go under "Menu". Give it `fold`: `<art-button slot="actions" fold size="s" variant="secondary"><button type="button">Log out</button></art-button>`. On a wide screen it stands with the other actions, in the order you wrote them; under 48rem the header moves it into the menu as its last line (it changes the element's `slot` to `folded`), and pressing it closes the menu.
+- New `nofold`: the links stay in the bar at every width and there is no "Menu" button. For a header with so little in it that it fits a phone's bar.
+- The menu is painted down from the bar. It used to open by growing its height, which lays the page out again on every frame and stuttered on a phone. It is now always as tall as its lines and is wiped in from its top edge, which moves nothing; its lines come up one after another behind the edge of the paint, and the drips go and come back in step with it. With reduced motion it opens at once.
+- A click outside the header closes the menu, on the page or on a link there. Escape closes it wherever the focus is: Safari gives a button no focus on a click, so with the menu opened by mouse the key did nothing there.
+
 ## 1.7.3 — 2026-11-19
 
 - `art-signature` signs in the same hand everywhere. The name was text set in Kristi, so a page where that font was late, blocked or failed to load showed the signature in the browser's own `cursive` font, which on a Mac is Apple Chancery: a different signature. The component now draws "Art Van der Vennet" and the year from Kristi's outlines, kept in `components/signature-ink.js`, and needs no font for them. It takes the same place as before, to within a third of a pixel, and has the weight the text had on a Mac. Another name than the artist's is still set in `--font-signature`.

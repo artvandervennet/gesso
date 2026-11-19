@@ -72,11 +72,30 @@ import './art-decor.js'; // the header carries an <art-drip>
  * marked line a block that stays together, so the name breaks between them.
  *
  * On small screens (under 48rem) the links fold away under a "Menu" button. The button says
- * whether the menu is open (aria-expanded), its three lines turn into a cross, and the list
- * opens by growing. A link, the button or Escape closes it again.
+ * whether the menu is open (aria-expanded) and its three lines turn into a cross. The list is
+ * painted down from the bar, and its lines come up one after another as the paint passes
+ * them. A link, the button, Escape or a click anywhere outside the header closes it again.
+ *
+ * The actions stay in the bar on a small screen: that is the place for the one or two things
+ * that must be reachable at once. An action that may fold away gets fold. On a wide screen it
+ * stands with the other actions, in the order you wrote them; on a small one the header moves
+ * it into the menu, as its last line, and pressing it closes the menu:
+ *
+ *   <art-header label="Main">
+ *     <a slot="wordmark" href="/">OdyFeed</a>
+ *     <a href="/feed">Feed</a>
+ *     <button slot="actions" type="button" aria-label="Notices">…</button>
+ *     <art-button slot="actions" fold size="s" variant="secondary"><button type="button">Log out</button></art-button>
+ *   </art-header>
+ *
+ * The header moves it by changing its slot attribute, between "actions" and "folded".
+ *
+ * A header with so little in it that it fits a phone's bar needs no menu: nofold keeps the
+ * links in the bar at every width, and there is no "Menu" button.
  *
  * Attributes
  *   label   accessible name of the navigation landmark (default "Sections")
+ *   nofold  never fold the links under a "Menu" button
  *   nodrip  never carry the drips
  *   drips, seed  only used when the first band has no <art-drip> to take along
  *
@@ -147,7 +166,7 @@ const css = sheet(`
   :host([data-open]) .lines span:first-child { translate: 0; rotate: 45deg; }
   :host([data-open]) .lines span:last-child { translate: 0; rotate: -45deg; }
   :host([data-open]) .lines span:nth-child(2) { opacity: 0; }
-  ::slotted(a:not([slot])), .wipe .links .list span {
+  ::slotted(a:not([slot])), .wipe .links .list > span {
     display: block; padding-block: var(--space-3) !important; white-space: nowrap;
     color: var(--ink-muted) !important; text-decoration: none !important;
     font: var(--weight-medium) var(--step--1)/1.25 var(--font-body) !important;
@@ -212,37 +231,53 @@ const css = sheet(`
     --art-drip-wet: color-mix(in oklch, var(--surface), black 16%);
   }
 
-  /* Small screens: the links fold away under a menu button. The bar keeps the wordmark and
-     the button; the links are a list that opens and closes by growing its grid row from
-     nothing to its own height. While closed it is hidden for real (visibility), so the
-     links can't be reached with the keyboard or a screen reader.
-     The list hangs under the bar, over the page: it takes no room in the layout. If it pushed
-     the page down, closing it after you picked a link would pull the page back up, and the
-     section you asked for would end up behind the header. */
+  /* Small screens: the links fold away under a menu button. The bar keeps the wordmark, the
+     actions and the button. The list hangs under the bar, over the page: it takes no room in
+     the layout. If it pushed the page down, closing it after you picked a link would pull the
+     page back up, and the section you asked for would end up behind the header.
+     It is always as tall as its lines and is painted down from the bar: a wipe from its top
+     edge (clip-path), which moves nothing and so costs no layout while it runs. Its lines come
+     up one after another behind the edge of the paint. Closing takes the lines away together
+     and wipes the paint back up. While closed it is hidden for real (visibility), so the links
+     can't be reached with the keyboard or a screen reader. */
   @media (max-width: 48rem) {
-    .toggle { display: inline-flex; }
-    nav, .wipe .links {
-      position: absolute; inset: 100% 0 auto; padding-inline: var(--gutter);
+    :host(:not([nofold])) .toggle { display: inline-flex; }
+    :host(:not([nofold])) nav, :host(:not([nofold])) .wipe .links {
+      position: absolute; inset: 100% 0 auto; display: block; padding-inline: var(--gutter);
       background: var(--surface); box-shadow: 0 1px 0 var(--rule), var(--shadow-lifted);
-      display: grid; grid-template-rows: 0fr; visibility: hidden;
-      transition: grid-template-rows var(--dur-wash) var(--ease-brush), visibility 0s var(--dur-wash);
+      visibility: hidden; clip-path: inset(0 0 100% 0);
+      transition: clip-path var(--dur-wash) var(--ease-brush), visibility 0s var(--dur-wash);
     }
+    /* open: past its own bottom edge, so the shadow it lies on the page with shows too */
     :host([data-open]) nav, :host([data-open]) .wipe .links {
-      grid-template-rows: 1fr; visibility: visible;
-      transition: grid-template-rows var(--dur-wash) var(--ease-brush), visibility 0s;
+      visibility: visible; clip-path: inset(0 0 -4rem 0);
+      transition: clip-path var(--dur-wash) var(--ease-brush), visibility 0s;
     }
-    .fold { min-block-size: 0; overflow: hidden; }
-    .list { flex-direction: column; align-items: flex-start; gap: 0; padding-block: var(--space-1) var(--space-4); overflow: visible; }
-    ::slotted(a:not([slot])), .wipe .links .list span { font-size: var(--step-0) !important; padding-block: var(--space-3) !important; }
-    /* the open list covers the bar's bottom edge, so there is nothing for drips to hang from */
-    :host([data-open]) .drips { visibility: hidden; }
+    :host(:not([nofold])) .list { flex-direction: column; align-items: flex-start; gap: 0; padding-block: var(--space-1) var(--space-4); overflow: visible; }
+    :host(:not([nofold])) ::slotted(a:not([slot])), :host(:not([nofold])) .wipe .links .list > span { font-size: var(--step-0) !important; padding-block: var(--space-3) !important; }
+    /* an action that folded into the menu: a line of its own under the links, at the start like them */
+    ::slotted([slot="folded"]) { align-self: flex-start; margin-block: var(--space-3) var(--space-1); }
+    /* The lines: gone at once when the menu closes, and laid on one after another when it
+       opens, each a little after the one above it (--art-header-nth is its place in the list;
+       from the eighth on they come together, so a long list isn't long in coming). */
+    :host(:not([nofold])) ::slotted(:not([slot])), ::slotted([slot="folded"]), :host(:not([nofold])) .wipe .links .list > * {
+      opacity: 0; transition: opacity var(--dur-dab) linear;
+    }
+    :host([data-open]) ::slotted(:not([slot])), :host([data-open]) ::slotted([slot="folded"]), :host([data-open]) .wipe .links .list > * {
+      opacity: 1; transition: opacity var(--dur-wash) var(--ease-settle) calc(var(--dur-dab) + min(var(--art-header-nth, 0), 7) * 40ms);
+    }
+    /* The open list covers the bar's bottom edge, so there is nothing for drips to hang from.
+       They go as it comes down, and are back once it has been wiped up again. */
+    .drips { transition: opacity var(--dur-dab) linear var(--dur-wash), visibility 0s var(--dur-wash); }
+    :host([data-open]) .drips { opacity: 0; visibility: hidden; transition: opacity var(--dur-dab) linear, visibility 0s var(--dur-dab); }
   }
-  @media (prefers-reduced-motion: reduce) { .lines span, nav, .wipe .links { transition: none !important; } }
+  @media (prefers-reduced-motion: reduce) {
+    .lines span, nav, .wipe .links, .drips, ::slotted(:not([slot])), ::slotted([slot="folded"]), .wipe .links .list > * { transition: none !important; }
+  }
 `);
 
 // the colours a paint gives to the things in the bar
 const ROLES = ['--surface', '--ink', '--ink-muted', '--accent', '--rule', '--focus'];
-const esc = (text) => text.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 // what makes a font: the properties ascent() copies onto its ruler
 const FONT = ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'fontStretch', 'fontVariationSettings', 'fontFeatureSettings', 'fontOpticalSizing'];
 // a logo in the wordmark: a picture, or a drawing in the page itself
@@ -252,7 +287,7 @@ const still = matchMedia('(prefers-reduced-motion: reduce)');
 const FLIGHT = ['translate', 'scale', 'transform-origin', 'opacity', 'position', 'z-index', 'letter-spacing', 'margin-inline-end'];
 
 class ArtHeader extends HTMLElement {
-  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #tall = 0; #fresh = ''; #resized; #marked; #title = []; #rest = new Map(); #ascents = new Map();
+  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #tall = 0; #fresh = ''; #resized; #marked; #outside; #compact = null; #title = []; #rest = new Map(); #ascents = new Map();
   constructor() { super(); this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [css]; }
 
   connectedCallback() {
@@ -261,7 +296,7 @@ class ArtHeader extends HTMLElement {
       <div class="paint" aria-hidden="true"></div>
       <div class="bar" part="bar">
         <div class="lead"><slot name="wordmark"></slot></div>
-        <nav id="links" part="nav"><div class="fold"><div class="list"><slot></slot></div></div></nav>
+        <nav id="links" part="nav"><div class="fold"><div class="list"><slot></slot><slot name="folded"></slot></div></div></nav>
         <div class="acts" part="actions"><slot name="actions"></slot></div>
         <button class="toggle" type="button" aria-expanded="false" aria-controls="links">
           <span>Menu</span><span class="lines" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -274,11 +309,13 @@ class ArtHeader extends HTMLElement {
     // every link in the navigation, and the ones that point at a band of this page
     this.navLinks = [...this.querySelectorAll(':scope > a:not([slot])')];
     this.links = this.navLinks.filter((a) => (a.getAttribute('href') || '').startsWith('#'));
+    // the actions that fold into the menu on a small screen (see place())
+    this.foldable = [...this.querySelectorAll(':scope > [fold]')];
     // the second coat: a picture of the bar, for the wipe to show in the new colours
     const wordmark = this.querySelector(':scope > [slot="wordmark"]');
     this.shadowRoot.querySelector('.wipe').innerHTML = `<div class="bar">
       <div class="lead">${wordmark ? '<span class="wordmark"></span>' : ''}</div>
-      <div class="links"><div class="fold"><div class="list">${this.navLinks.map((a) => `<span>${esc(a.textContent)}</span>`).join('')}</div></div></div>
+      <div class="links"><div class="fold"><div class="list"></div></div></div>
       <div class="acts"></div>
       <span class="toggle"><span>Menu</span><span class="lines"><span></span><span></span><span></span></span></span></div>`;
     // the wordmark's copy: its words, and its logo where it has one, in the order they stand in
@@ -286,16 +323,39 @@ class ArtHeader extends HTMLElement {
       if (node.nodeType !== Node.ELEMENT_NODE && node.nodeType !== Node.TEXT_NODE) continue; // a framework's comment
       this.shadowRoot.querySelector('.wipe .wordmark').append(isLogo(node) ? node.cloneNode(true) : node.textContent);
     }
-    const filled = !!this.querySelector(':scope > [slot="actions"]');
-    for (const acts of this.shadowRoot.querySelectorAll('.acts')) acts.classList.toggle('filled', filled);
+    // the copy of the list: each link's words. --art-header-nth is a line's place in the menu,
+    // for the order the lines come up in when it opens; the folded actions come after the links.
+    this.copies = new Map();
+    const list = this.shadowRoot.querySelector('.wipe .links .list');
+    for (const [nth, item] of [...this.navLinks, ...this.foldable].entries()) {
+      item.style.setProperty('--art-header-nth', String(nth));
+      if (item.localName !== 'a') continue;
+      const copy = document.createElement('span');
+      copy.textContent = item.textContent;
+      copy.style.setProperty('--art-header-nth', String(nth));
+      list.append(copy);
+      this.copies.set(item, copy);
+    }
     // the menu button (small screens only)
     this.toggle = this.shadowRoot.querySelector('button.toggle');
     this.toggle.addEventListener('click', () => this.open(!this.hasAttribute('data-open')));
-    // following a link closes the menu; so does Escape, which hands focus back to the button
-    for (const a of this.navLinks) a.addEventListener('click', () => this.open(false));
-    this.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.hasAttribute('data-open')) { this.open(false); this.toggle.focus(); }
-    });
+    // following a link closes the menu, and so does an action in it
+    for (const item of [...this.navLinks, ...this.foldable]) item.addEventListener('click', () => this.open(false));
+    // So do two things anywhere on the page. Escape, which hands the focus back to the button
+    // when it was in the menu (Safari gives a button no focus on a click, so the key is
+    // listened for on the window and not only inside the header). And a click outside the
+    // header: on the page, or on a link there.
+    this.#outside = (e) => {
+      if (!this.hasAttribute('data-open')) return;
+      if (e.type === 'keydown') {
+        if (e.key !== 'Escape') return;
+        const within = this.contains(document.activeElement) || !!this.shadowRoot.activeElement;
+        this.open(false);
+        if (within) this.toggle.focus();
+      } else if (!e.composedPath().includes(this)) this.open(false);
+    };
+    addEventListener('click', this.#outside);
+    addEventListener('keydown', this.#outside);
     // the brushstroke can only be placed once the list has finished opening
     this.shadowRoot.querySelector('nav').addEventListener('transitionend', () => this.update());
     // the brushstroke under the current link, once in each coat
@@ -306,7 +366,7 @@ class ArtHeader extends HTMLElement {
         ${bristles(W, H, seed, 3).map((b) => `<path class="streak" d="${b.d}" stroke-width="${b.w}" stroke-linecap="round" fill="none" opacity=".55"/>`).join('')}</g></svg>`;
     for (const bar of this.shadowRoot.querySelectorAll('.bar')) bar.insertAdjacentHTML('beforeend', stroke);
     this.marks = [...this.shadowRoot.querySelectorAll('.mark')];
-    this.#under = -1; this.#reading = -1; this.#coat = null;
+    this.#under = -1; this.#reading = -1; this.#coat = null; this.#compact = null;
     this.removeAttribute('data-open');
     this.#schedule = () => { cancelAnimationFrame(this.#raf); this.#raf = requestAnimationFrame(() => this.update()); };
     addEventListener('scroll', this.#schedule, { passive: true });
@@ -315,8 +375,11 @@ class ArtHeader extends HTMLElement {
     // bands and moves aria-current. Watch for both.
     this.#resized = new ResizeObserver(this.#schedule);
     this.#resized.observe(document.body);
-    this.#marked = new MutationObserver(this.#schedule);
-    this.#marked.observe(this, { attributes: true, subtree: true, attributeFilter: ['aria-current'] });
+    // A framework that takes the page over after the server rendered it (hydration) writes an
+    // element's attributes again, its slot among them: an action that had folded into the menu
+    // is then put back where it belongs.
+    this.#marked = new MutationObserver(() => { this.place(); this.#schedule(); });
+    this.#marked.observe(this, { attributes: true, subtree: true, attributeFilter: ['aria-current', 'slot'] });
     this.update();
   }
 
@@ -324,6 +387,8 @@ class ArtHeader extends HTMLElement {
     cancelAnimationFrame(this.#raf);
     removeEventListener('scroll', this.#schedule);
     removeEventListener('resize', this.#schedule);
+    removeEventListener('click', this.#outside);
+    removeEventListener('keydown', this.#outside);
     this.#resized?.disconnect();
     this.#marked?.disconnect();
     this.fly([]);
@@ -339,6 +404,18 @@ class ArtHeader extends HTMLElement {
   /** True when the links are folded under the menu button. */
   get compact() { return getComputedStyle(this.toggle).display !== 'none'; }
 
+  /**
+   * Puts every action that may fold where it belongs at this width: in the menu when the links
+   * are folded away, with the other actions when they are not. The actions' box is only there
+   * while something is in it.
+   */
+  place() {
+    const slot = this.compact ? 'folded' : 'actions';
+    for (const item of this.foldable) if (item.slot !== slot) item.slot = slot;
+    const filled = !!this.querySelector(':scope > [slot="actions"]');
+    for (const acts of this.shadowRoot.querySelectorAll('.acts')) acts.classList.toggle('filled', filled);
+  }
+
   /** The painted bands of the page, top to bottom: every data-paint element that isn't inside another. */
   bands() {
     return [...document.querySelectorAll('[data-paint]')]
@@ -353,6 +430,9 @@ class ArtHeader extends HTMLElement {
    * read, and where an anchor link lands its section.
    */
   update() {
+    // the window crossed the width where the links fold: the actions that fold go with them
+    const compact = this.compact;
+    if (compact !== this.#compact) { this.#compact = compact; this.place(); }
     const bands = this.bands();
     if (!bands.length) return;
     const tops = bands.map((band) => band.getBoundingClientRect().top);
@@ -379,8 +459,7 @@ class ArtHeader extends HTMLElement {
     // keep the stroke under the current link (its place changes with the window and the weight)
     // the current link is the band you are in, or the page you are on (aria-current="page")
     const current = this.navLinks.find((a) => a.hasAttribute('aria-current'));
-    const spans = wipe.querySelectorAll('.links .list span');
-    this.navLinks.forEach((a, i) => spans[i]?.classList.toggle('current', a === current));
+    for (const a of this.navLinks) this.copies.get(a)?.classList.toggle('current', a === current);
     wipe.querySelector('.acts').style.setProperty('--acts-width', `${this.shadowRoot.querySelector('.bar[part] > .acts').offsetWidth}px`);
     const bar = this.shadowRoot.querySelector('.bar[part]').getBoundingClientRect();
     // folded away, there is no link to put it under
