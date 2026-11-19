@@ -194,6 +194,27 @@
     padding-inline-start: var(--space-3);
   }
 
+  /* A button that changes its words, as the one in <art-share> does: one
+     <span class="wordings"> in the button with a <span data-when="…"> per wording. They lie on
+     top of each other and one shows, so the button is as wide as the longest and nothing
+     beside it moves. The hidden ones are no part of the button's name. */
+  .wordings { display: inline-grid; }
+  .wordings > [data-when] {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+  /* Until <art-share> has looked at the browser, the first wording shows. Then the one it
+     names in data-state: "share", "copy" or "copied". */
+  art-share:not([data-state]) .wordings > [data-when] ~ [data-when],
+  art-share[data-state="share"] .wordings > [data-when]:not([data-when="share"]),
+  art-share[data-state="copy"] .wordings > [data-when]:not([data-when="copy"]),
+  art-share[data-state="copied"] .wordings > [data-when]:not([data-when="copied"]) {
+    visibility: hidden;
+  }
+
   /* ── App patterns ──────────────────────────────────────────────────────── */
   /* For sites that are an app as well as a page: feeds, people, dialogs, menus, tabs. */
 

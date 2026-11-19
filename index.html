@@ -560,6 +560,44 @@
         </details>
         <p class="a11y">The input stays a real input with its own label, autofill and validation. The eye is a real button inside the field, 44px square, with a fixed name and <code>aria-pressed</code>. Pressed with a mouse, it leaves the cursor in the field. It turns back into a password field when the form is sent, so a password manager offers to save it.</p>
 
+        <h3 id="c-share">art-share</h3>
+        <p>A button that shares a link. On a phone, and in every browser that has a share sheet, it opens the sheet with your words and the link, to send on with any app there. In a browser without one it copies the link and says so in the button itself.</p>
+        <div class="demo" data-code>
+          <art-share url="#c-share" text="Have a look at Gesso's share button.">
+            <art-button variant="secondary"><button type="button">
+              <span class="wordings">
+                <span data-when="share">Share</span>
+                <span data-when="copy">Copy link</span>
+                <span data-when="copied">Copied</span>
+              </span>
+            </button></art-button>
+          </art-share>
+          <art-share url="#c-share" nosheet>
+            <art-button variant="quiet"><button type="button">
+              <span class="wordings">
+                <span data-when="copy">Copy link</span>
+                <span data-when="copied">Copied</span>
+              </span>
+            </button></art-button>
+          </art-share>
+        </div>
+        <details class="api"><summary>Attributes, methods and events</summary>
+          <table><tbody>
+            <tr><td><code>url</code></td><td>The address to share. One that starts with <code>/</code> or <code>#</code> is on this site. Default: the page itself.</td></tr>
+            <tr><td><code>text</code></td><td>The words that go with the link. Leave it out to share the bare link. The link is put in the words, on a line of its own under them: handed over apart, WhatsApp, Messages and Mail on a Mac or an iPhone send the address and drop the words.</td></tr>
+            <tr><td><code>heading</code></td><td>A subject, for the apps that have one, such as mail.</td></tr>
+            <tr><td><code>nosheet</code></td><td>Always copy, also where there is a share sheet. Leave the "share" wording out.</td></tr>
+            <tr><td><code>copied-label</code></td><td>What a screen reader hears after copying. Default "Link copied".</td></tr>
+            <tr><td><code>manual-label</code></td><td>The label of the field that appears when there is no clipboard. Default "Copy this link".</td></tr>
+            <tr><td><code>data-state</code></td><td>Set by the element: <code>share</code> where the button opens a sheet, <code>copy</code> where it copies, <code>copied</code> for three seconds after copying.</td></tr>
+            <tr><td>Wordings</td><td>One <code>&lt;span class="wordings"&gt;</code> in the button, with a <code>&lt;span data-when&gt;</code> for <code>share</code>, <code>copy</code> and <code>copied</code>. They lie on top of each other and the one for the moment shows, so the button keeps the width of the longest. Before the element has loaded the first one shows. A button with plain words works too; it never changes them.</td></tr>
+            <tr><td><code>share()</code></td><td>Opens the sheet from script, for a link you have just made. Resolves <code>false</code> when there is no sheet or the browser won't open one, which it only does shortly after a press; the button is still there then.</td></tr>
+            <tr><td><code>copy()</code></td><td>Copies the link. Resolves <code>false</code> when it could only show it, to copy by hand.</td></tr>
+            <tr><td><code>gesso:share</code></td><td>Fires after the link went out. <code>detail.via</code> is <code>sheet</code>, <code>clipboard</code> or <code>manual</code>.</td></tr>
+          </tbody></table>
+        </details>
+        <p class="a11y">The button stays a real button, with the name of the wording that shows. "Link copied" is also said in a status line nobody sees, because a screen reader doesn't read a button's new words while the focus is on it. Without a clipboard (a page on plain http) a labelled field appears under the button with the address in it, selected.</p>
+
         <h3 id="c-scheme">art-scheme</h3>
         <p>One button that moves the page between light, dark and the visitor's system. It says the current choice in words, so it never relies on an icon alone.</p>
         <div class="demo" data-code>

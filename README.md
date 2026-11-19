@@ -289,6 +289,7 @@ Put `npm run check` in CI.
 | `<art-theme>` | Theme picker: palettes for every theme in `themes.json`. `label`, `remember`. Fires `gesso:themechange`. |
 | `<art-scheme>` | One button that switches between light, dark and the visitor's system, and says which in words. `remember`, `label`. Fires `gesso:schemechange`. |
 | `<art-password>` | Wraps a native `<input type="password">` and puts an eye at its end that shows and hides what was typed; hidden again when the form is sent. `label`. |
+| `<art-share>` | Wraps a native `<button>` and makes it share a link: it opens the device's share sheet with your words and the link, and where the browser has no sheet it copies the link and says so in the button. `url`, `text`, `heading`, `nosheet`, `copied-label`, `manual-label`. Sets `data-state`; `share()` and `copy()`; fires `gesso:share`. |
 | `<art-header>` | The sticky page header and the standard navigation, folding into a labelled Menu button under 48rem: wordmark, section links (`aria-current="location"` on the one you're in), and drips: it carries the hero's along, and drips afresh each time a section repaints it. Wears the paint of the section above the current one. On a home page, give the hero's title `data-wordmark` and it flies up into the header as the wordmark; a name that takes more than one line gets it on a `<span>` per line. The wordmark's link can hold a logo, an `<img>` before the name. `label`, `nodrip`. |
 | `<art-railnav>` | Section nav drawn as a git branch, for use inside a page: a painted lane with a dab per section, filling as you scroll (`aria-current="location"`). `label`. |
 | `<art-gitflow>` | Turns an `<ol>` into a painted git graph that reveals on scroll. Write the list newest first and add `newest-first`. Items: `data-branch`, `data-pigment`, `data-open`, `data-current`. |
@@ -302,6 +303,7 @@ Put `npm run check` in CI.
 - All decoration is `aria-hidden`. Lists stay lists, links stay links.
 - `art-button` keeps native focus, keyboard and form behaviour; targets are 44px tall (36px for `size="s"`).
 - `art-password`'s eye is a real button with a fixed name and `aria-pressed`, so a screen reader hears "Show password, toggle button, pressed" rather than a name that changes under the focus.
+- `art-share` leaves the button a real button. Its hidden wordings are no part of its name, and "Link copied" is also said in a status line, because a screen reader doesn't read a button's new words while the focus is on it. Without a clipboard it shows the address in a labelled field, selected.
 - Focus rings use `--focus` (the complement), 3px with a 3px offset, at least 3:1 on every paint.
 - Errors are always red or orange: when a theme's complement isn't, the generator mixes a red.
 - Status colours always come with a word; branch colours always come with a branch name.

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.0 — 2026-11-19
+
+- New `art-share`: wrap a `<button>` and it shares a link. Where the browser has a share sheet (phones, Safari, Chrome and Edge) the button opens it with your words (`text`) and the link (`url`, default the page itself), to send on with any app there. Where it has none, the button copies the link. The link goes to the sheet inside the words, on a line of its own: handed over apart, WhatsApp, Messages and Mail on a Mac or an iPhone send the address and drop the words. Without a clipboard a field with the address appears under the button. `nosheet` makes it a copy button everywhere. `share()` opens the sheet from script, for a link that was just made, and resolves false when the browser won't; `gesso:share` fires when the link went out.
+- New `.wordings` in `layout.css`, for a button that changes its words: a `<span data-when="…">` per wording, on top of each other, so the button keeps the width of the longest. `art-share` shows "share", "copy" or "copied", whichever fits the moment, through `data-state`.
+
 ## 1.6.2 — 2026-11-19
 
 - The hero's title lands exactly on the wordmark. It used to land up to a pixel beside and under it, which showed as a faint second name while the two swapped. Three causes, all gone:
