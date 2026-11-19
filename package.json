@@ -56,6 +56,7 @@
     "tokens": "node scripts/build-tokens.mjs",
     "check": "node scripts/check-contrast.mjs",
     "kit": "node scripts/export-design-kit.mjs",
+    "signature": "node scripts/build-signature.mjs",
     "docs": "python3 -m http.server 8080"
   },
   "keywords": [

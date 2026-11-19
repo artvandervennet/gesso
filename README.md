@@ -276,6 +276,14 @@ npm run check    # contrast check for every pairing, paint and theme; exits 1 be
 
 Put `npm run check` in CI.
 
+### Changing the signature
+
+```sh
+npm run signature   # Kristi's outlines for the name and the year → components/signature-ink.js
+```
+
+`<art-signature>` draws the name from that file. Run it after changing the font or the name in `scripts/build-signature.mjs`.
+
 ## Components
 
 | Element | What it does |
@@ -285,7 +293,7 @@ Put `npm run check` in CI.
 | `<art-swatch>` | Paint chip documenting a colour token, with live contrast and copy. `token`, `name`, `code`, `size`. |
 | `<art-canvas>` | Stretched-canvas card; paints its own study when there's no image. Whole card follows the link in its heading; other links inside stay ordinary links. `pigment`, `seed`, `wet`. |
 | `<art-tape>` | Tape tag in the complement colour. `pigment`, `seed`, `flat`. |
-| `<art-signature>` | Your tag in the footer, like the signature on a painting. `year`, `pigment`, `animate`. |
+| `<art-signature>` | Your tag in the footer, like the signature on a painting. Drawn from outlines, so it is the same hand with or without the fonts. `year`, `pigment`, `animate`. |
 | `<art-theme>` | Theme picker: palettes for every theme in `themes.json`. `label`, `remember`. Fires `gesso:themechange`. |
 | `<art-scheme>` | One button that switches between light, dark and the visitor's system, and says which in words. `remember`, `label`. Fires `gesso:schemechange`. |
 | `<art-password>` | Wraps a native `<input type="password">` and puts an eye at its end that shows and hides what was typed; hidden again when the form is sent. `label`. |
