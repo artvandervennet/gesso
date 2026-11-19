@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.0 — 2026-11-19
+
+- New `.footer-note` in `layout.css`: one sentence in the footer, small and muted, on a line of its own above the rest of the footer's row. Every site uses it to say where to report a fault or ask for something: `<p class="footer-note">Something not quite right, or something missing? <a href="https://github.com/you/your-site/issues/new/choose">Open an issue on GitHub</a>.</p>`. The link goes to the site's own repo; at `/issues/new/choose` GitHub asks whether it is a bug or a feature when the repo has forms for them, and opens an empty issue when it has none. The class sets its own size and colour, so it looks the same in a footer that is laid out another way.
+
 ## 1.8.0 — 2026-11-19
 
 All of it is `art-header`.

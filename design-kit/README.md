@@ -42,6 +42,7 @@ Read **Gesso-design-guide.pdf** first. It's the full system: principles, themes 
 - Animate decoration and responses only: drips running, the header repainting as you scroll, a dab on press, colours washing on a theme change. Content never fades or slides in, and never waits.
 - Nothing changes place on hover. Buttons and links respond with paint; a card may grow slightly, in place.
 - Every page footer carries the signature, bottom right, like the corner of a painting. The footer has no rule above it: it reads as one block with the last section.
+- Every page footer has one small muted sentence that says where to report a fault: "Something not quite right, or something missing? Open an issue on GitHub."
 - Timelines are git graphs, newest first.
 - On phones the header folds its links into a labelled Menu button.
 - Every theme has a light and a dark scheme. The deep paint is the same in both; design the sections in both.

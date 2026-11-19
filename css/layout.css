@@ -17,7 +17,12 @@
          </div>
        </section>
      </main>
-     <footer class="band page-footer" data-paint="deep"><div class="inner"><art-signature>…</art-signature></div></footer>
+     <footer class="band page-footer" data-paint="deep">
+       <div class="inner">
+         <p class="footer-note">Something not quite right, or something missing? <a href="…/issues/new/choose">Open an issue on GitHub</a>.</p>
+         <art-signature>…</art-signature>
+       </div>
+     </footer>
 */
 
 @layer gesso.layout {
@@ -370,6 +375,16 @@
     color: var(--ink-muted);
   }
   .page-footer art-signature { margin-inline-start: auto; }
+
+  /* One sentence in the footer, such as where to report a fault: small and muted, and on a
+     line of its own above the rest of the footer's row. It says its size and colour itself,
+     so it looks the same in a footer that is laid out another way. */
+  .page-footer .footer-note {
+    flex-basis: 100%;
+    max-inline-size: none;
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
 
   @media print {
     .band-drip { --art-drip-height: 3rem; }

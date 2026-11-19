@@ -91,7 +91,11 @@ Every page follows the same anatomy, and `layout.css` has the classes for it:
 
   <!-- 4. The footer, after main, in the deep paint. Nothing comes after it, and it doesn't drip. -->
   <footer class="band page-footer" data-paint="deep">
-    <div class="inner"><art-signature year="2026">Art Van der Vennet</art-signature></div>
+    <div class="inner">
+      <!-- Where to report a fault or ask for something: the repo's own page for a new issue. -->
+      <p class="footer-note">Something not quite right, or something missing? <a href="https://github.com/you/your-site/issues/new/choose">Open an issue on GitHub</a>.</p>
+      <art-signature year="2026">Art Van der Vennet</art-signature>
+    </div>
   </footer>
 </body>
 ```
@@ -108,6 +112,7 @@ Every page follows the same anatomy, and `layout.css` has the classes for it:
 | `.field-row`, `.form-message` | A field with its button beside it, and what the form says back. |
 | `.stack`, `.avatar`, `.dialog`, `.menu`, `.tabs`, `.skeleton`, `.empty` | For apps: a feed, a person, a native dialog, a popover menu, tabs, loading and empty states. |
 | `.page-footer` | The footer: same paint as the last section, no rule, the signature bottom right. |
+| `.footer-note` | One sentence in the footer, small and muted, on a line of its own: where to open an issue. |
 
 The rules behind it:
 
@@ -121,6 +126,7 @@ The rules behind it:
 - **Fresh paint drips.** Every later section repaints the header, and it drips again: new drips, each after its own wait.
 - **Drips stay in their section.** They hang straight off the header, with no band of paint under it, and never into the next section: as it comes up they get shorter, all together, and are gone when it reaches the header.
 - **The footer is outside `<main>`** and is the last thing on the page.
+- **The footer says where to report a fault.** Every site has one `.footer-note` with the same words, "Something not quite right, or something missing? Open an issue on GitHub.", in the page's language. The link goes to the site's own repo at `/issues/new/choose`: GitHub asks there whether it is a bug or a feature when the repo has forms for them, and opens an empty issue when it has none.
 - **Timelines read newest first**, like `git log`.
 - **Sections are two columns on wide screens**: the title and intro on the left, pinned while the section scrolls, the content on the right.
 - **There is one card.** No outline, square corners, a soft shadow. Every card on a page looks the same, and a grid of them never ends in a hole.

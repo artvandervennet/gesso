@@ -918,7 +918,11 @@
 &lt;/main&gt;
 
 &lt;footer class="band page-footer" data-paint="deep"&gt;
-  &lt;div class="inner"&gt;&lt;art-signature year="2026"&gt;…&lt;/art-signature&gt;&lt;/div&gt;
+  &lt;div class="inner"&gt;
+    &lt;p class="footer-note"&gt;Something not quite right, or something missing?
+      &lt;a href="https://github.com/you/your-site/issues/new/choose"&gt;Open an issue on GitHub&lt;/a&gt;.&lt;/p&gt;
+    &lt;art-signature year="2026"&gt;…&lt;/art-signature&gt;
+  &lt;/div&gt;
 &lt;/footer&gt;</code></pre>
         <div style="overflow-x:auto">
           <table>
@@ -940,6 +944,7 @@
               <tr><td><code>.tabs</code></td><td>A <code>role="tablist"</code> of <code>role="tab"</code> buttons. The selected one is bolder and underlined.</td></tr>
               <tr><td><code>.skeleton</code>, <code>.empty</code></td><td>Something is on its way, and nothing is here. The skeleton doesn't shimmer.</td></tr>
               <tr><td><code>.page-footer</code></td><td>The footer after <code>&lt;main&gt;</code>: same deep paint as the last section, no rule, the signature bottom right.</td></tr>
+              <tr><td><code>.footer-note</code></td><td>One sentence in the footer, small and muted, on a line of its own. Every site uses it to say where to report a fault, with the same words and a link to its own repo at <code>/issues/new/choose</code>: GitHub asks there whether it is a bug or a feature, and opens an empty issue when the repo has no forms for them.</td></tr>
             </tbody>
           </table>
         </div>
@@ -1001,6 +1006,7 @@ git push --follow-tags</code></pre>
 
   <footer class="band page-footer" data-paint="deep">
     <div class="inner">
+      <p class="footer-note">Something not quite right, or something missing? <a href="https://github.com/artvandervennet/gesso/issues/new/choose">Open an issue on GitHub</a>.</p>
       <div class="footer-notes">
         <span>Gesso 1.2, for vandervennet.art</span>
         <span>Inspired by the work of Bart Delrue and Michiel Van de Velde, with their blessing.</span>
