@@ -243,10 +243,10 @@ const esc = (text) => text.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;'
 const isLogo = (node) => node.nodeType === Node.ELEMENT_NODE && ['img', 'svg'].includes(node.localName);
 const still = matchMedia('(prefers-reduced-motion: reduce)');
 // what fly() writes on the hero's title, so it can be taken off again
-const FLIGHT = ['translate', 'scale', 'transform-origin', 'opacity', 'position', 'z-index'];
+const FLIGHT = ['translate', 'scale', 'transform-origin', 'opacity', 'position', 'z-index', 'letter-spacing', 'margin-inline-end'];
 
 class ArtHeader extends HTMLElement {
-  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = ''; #resized; #marked; #title = [];
+  #raf = 0; #schedule; #under = -1; #reading = -1; #source = null; #coat = null; #drip = null; #fresh = ''; #resized; #marked; #title = []; #rest = new Map();
   constructor() { super(); this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [css]; }
 
   connectedCallback() {
@@ -455,17 +455,21 @@ class ArtHeader extends HTMLElement {
    * The hero's title (data-wordmark) on its way up to become the wordmark. The flight follows
    * the scroll: it starts at the top of the page and ends when the title's own place has gone
    * under the header's bottom edge. On the way the title moves from its own place to the
-   * wordmark's and shrinks to the wordmark's size, over the header. Over the last stretch it
-   * fades out while the header's wordmark fades in; after that it stays in its place, unseen,
-   * so the page keeps its heading for screen readers. With no title to fly, the wordmark is
+   * wordmark's and shrinks to the wordmark's size, over the header. Over the last stretch the
+   * two swap: first the header's wordmark comes in under the title, then the title fades away
+   * over it. One of the two is solid at every moment, so the name never dims. After that the
+   * title stays in its place, unseen, so the page keeps its heading for screen readers. With no title to fly, the wordmark is
    * simply there.
    * A title marked line by line flies line by line: each one goes to its own words in the
    * wordmark, so the lines of a long name come together into one on the way up.
+   * A big title is set tighter than the small wordmark. On the way up its letters move apart
+   * to the wordmark's spacing, so when the two swap, every letter stands where its twin does.
    */
   fly(lines, box, open) {
     if (lines.length !== this.#title.length || lines.some((line, i) => line !== this.#title[i])) {
       for (const line of this.#title) for (const prop of FLIGHT) line.style.removeProperty(prop);
       this.#title = lines;
+      this.#rest.clear();
     }
     const wordmark = this.querySelector(':scope > [slot="wordmark"]');
     if (!lines.length || !wordmark) {
@@ -484,29 +488,48 @@ class ArtHeader extends HTMLElement {
     // the last stretch: the title goes, the wordmark comes
     const handover = still.matches ? Math.floor(done) : Math.min(1, Math.max(0, (done - 0.85) / 0.15));
     this.toggleAttribute('data-wordmark-away', handover === 0);
-    this.style.setProperty('--wordmark-in', handover.toFixed(3));
+    this.style.setProperty('--wordmark-in', Math.min(1, handover * 2).toFixed(3)); // in over the first half of the swap
 
     if (still.matches || done === 0 || done === 1) {
       for (const { style } of lines) {
         for (const prop of FLIGHT) if (prop !== 'opacity') style.removeProperty(prop);
         if (done === 1) style.setProperty('opacity', '0'); else style.removeProperty('opacity');
       }
+      this.#rest.clear();
       return;
     }
+    // What each line has when nothing moves it: its letter-spacing, as a part of its type size,
+    // and the margin after it. Read once a flight, before the flight changes either.
+    for (const line of lines) {
+      if (this.#rest.has(line)) continue;
+      const own = getComputedStyle(line);
+      this.#rest.set(line, {
+        spacing: (parseFloat(own.letterSpacing) || 0) / parseFloat(own.fontSize),
+        margin: parseFloat(own.marginInlineEnd) || 0,
+        letters: [...line.textContent.trim()].length,
+      });
+    }
     const landings = this.landings(lines, wordmark);
-    const small = parseFloat(getComputedStyle(wordmark).fontSize);
+    const mark = getComputedStyle(wordmark);
+    const small = parseFloat(mark.fontSize);
+    const loose = (parseFloat(mark.letterSpacing) || 0) / small; // the wordmark's letter-spacing, the same way
     // From where it stood at the top of the page to the wordmark, in step with the scroll but
     // slower than the page, so it never overshoots. It is there when the hand-over starts, so
     // the two swap in the same place. The page moved it by the scroll; undo that.
     const flown = Math.min(1, done / 0.85);
     lines.forEach((line, i) => {
       const { top, left } = places[i], to = landings[i], s = line.style;
-      const size = small / parseFloat(getComputedStyle(line).fontSize);
+      const big = parseFloat(getComputedStyle(line).fontSize), size = small / big;
+      // The letters move apart to the wordmark's spacing. That makes the line wider; the margin
+      // takes the extra width back, so nothing beside the line moves and the title can't wrap.
+      const rest = this.#rest.get(line), wider = (loose - rest.spacing) * flown;
+      s.setProperty('letter-spacing', `${(rest.spacing + wider).toFixed(4)}em`);
+      s.setProperty('margin-inline-end', `${(rest.margin - wider * rest.letters * big).toFixed(2)}px`);
       const x = left + (to.left - left) * flown, y = top + (to.top - top) * flown;
       s.setProperty('transform-origin', '0 0');
       s.setProperty('translate', `${(x - left + scrollX).toFixed(1)}px ${(y - top + scrollY).toFixed(1)}px`);
       s.setProperty('scale', (size ** flown).toFixed(4)); // even steps to the eye: shrinking by a factor, not by an amount
-      s.setProperty('opacity', (1 - handover).toFixed(3));
+      s.setProperty('opacity', Math.min(1, 2 - handover * 2).toFixed(3)); // out over the second half
       // over the header, except when the open menu hangs there
       if (open) { s.removeProperty('position'); s.removeProperty('z-index'); }
       else { s.setProperty('position', 'relative'); s.setProperty('z-index', '31'); }

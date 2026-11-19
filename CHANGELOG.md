@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.1 — 2026-11-19
+
+- The name no longer changes when the hero's title becomes the wordmark. The title is set tighter than the wordmark (`letter-spacing: -0.04em` on `.hero h1`), so the two did not cover each other when they swapped: for a moment you saw the name twice, a few pixels apart, and then it got wider. On the way up the title's letters now move apart to the wordmark's spacing, and every letter lands on its twin. A margin takes back the width that adds, so nothing beside the title moves.
+- The name no longer dims during that swap. The title used to fade out while the wordmark faded in, which left both half see-through halfway. Now the wordmark comes in under the title first and the title fades away over it, so one of the two is solid at every moment.
+
 ## 1.6.0 — 2026-11-19
 
 - `art-header`'s wordmark can carry a logo. Put an `<img>` (or an inline `<svg>`) inside the wordmark's link, before the name: `<a slot="wordmark" href="/"><img src="/logo.svg" alt="" width="28" height="28">OdyFeed</a>`. `layout.css` makes it one and a half times the name's type size and centres it on the capitals. The header's repaint used to copy the wordmark's words only, so a picture in the link dropped out of the freshly painted half and the name jumped to the left; the copy now holds the logo too. A title that flies up from the hero lands on the name, beside the logo, where it used to land on the link's corner. Wordmarks without a logo look and fly the same as before.
