@@ -226,7 +226,7 @@ The command mixes the shades and the eight section paints, fixes anything that w
 
 ### Updating
 
-Bump the tag in the project's `package.json` (`github:artvandervennet/gesso#v1.7.3`) and run `npm install`. If the project has its own theme, run `npm run theme` again so it picks up generator changes.
+Bump the tag in the project's `package.json` (`github:artvandervennet/gesso#v1.8.0`) and run `npm install`. If the project has its own theme, run `npm run theme` again so it picks up generator changes.
 
 ### Releasing a new version (in this repo)
 
