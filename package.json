@@ -1,6 +1,6 @@
 {
   "name": "@vandervennet/gesso",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "Gesso, Art Van der Vennet's paint-themed design system: tokens, themes and web components. Install it from git; every project picks its own theme.",
   "author": "Art Van der Vennet <me@vandervennet.art>",
   "license": "MIT",
