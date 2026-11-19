@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0 — 2026-11-19
+
+- `art-header`'s wordmark can carry a logo. Put an `<img>` (or an inline `<svg>`) inside the wordmark's link, before the name: `<a slot="wordmark" href="/"><img src="/logo.svg" alt="" width="28" height="28">OdyFeed</a>`. `layout.css` makes it one and a half times the name's type size and centres it on the capitals. The header's repaint used to copy the wordmark's words only, so a picture in the link dropped out of the freshly painted half and the name jumped to the left; the copy now holds the logo too. A title that flies up from the hero lands on the name, beside the logo, where it used to land on the link's corner. Wordmarks without a logo look and fly the same as before.
+
 ## 1.5.0 — 2026-11-19
 
 - A name that takes more than one line in the hero can fly into the header too. Mark each line, not the `<h1>`: `<h1><span data-wordmark>Art Van</span> <span data-wordmark>der Vennet</span></h1>`. Each line flies to its own words in the wordmark, so the lines come together into one on the way up. A whole `<h1 data-wordmark>` on two lines used to land as two small lines on top of the one-line wordmark. `layout.css` keeps each marked line together, so the name breaks between them. A title marked on the `<h1>` flies the same as before.

@@ -39,6 +39,14 @@ import './art-decor.js'; // the header carries an <art-drip>
  *     <art-button slot="actions" size="s"><a href="/login">Log in</a></art-button>
  *   </art-header>
  *
+ * The wordmark can carry a logo: an <img> (or an inline <svg>) inside the link, before the name.
+ * The link's name is the site's name, so the picture gets an empty alt:
+ *
+ *   <a slot="wordmark" href="/"><img src="/logo.svg" alt="" width="28" height="28">OdyFeed</a>
+ *
+ * layout.css sizes it to the name and sets it on the name's line. It is repainted with the
+ * name, and a title that flies up from the hero lands on the name, beside the logo.
+ *
  * Put it first in <body>, before the hero, and end the hero in an <art-drip stagger flush>.
  * The hero and the header are the only things on the page that drip.
  *
@@ -99,6 +107,11 @@ const css = sheet(`
      would otherwise win over these rules. See art-button.js. */
   ::slotted([slot="wordmark"]), .wipe .wordmark {
     font: var(--step-1)/1 var(--font-display) !important; color: var(--ink) !important; text-decoration: none !important; white-space: nowrap;
+  }
+  /* A logo in the wordmark, in the second coat's copy. The real one is in the page, where
+     layout.css gives it these same sizes: change the two together. */
+  .wipe .wordmark :is(img, svg) {
+    display: inline-block; block-size: 1.5em; inline-size: auto; vertical-align: -0.375em; margin-inline-end: 0.4em;
   }
   /* The hero's title flying up to become the wordmark (see fly()): the wordmark comes in as
      the title lands, and until then it is hidden for real, so it can't take keyboard focus. */
@@ -226,6 +239,8 @@ const css = sheet(`
 // the colours a paint gives to the things in the bar
 const ROLES = ['--surface', '--ink', '--ink-muted', '--accent', '--rule', '--focus'];
 const esc = (text) => text.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+// a logo in the wordmark: a picture, or a drawing in the page itself
+const isLogo = (node) => node.nodeType === Node.ELEMENT_NODE && ['img', 'svg'].includes(node.localName);
 const still = matchMedia('(prefers-reduced-motion: reduce)');
 // what fly() writes on the hero's title, so it can be taken off again
 const FLIGHT = ['translate', 'scale', 'transform-origin', 'opacity', 'position', 'z-index'];
@@ -255,10 +270,15 @@ class ArtHeader extends HTMLElement {
     // the second coat: a picture of the bar, for the wipe to show in the new colours
     const wordmark = this.querySelector(':scope > [slot="wordmark"]');
     this.shadowRoot.querySelector('.wipe').innerHTML = `<div class="bar">
-      <div class="lead">${wordmark ? `<span class="wordmark">${esc(wordmark.textContent)}</span>` : ''}</div>
+      <div class="lead">${wordmark ? '<span class="wordmark"></span>' : ''}</div>
       <div class="links"><div class="fold"><div class="list">${this.navLinks.map((a) => `<span>${esc(a.textContent)}</span>`).join('')}</div></div></div>
       <div class="acts"></div>
       <span class="toggle"><span>Menu</span><span class="lines"><span></span><span></span><span></span></span></span></div>`;
+    // the wordmark's copy: its words, and its logo where it has one, in the order they stand in
+    for (const node of wordmark?.childNodes ?? []) {
+      if (node.nodeType !== Node.ELEMENT_NODE && node.nodeType !== Node.TEXT_NODE) continue; // a framework's comment
+      this.shadowRoot.querySelector('.wipe .wordmark').append(isLogo(node) ? node.cloneNode(true) : node.textContent);
+    }
     const filled = !!this.querySelector(':scope > [slot="actions"]');
     for (const acts of this.shadowRoot.querySelectorAll('.acts')) acts.classList.toggle('filled', filled);
     // the menu button (small screens only)
@@ -498,13 +518,20 @@ class ArtHeader extends HTMLElement {
    * Lines land on their own words: the first on the wordmark's first word, the next on the
    * word after the first line's last, and so on. A line the wordmark has no words left for
    * lands on the corner too.
+   * A wordmark with a logo is wider and taller than its name. There every line lands on its
+   * words, a title in one piece on the first of them, and at the height of the name's own line.
    */
   landings(lines, wordmark) {
     const corner = wordmark.getBoundingClientRect();
-    if (lines.length === 1) return [corner];
+    const logo = [...wordmark.children].some(isLogo);
+    if (lines.length === 1 && !logo) return [corner];
     const words = []; // where each word of the wordmark starts: its text node, and how far in
     const texts = document.createTreeWalker(wordmark, NodeFilter.SHOW_TEXT);
-    for (let node; (node = texts.nextNode());) for (const word of node.data.matchAll(/\S+/g)) words.push([node, word.index]);
+    for (let node; (node = texts.nextNode());) {
+      if (node.parentElement.closest('svg')) continue; // a drawn logo's own text: its <title>, say
+      for (const word of node.data.matchAll(/\S+/g)) words.push([node, word.index]);
+    }
+    const small = parseFloat(getComputedStyle(wordmark).fontSize);
     let at = 0;
     return lines.map((line) => {
       const word = words[at];
@@ -513,7 +540,10 @@ class ArtHeader extends HTMLElement {
       const first = document.createRange(); // the word's first letter
       first.setStart(...word);
       first.setEnd(word[0], word[1] + 1);
-      return { left: first.getBoundingClientRect().left, top: corner.top };
+      const letter = first.getBoundingClientRect();
+      // The name's line is as tall as its type size (line-height 1), centred on the letters' own
+      // box. Without a logo that line is the whole wordmark, and its top the corner's.
+      return { left: letter.left, top: logo ? letter.top + (letter.height - small) / 2 : corner.top };
     });
   }
 
